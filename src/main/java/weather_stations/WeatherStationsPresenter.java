@@ -1,6 +1,7 @@
 package weather_stations;
 
 import com.sun.istack.internal.NotNull;
+import data.Weather;
 import data.WeatherRepository;
 import data.WeatherStation;
 
@@ -38,7 +39,7 @@ public class WeatherStationsPresenter implements WeatherStationsContract.UserAct
 
     }
 
-    public void openWeatherDetails(@NotNull WeatherStation weatherStation) {
+    public void openWeatherDetails(@NotNull Weather weather) {
 
     }
 }

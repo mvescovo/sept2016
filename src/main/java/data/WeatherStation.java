@@ -1,5 +1,8 @@
 package data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by michael on 5/04/16.
  *
@@ -9,6 +12,7 @@ public class WeatherStation {
 
     private String mUrl;
     private String mCity;
+    private ArrayList<Weather> weather;
 
     public WeatherStation(String url, String city) {
         mUrl = url;
@@ -29,5 +33,9 @@ public class WeatherStation {
 
     public void setCity(String city) {
         mCity = city;
+    }
+
+    public Weather getWeather(int id) {
+        return weather.get(id);
     }
 }

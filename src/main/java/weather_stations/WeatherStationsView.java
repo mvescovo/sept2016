@@ -40,7 +40,7 @@ public class WeatherStationsView implements WeatherStationsContract.View {
      */
     WeatherStationListener mWeatherStationListener = new WeatherStationListener() {
         public void onWeatherStationClick(WeatherStation weatherStation) {
-            mActionsListener.openWeatherDetails(weatherStation);
+            mActionsListener.openWeatherDetails(weatherStation.getWeather(0));
         }
     };
 

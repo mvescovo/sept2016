@@ -7,13 +7,14 @@ package data;
  */
 public class Weather {
 
-    private String mId;
+    private int mId;
     private String mMax;
     private String mMin;
     private String m9am;
     private String m3pm;
+    private String date;
 
-    public Weather(String id, String max, String min, String nineam, String threepm) {
+    public Weather(int id, String max, String min, String nineam, String threepm) {
         mId = id;
         mMax = max;
         mMin = min;
@@ -21,7 +22,7 @@ public class Weather {
         m3pm = threepm;
     }
 
-    public String getId() {
+    public int getId() {
         return mId;
     }
 

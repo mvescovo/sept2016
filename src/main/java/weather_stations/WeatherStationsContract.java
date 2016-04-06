@@ -1,5 +1,6 @@
 package weather_stations;
 
+import data.Weather;
 import data.WeatherStation;
 
 import java.util.List;
@@ -28,6 +29,6 @@ interface WeatherStationsContract {
 
         void addFavouriteStation(WeatherStation weatherStation);
 
-        void openWeatherDetails(WeatherStation weatherStation);
+        void openWeatherDetails(Weather weather);
     }
 }

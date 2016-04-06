@@ -1,6 +1,7 @@
 package weather_stations;
 
 import com.google.common.collect.Lists;
+import data.Weather;
 import data.WeatherRepository;
 import data.WeatherStation;
 import org.junit.Before;
@@ -22,7 +23,8 @@ import static org.mockito.Mockito.verify;
  */
 public class WeatherStationsPresenterTest {
 
-    private static List<WeatherStation> STATIONS = Lists.newArrayList(new WeatherStation("Title1", "Description1"), new WeatherStation("Title2", "Description2"));
+    private static List<WeatherStation> STATIONS = Lists.newArrayList(new WeatherStation("http://www.bom.gov.au/fwo/IDV60801/IDV60801.95936.json",
+            "Melbourne Olympic Park"), new WeatherStation("http://www.bom.gov.au/fwo/IDV60801/IDV60801.94866.json", "Melbourne Airport"));
 
     private static List<WeatherStation> EMPTY_STATIONS = new ArrayList(0);
 
@@ -57,7 +59,7 @@ public class WeatherStationsPresenterTest {
         // When loading of WeatherStations is requested
        mWeatherStationsPresenter.loadWeatherStations(true);
 
-        // Callback is captured and invoked with stubbed notes
+        // Callback is captured and invoked with stubbed weather stations
         verify(mWetherRepository).getWeatherStations(mLoadWeatherStationsCallbackCaptor.capture());
         mLoadWeatherStationsCallbackCaptor.getValue().onWeatherStationsLoaded(STATIONS);
 
@@ -67,9 +69,14 @@ public class WeatherStationsPresenterTest {
     }
 
     @Test
+    public void addFavouriteStationToRepository() {
+
+    }
+
+    @Test
     public void clickOnStation_ShowsDetailUi() {
         // Given a stubbed Weather
-        WeatherStation requestedWeather = new WeatherStation("Details Requested", "For this note");
+        Weather requestedWeather = new Weather(1, "30", "20", "20", "28");
 
         // When open weatherStation details is requested
         mWeatherStationsPresenter.openWeatherDetails(requestedWeather);
