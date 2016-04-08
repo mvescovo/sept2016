@@ -14,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
@@ -63,12 +64,16 @@ public class StationsPresenterTest {
 
     @Test
     public void loadStationsFromRepositoryAndLoadIntoView() {
+        fail("Not implemented");
 
+        // TODO Implement me
     }
 
     @Test
     public void addFavouriteStationToRepository() {
+        fail("Not implemented");
 
+        // TODO Implement me
     }
 
     @Test
