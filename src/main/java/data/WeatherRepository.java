@@ -1,29 +1,33 @@
 package data;
 
-import com.sun.istack.internal.NotNull;
-
-        import java.util.List;
+import java.util.List;
 
 /**
  * Created by michael on 5/04/16.
  *
- * Memory repository interface.
+ * Weather repository interface.
  */
 public interface WeatherRepository {
 
-    interface LoadWeatherCallback {
-        void onWeatherLoaded(Weather weather);
+    interface LoadStatesCallback {
+        void onStatesLoaded(List<State> states);
     }
 
-    interface LoadWeatherStationsCallback {
-        void onWeatherStationsLoaded(List<WeatherStation> weatherStations);
+    interface LoadStationsCallback {
+        void onStationsLoaded(List<Station> stations);
     }
 
-    void getWeatherStations(@NotNull LoadWeatherStationsCallback callback);
+    interface LoadObservationsCallback {
+        void onWeatherLoaded(Observation observation);
+    }
 
-    void getWeather(WeatherStation weatherStation, @NotNull LoadWeatherCallback callback);
+    void getStates(LoadStatesCallback callback);
 
-    void saveFavouriteStation(WeatherStation weatherStation, boolean favourite);
+    void getStations(LoadStationsCallback callback);
+
+    void getObservations(Station station, LoadObservationsCallback callback);
+
+    void saveFavouriteStation(Station station, boolean favourite);
 
     void refreshData();
 }

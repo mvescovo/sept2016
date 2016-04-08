@@ -1,5 +1,6 @@
 package data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,21 +10,29 @@ import java.util.List;
  */
 public class WeatherServiceApiImpl implements WeatherServiceApi {
 
-    // Get data from WeatherServiceApiEndpoint in here.
+    /*
+    * Get data from WeatherServiceApiEndpoint
+    * */
+    private static final List<State> STATES_SERVICE_DATA = WeatherServiceApiEndpoint.loadPersistedStates();
+    private static final List<Station> STATIONS_SERVICE_DATA = WeatherServiceApiEndpoint.loadPersistedStations();
+    private static final List<Observation> OBSERVATIONS_SERVICE_DATA = WeatherServiceApiEndpoint.loadPersistedObservations();
 
-    public void getWeather(WeatherServiceCallback<Weather> callback) {
-
+    public void getStates(WeatherServiceCallback<List<State>> callback) {
+        List<State> states = new ArrayList<State>(STATES_SERVICE_DATA);
+        callback.onLoaded(states);
     }
 
-    public void saveWeather(Weather weather) {
-
+    public void getStations(WeatherServiceCallback<List<Station>> callback) {
+        List<Station> stations = new ArrayList<Station>(STATIONS_SERVICE_DATA);
+        callback.onLoaded(stations);
     }
 
-    public void getWeatherStations(WeatherServiceCallback<List<WeatherStation>> callback) {
-
+    public void getObservations(WeatherServiceCallback<List<Observation>> callback) {
+        List<Observation> observations = new ArrayList<Observation>(OBSERVATIONS_SERVICE_DATA);
+        callback.onLoaded(observations);
     }
 
-    public void saveFavouriteStation(WeatherStation weatherStation) {
+    public void saveFavouriteStation(Station station) {
 
     }
 }

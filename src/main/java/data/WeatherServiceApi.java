@@ -13,11 +13,11 @@ interface WeatherServiceApi {
         void onLoaded(T data);
     }
 
-    void getWeather(WeatherServiceCallback<Weather> callback);
+    void getStates(WeatherServiceCallback<List<State>> callback);
 
-    void saveWeather(Weather weather);
+    void getStations(WeatherServiceCallback<List<Station>> callback);
 
-    void getWeatherStations(WeatherServiceCallback<List<WeatherStation>> callback);
+    void getObservations(WeatherServiceCallback<List<Observation>> callback);
 
-    void saveFavouriteStation(WeatherStation weatherStation);
+    void saveFavouriteStation(Station station);
 }

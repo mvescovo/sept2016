@@ -1,8 +1,6 @@
 package data;
 
 import com.google.common.collect.ImmutableList;
-import com.sun.istack.internal.NotNull;
-
 import java.util.List;
 import java.util.Map;
 
@@ -16,32 +14,35 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class InMemoryWeatherRepository implements WeatherRepository {
 
     private final WeatherServiceApi mWeatherServiceApi;
-    private List<WeatherStation> mCachedWeatherStations;
-    private Map<WeatherStation, Weather> mCachedWeather;
+    private List<State> mCachedStates;
+    private List<Station> mCachedStations;
+    private Map<Station, Observation> mCachedObservations;
 
-    public InMemoryWeatherRepository(@NotNull WeatherServiceApi weatherServiceApi) {
+    public InMemoryWeatherRepository(WeatherServiceApi weatherServiceApi) {
         mWeatherServiceApi = checkNotNull(weatherServiceApi);
     }
 
-    public void getWeatherStations(@NotNull final LoadWeatherStationsCallback callback) {
+    public void getStates(final LoadStatesCallback callback) {
         checkNotNull(callback);
-        if (mCachedWeatherStations == null) {
-            mWeatherServiceApi.getWeatherStations(new WeatherServiceApi.WeatherServiceCallback<List<WeatherStation>>() {
-                public void onLoaded(List<WeatherStation> data) {
-                    mCachedWeatherStations = ImmutableList.copyOf(data);
-                    callback.onWeatherStationsLoaded(mCachedWeatherStations);
+        if (mCachedStates == null) {
+            mWeatherServiceApi.getStates(new WeatherServiceApi.WeatherServiceCallback<List<State>>() {
+                public void onLoaded(List<State> data) {
+                    mCachedStates = ImmutableList.copyOf(data);
+                    callback.onStatesLoaded(mCachedStates);
                 }
             });
-        } else {
-            callback.onWeatherStationsLoaded(mCachedWeatherStations);
         }
     }
 
-    public void getWeather(WeatherStation weatherStation, @NotNull LoadWeatherCallback callback) {
+    public void getStations(final LoadStationsCallback callback) {
 
     }
 
-    public void saveFavouriteStation(WeatherStation weatherStation, boolean favourite) {
+    public void getObservations(Station station, LoadObservationsCallback callback) {
+
+    }
+
+    public void saveFavouriteStation(Station station, boolean favourite) {
 
     }
 

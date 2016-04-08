@@ -1,7 +1,5 @@
 package data;
 
-import com.sun.istack.internal.NotNull;
-
 /**
  * Created by michael on 5/04/16.
  *
@@ -9,13 +7,9 @@ import com.sun.istack.internal.NotNull;
  */
 public class WeatherRepositories {
 
-    private WeatherRepositories() {
-        // no instance
-    }
-
     private static WeatherRepository repository = null;
 
-    public synchronized static WeatherRepository getInMemoryRepoInstance(@NotNull WeatherServiceApi weatherServiceApi) {
+    public synchronized static WeatherRepository getInMemoryRepoInstance(WeatherServiceApi weatherServiceApi) {
         if (repository == null) {
             repository = new InMemoryWeatherRepository(weatherServiceApi);
         }
