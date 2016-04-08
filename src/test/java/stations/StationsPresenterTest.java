@@ -14,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -70,10 +71,10 @@ public class StationsPresenterTest {
 
     }
 
-//    @Test
-//    public void clickOnStationAndShowObservations() {
-//        Station station = new Station("94866", "Melbourne Airport");
-//        mStationsPresenter.openObservations(station);
-//        verify(mStationsView).showObservationsUi(any(String.class));
-//    }
+    @Test
+    public void clickOnStationAndShowObservations() {
+        Station station = new Station("94866", "Melbourne Airport");
+        mStationsPresenter.openObservations(station);
+        verify(mStationsView).showObservationsUi(any(String.class));
+    }
 }
