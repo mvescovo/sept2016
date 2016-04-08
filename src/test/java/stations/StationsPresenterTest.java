@@ -58,7 +58,7 @@ public class StationsPresenterTest {
         verify(mWetherRepository).getStates(mLoadStatesCallbackCaptor.capture());
         mLoadStatesCallbackCaptor.getValue().onStatesLoaded(STATES);
 
-        verify(mStationsView).setProgressIndicator(false);
+        verify(mStationsView).setProgressBar(false);
         verify(mStationsView).showStates(STATES);
     }
 

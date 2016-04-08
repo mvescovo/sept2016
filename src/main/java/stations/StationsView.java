@@ -3,12 +3,17 @@ package stations;
 import application.Main;
 import data.State;
 import data.Station;
+import data.WeatherRepositories;
+import data.WeatherServiceApiImpl;
+import observations.ObservationsPresenter;
+import observations.ObservationsView;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,6 +25,9 @@ public class StationsView implements StationsContract.View, ActionListener {
 
     private StationsContract.UserActionsListener mActionsListener;
     private JProgressBar mJProgressBar;
+    private JComboBox mStatesComboList;
+    private JComboBox mStationsComboList;
+    private HashMap<String, Station> mStationHashMap = new HashMap<String, Station>();
 
     public StationsView() {
         // Add a progress bar to the main window
@@ -34,7 +42,7 @@ public class StationsView implements StationsContract.View, ActionListener {
         mActionsListener = actionListener;
     }
 
-    public void setProgressIndicator(final boolean active) {
+    public void setProgressBar(final boolean active) {
         if (active) {
             mJProgressBar.setVisible(true);
         } else {
@@ -49,33 +57,57 @@ public class StationsView implements StationsContract.View, ActionListener {
 
     // Show the states
     public void showStates(List<State> states) {
-        ArrayList stateList = new ArrayList();
+        ArrayList stateNames = new ArrayList();
         for (int i = 0; i < states.size(); i++) {
-            stateList.add(states.get(i).getName());
+            stateNames.add(states.get(i).getName());
         }
 
-        final JComboBox comboList = new JComboBox(stateList.toArray());
-        comboList.setSelectedIndex(0);
-        comboList.addActionListener(this);
-        Main.MainWindow.getInstance().getContentPane().add(comboList, BorderLayout.PAGE_START);
+        mStatesComboList = new JComboBox(stateNames.toArray());
+        mStatesComboList.setSelectedIndex(0);
+        mStatesComboList.addActionListener(this);
+        Main.MainWindow.getInstance().getContentPane().add(mStatesComboList, BorderLayout.PAGE_START);
         Main.MainWindow.getInstance().getContentPane().setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
     }
 
+    // Show the stations
     public void showStations(List<Station> stations) {
+        mStationHashMap.clear();
+        for (int i = 0; i < stations.size(); i++) {
+            mStationHashMap.put(stations.get(i).getCity(), stations.get(i));
+        }
 
+        ArrayList stationNames = new ArrayList();
+        for (int i = 0; i < stations.size(); i++) {
+            stationNames.add(stations.get(i).getCity());
+        }
+
+        mStationsComboList = new JComboBox(stationNames.toArray());
+        mStationsComboList.setSelectedIndex(0);
+        mStationsComboList.addActionListener(this);
+        Main.MainWindow.getInstance().getContentPane().add(mStationsComboList, BorderLayout.PAGE_START);
+        Main.MainWindow.getInstance().getContentPane().setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
     }
 
     public void showStationAsFavourited(String stationId, boolean favourite) {
 
     }
 
-    public void showObservationsUi(String stationId) {
-
+    public void showObservationsUi(Station station) {
+        ObservationsView observationsView = new ObservationsView();
+        ObservationsPresenter observationsPresenter = new ObservationsPresenter(WeatherRepositories.getInMemoryRepoInstance(new WeatherServiceApiImpl()), observationsView);
+        observationsView.setActionListener(observationsPresenter);
+        observationsView.onReady(station);
     }
 
     public void actionPerformed(ActionEvent e) {
-        JComboBox cb = (JComboBox)e.getSource();
-        String stateName = (String)cb.getSelectedItem();
-        System.out.println("clicked on: " + stateName);
+        if (e.getSource() == mStatesComboList) {
+            JComboBox cb = (JComboBox)e.getSource();
+            String stateName = (String)cb.getSelectedItem();
+            mActionsListener.loadStations(stateName, true);
+        } else if (e.getSource() == mStationsComboList) {
+            JComboBox cb = (JComboBox)e.getSource();
+            String stationName = (String)cb.getSelectedItem();
+            mActionsListener.openObservations(mStationHashMap.get(stationName));
+        }
     }
 }

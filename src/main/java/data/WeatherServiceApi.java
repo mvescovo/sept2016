@@ -1,5 +1,6 @@
 package data;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -15,9 +16,9 @@ interface WeatherServiceApi {
 
     void getStates(WeatherServiceCallback<List<State>> callback);
 
-    void getStations(WeatherServiceCallback<List<Station>> callback);
+    void getStations(WeatherServiceCallback<HashMap<String,List<Station>>> callback);
 
-    void getObservations(WeatherServiceCallback<List<Observation>> callback);
+    void getObservations(Station station, WeatherServiceCallback<List<Observation>> callback);
 
     void saveFavouriteStation(Station station);
 }

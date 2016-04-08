@@ -23,17 +23,23 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
     }
 
     public void loadStates(final boolean forceUpdate) {
-        mView.setProgressIndicator(true);
+        mView.setProgressBar(true);
         mWeatherRepository.getStates(new WeatherRepository.LoadStatesCallback() {
             public void onStatesLoaded(List<State> states) {
-                mView.setProgressIndicator(false);
+                mView.setProgressBar(false);
                 mView.showStates(states);
             }
         });
     }
 
-    public void loadStations(boolean forceUpdate) {
-
+    public void loadStations(String stateName, boolean forceUpdate) {
+        mView.setProgressBar(true);
+        mWeatherRepository.getStations(stateName, new WeatherRepository.LoadStationsCallback() {
+            public void onStationsLoaded(List<Station> stations) {
+                mView.setProgressBar(false);
+                mView.showStations(stations);
+            }
+        });
     }
 
     public void addFavouriteStation(Station station) {
@@ -41,7 +47,7 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
     }
 
     public void openObservations(Station station) {
-
+        mView.showObservationsUi(station);
     }
 
 }

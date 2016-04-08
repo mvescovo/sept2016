@@ -9,27 +9,27 @@ import java.util.HashMap;
  */
 public class Station {
 
-    private String mId;
+    private String mUrl;
     private String mCity;
     private HashMap<String, Observation> mObservations;
 
-    public Station(String id, String city) {
-        mId = id;
+    public Station(String url, String city) {
+        mUrl = url;
         mCity = city;
     }
 
-    public Station(String id, String city, HashMap<String, Observation> observations) {
-        mId = id;
+    public Station(String url, String city, HashMap<String, Observation> observations) {
+        mUrl = url;
         mCity = city;
         mObservations = observations;
     }
 
-    public String getId() {
-        return mId;
+    public String getUrl() {
+        return mUrl;
     }
 
-    public void setId(String id) {
-        mId = id;
+    public void setUrl(String url) {
+        mUrl = url;
     }
 
     public String getCity() {

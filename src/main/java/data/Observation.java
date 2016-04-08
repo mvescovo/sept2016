@@ -16,6 +16,11 @@ public class Observation {
     private String mRain;
     private String mHumidity;
 
+    public Observation(String airTemp, String name) {
+        mAirtemp = airTemp;
+        mName = name;
+    }
+
     public Observation(String id, String name, String dateTime, String apparentTemp, String cloud, String airtemp, String rain, String humidity) {
         mId = id;
         mName = name;

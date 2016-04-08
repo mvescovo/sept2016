@@ -1,8 +1,9 @@
 package data;
 
 import com.google.common.collect.ImmutableList;
+
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -11,14 +12,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * Memory model. Gets and saves data from and to the weather service API.
  */
-public class InMemoryWeatherRepository implements WeatherRepository {
+class InMemoryWeatherRepository implements WeatherRepository {
 
     private final WeatherServiceApi mWeatherServiceApi;
     private List<State> mCachedStates;
-    private List<Station> mCachedStations;
-    private Map<Station, Observation> mCachedObservations;
+    private HashMap<String,List<Station>> mCachedStations;
+    private HashMap<Station,List<Observation>> mCachedObservations = new HashMap<Station, List<Observation>>();
 
-    public InMemoryWeatherRepository(WeatherServiceApi weatherServiceApi) {
+    InMemoryWeatherRepository(WeatherServiceApi weatherServiceApi) {
         mWeatherServiceApi = checkNotNull(weatherServiceApi);
     }
 
@@ -31,22 +32,51 @@ public class InMemoryWeatherRepository implements WeatherRepository {
                     callback.onStatesLoaded(mCachedStates);
                 }
             });
+        } else {
+            callback.onStatesLoaded(mCachedStates);
         }
     }
 
-    public void getStations(final LoadStationsCallback callback) {
-
+    public void getStations(final String state, final LoadStationsCallback callback) {
+        checkNotNull(callback);
+        if (mCachedStations == null) {
+            mWeatherServiceApi.getStations(new WeatherServiceApi.WeatherServiceCallback<HashMap<String, List<Station>>>() {
+                public void onLoaded(HashMap<String, List<Station>> data) {
+                    mCachedStations = data;
+                    callback.onStationsLoaded(mCachedStations.get(state));
+                }
+            });
+        } else {
+            callback.onStationsLoaded(mCachedStations.get(state));
+        }
     }
 
-    public void getObservations(Station station, LoadObservationsCallback callback) {
-
+    public void getObservations(final Station station, final LoadObservationsCallback callback) {
+        checkNotNull(callback);
+        if ((mCachedObservations == null) || (mCachedObservations.get(station) == null)) {
+            mWeatherServiceApi.getObservations(station, new WeatherServiceApi.WeatherServiceCallback<List<Observation>>() {
+                public void onLoaded(List<Observation> data) {
+                    if (data == null) {
+                        System.out.println("data is NULL");
+                    } else if (data.size() == 0) {
+                        System.out.println("data size is 0");
+                    }
+                    mCachedObservations.put(station, data);
+                    callback.onObservationsLoaded(mCachedObservations.get(station));
+                }
+            });
+        } else {
+            callback.onObservationsLoaded(mCachedObservations.get(station));
+        }
     }
 
     public void saveFavouriteStation(Station station, boolean favourite) {
-
+        // TODO Implement me
     }
 
     public void refreshData() {
-
+        mCachedStates = null;
+        mCachedStations = null;
+        mCachedObservations = null;
     }
 }

@@ -18,12 +18,12 @@ public interface WeatherRepository {
     }
 
     interface LoadObservationsCallback {
-        void onWeatherLoaded(Observation observation);
+        void onObservationsLoaded(List<Observation> observations);
     }
 
     void getStates(LoadStatesCallback callback);
 
-    void getStations(LoadStationsCallback callback);
+    void getStations(String state, LoadStationsCallback callback);
 
     void getObservations(Station station, LoadObservationsCallback callback);
 

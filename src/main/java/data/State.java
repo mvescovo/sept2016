@@ -12,6 +12,10 @@ public class State {
     private String mName;
     private HashMap<String, Station> mWeatherStations; // use station id for first param
 
+    public State(String name) {
+        mName = name;
+    }
+
     public State(String id, String name) {
         mId = id;
         mName = name;

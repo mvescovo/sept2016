@@ -14,8 +14,8 @@ interface StationsContract {
 
     interface View {
 
-        // Enable/disable a progress indicator while data is loading
-        void setProgressIndicator(boolean active);
+        // Enable/disable a progress bar while data is loading
+        void setProgressBar(boolean active);
 
         // Show a list of states in the current view
         void showStates(List<State> states);
@@ -27,14 +27,14 @@ interface StationsContract {
         void showStationAsFavourited(String stationId, boolean favourite);
 
         // Show observations in the the observations view
-        void showObservationsUi(String stationId);
+        void showObservationsUi(Station station);
     }
 
     interface UserActionsListener {
 
         void loadStates(boolean forceUpdate);
 
-        void loadStations(boolean forceUpdate);
+        void loadStations(String stateName, boolean forceUpdate);
 
         void addFavouriteStation(Station station);
 
