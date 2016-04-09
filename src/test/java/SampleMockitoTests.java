@@ -1,5 +1,3 @@
-package application;
-
 import org.junit.Test;
 
 import java.util.LinkedList;
@@ -13,10 +11,10 @@ import static org.mockito.Mockito.when;
 /**
  * Created by michael on 5/04/16.
  *
- * Testing that Mockito is working. To be deleted when we have real tests.
+ * Sample Mockito tests.
  *
  */
-public class test {
+public class SampleMockitoTests {
 
     @Test
     public void testTest() {

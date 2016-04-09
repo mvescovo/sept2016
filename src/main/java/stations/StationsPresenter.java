@@ -43,7 +43,7 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
     }
 
     public void addFavouriteStation(Station station) {
-
+        // TODO Steve implement me
     }
 
     public void openObservations(Station station) {

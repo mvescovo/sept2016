@@ -70,6 +70,7 @@ class WeatherServiceApiEndpoint {
         return allStations;
     }
 
+    // Get observations from the BOM
     static void getObservations(Station station, final WeatherServiceApi.WeatherServiceCallback callback) {
         final List<Observation> observations = new ArrayList<Observation>();
 
@@ -86,7 +87,9 @@ class WeatherServiceApiEndpoint {
                     JsonObject observationsObject = response.body().getAsJsonObject("observations");
                     JsonArray dataArray = observationsObject.get("data").getAsJsonArray();
                     for (int i = 0; i < dataArray.size(); i++) {
-                        // TODO Implement me. Only two fields have been done.
+
+                        // TODO Steve implement me. Only two fields have been done. Need all relevant fields.
+
                         String name = "";
                         String air_temp = "";
                         if (!dataArray.get(i).getAsJsonObject().get("name").isJsonNull()) {
@@ -105,7 +108,7 @@ class WeatherServiceApiEndpoint {
             }
 
             public void onFailure(Call<JsonObject> call, Throwable t) {
-
+                callback.onLoaded(observations);
             }
         });
     }

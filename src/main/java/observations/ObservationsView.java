@@ -5,10 +5,10 @@ import data.Observation;
 import data.Station;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,17 +17,38 @@ import java.util.List;
  * UI for the observations.
  */
 public class ObservationsView implements ObservationsContract.View, ActionListener {
+    // TODO Kendall to UI parts and modify as necessary - delete comment when done.
 
     private ObservationsContract.UserActionsListener mActionsListener;
     private JProgressBar mJProgressBar;
-    private JComboBox mObservationsComboList;
+    private JPanel mTablePanel;
+    private JPanel mChartPanel;
+    private JTextArea mObservationsTextArea;
 
     public ObservationsView() {
-        // Add a progress bar to the main window
+        // Add a progress bar
         mJProgressBar = new JProgressBar();
         mJProgressBar.setIndeterminate(true);
         mJProgressBar.setVisible(false);
-        Main.MainWindow.getInstance().getContentPane().add(mJProgressBar);
+        Main.MainWindow.getInstance().getObservationsPanel().add(mJProgressBar);
+        Main.MainWindow.getInstance().getObservationsPanel().add(Box.createRigidArea(new Dimension(500, 0)));
+
+        // Add table panel
+        mTablePanel = new JPanel();
+        mTablePanel.setPreferredSize(new Dimension(500,350));
+        mTablePanel.setBorder(new LineBorder(Color.blue));
+        JLabel tableLabel = new JLabel("Table Panel");
+        mTablePanel.add(tableLabel);
+        Main.MainWindow.getInstance().getObservationsPanel().add(mTablePanel);
+        Main.MainWindow.getInstance().getObservationsPanel().add(Box.createRigidArea(new Dimension(500, 0)));
+
+        // Add chart panel
+        mChartPanel = new JPanel();
+        mChartPanel.setPreferredSize(new Dimension(500,350));
+        mChartPanel.setBorder(new LineBorder(Color.red));
+        JLabel chartLabel = new JLabel("Chart Panel");
+        mChartPanel.add(chartLabel);
+        Main.MainWindow.getInstance().getObservationsPanel().add(mChartPanel);
     }
 
     // Set the presenter for this view
@@ -41,6 +62,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         } else {
             mJProgressBar.setVisible(false);
         }
+        Main.MainWindow.getInstance().getObservationsPanel().repaint();
     }
 
     // When everything is initialised
@@ -49,16 +71,13 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
     }
 
     public void showObservations(List<Observation> observations) {
-        ArrayList observationNames = new ArrayList();
-        for (int i = 0; i < observations.size(); i++) {
-            observationNames.add(observations.get(i).getName());
-        }
+        mObservationsTextArea = new JTextArea(10, 40);
+        mObservationsTextArea.setLineWrap(true);
+        mTablePanel.add(mObservationsTextArea);
 
-        mObservationsComboList = new JComboBox(observationNames.toArray());
-        mObservationsComboList.setSelectedIndex(0);
-        mObservationsComboList.addActionListener(this);
-        Main.MainWindow.getInstance().getContentPane().add(mObservationsComboList, BorderLayout.PAGE_END);
-        Main.MainWindow.getInstance().getContentPane().setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        for (int i = 0; i < observations.size(); i++) {
+            mObservationsTextArea.append(observations.get(i).getName());
+        }
     }
 
     public void showChart() {
@@ -66,10 +85,6 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == mObservationsComboList) {
-            JComboBox cb = (JComboBox) e.getSource();
-            String observationName = (String) cb.getSelectedItem();
-            System.out.println("Observation name: " + observationName);
-        }
+
     }
 }

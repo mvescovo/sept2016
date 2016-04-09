@@ -6,5 +6,6 @@ package observations;
  */
 public class WeatherDetailsPresenterTest {
 
+    // TODO Daniel implement me. Use StationsPresenterTest as an example.
 
 }

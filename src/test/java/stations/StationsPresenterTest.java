@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -66,20 +65,20 @@ public class StationsPresenterTest {
     public void loadStationsFromRepositoryAndLoadIntoView() {
         fail("Not implemented");
 
-        // TODO Implement me
+        // TODO Daniel implement me
     }
 
     @Test
     public void addFavouriteStationToRepository() {
         fail("Not implemented");
 
-        // TODO Implement me
+        // TODO Daniel implement me
     }
 
     @Test
     public void clickOnStationAndShowObservations() {
         Station station = new Station("94866", "Melbourne Airport");
         mStationsPresenter.openObservations(station);
-        verify(mStationsView).showObservationsUi(any(String.class));
+        verify(mStationsView).showObservationsUi(station);
     }
 }

@@ -22,19 +22,23 @@ import java.util.List;
  * UI for the stations list.
  */
 public class StationsView implements StationsContract.View, ActionListener {
+    // TODO Kendall to UI parts and modify as necessary - delete comment when done.
 
     private StationsContract.UserActionsListener mActionsListener;
     private JProgressBar mJProgressBar;
     private JComboBox mStatesComboList;
     private JComboBox mStationsComboList;
     private HashMap<String, Station> mStationHashMap = new HashMap<String, Station>();
+    private ObservationsView mObservationsView;
+    private ObservationsPresenter mObservationsPresenter;
 
     public StationsView() {
-        // Add a progress bar to the main window
+        // Add a progress bar
         mJProgressBar = new JProgressBar();
         mJProgressBar.setIndeterminate(true);
         mJProgressBar.setVisible(false);
-        Main.MainWindow.getInstance().getContentPane().add(mJProgressBar);
+        Main.MainWindow.getInstance().getStationsPanel().add(mJProgressBar);
+        Main.MainWindow.getInstance().getStationsPanel().add(Box.createRigidArea(new Dimension(300, 0)));
     }
 
     // Set the presenter for this view
@@ -65,8 +69,8 @@ public class StationsView implements StationsContract.View, ActionListener {
         mStatesComboList = new JComboBox(stateNames.toArray());
         mStatesComboList.setSelectedIndex(0);
         mStatesComboList.addActionListener(this);
-        Main.MainWindow.getInstance().getContentPane().add(mStatesComboList, BorderLayout.PAGE_START);
-        Main.MainWindow.getInstance().getContentPane().setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        Main.MainWindow.getInstance().getStationsPanel().add(mStatesComboList);
+        Main.MainWindow.getInstance().getStationsPanel().add(Box.createRigidArea(new Dimension(300, 0)));
     }
 
     // Show the stations
@@ -81,11 +85,14 @@ public class StationsView implements StationsContract.View, ActionListener {
             stationNames.add(stations.get(i).getCity());
         }
 
+        if (mStationsComboList != null) {
+            Main.MainWindow.getInstance().getStationsPanel().remove(mStationsComboList);
+            Main.MainWindow.getInstance().getStationsPanel().repaint();
+        }
         mStationsComboList = new JComboBox(stationNames.toArray());
         mStationsComboList.setSelectedIndex(0);
         mStationsComboList.addActionListener(this);
-        Main.MainWindow.getInstance().getContentPane().add(mStationsComboList, BorderLayout.PAGE_START);
-        Main.MainWindow.getInstance().getContentPane().setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        Main.MainWindow.getInstance().getStationsPanel().add(mStationsComboList);
     }
 
     public void showStationAsFavourited(String stationId, boolean favourite) {
@@ -93,10 +100,11 @@ public class StationsView implements StationsContract.View, ActionListener {
     }
 
     public void showObservationsUi(Station station) {
-        ObservationsView observationsView = new ObservationsView();
-        ObservationsPresenter observationsPresenter = new ObservationsPresenter(WeatherRepositories.getInMemoryRepoInstance(new WeatherServiceApiImpl()), observationsView);
-        observationsView.setActionListener(observationsPresenter);
-        observationsView.onReady(station);
+        Main.MainWindow.getInstance().clearObservationsPanel();
+        mObservationsView = new ObservationsView();
+        mObservationsPresenter = new ObservationsPresenter(WeatherRepositories.getInMemoryRepoInstance(new WeatherServiceApiImpl()), mObservationsView);
+        mObservationsView.setActionListener(mObservationsPresenter);
+        mObservationsView.onReady(station);
     }
 
     public void actionPerformed(ActionEvent e) {

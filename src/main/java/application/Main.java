@@ -6,6 +6,8 @@ import stations.StationsPresenter;
 import stations.StationsView;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
 
 /**
  * Created by michael on 20/03/16.
@@ -28,27 +30,40 @@ public class Main {
     }
 
     /*
-    * Singleton class to create and show an empty main window for the app.
+    * Singleton class to create and show the main window for the app.
     *
     * This window is then used by other parts of the app to add and update relevant GUI components.
     *
     * */
     public static class MainWindow {
+        // TODO Kendall to UI parts and modify as necessary - delete comment when done.
+
         private volatile static MainWindow uniqueInstance;
-        private static JComponent mContentPane;
+        private static Container container;
+        private static JPanel stationsPanel;
+        private static JPanel observationsPanel;
 
         private MainWindow() {
+            // Container frame for the main window
             JFrame jFrame;
             jFrame = new JFrame("SEPT Weather App");
             jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            container = jFrame.getContentPane();
 
-            // Create and set up the content pane.
-            mContentPane = new JPanel();
-            mContentPane.setOpaque(true); //content panes must be opaque
-            jFrame.setContentPane(mContentPane);
+            // Stations panel - callable directly from stations view
+            stationsPanel = new JPanel();
+            stationsPanel.setBorder(new LineBorder(Color.black));
+            stationsPanel.setPreferredSize(new Dimension(300, 0));
+            JLabel stationsLabel = new JLabel("Stations Panel");
+            stationsPanel.add(stationsLabel);
+            stationsPanel.add(Box.createRigidArea(new Dimension(300, 0)));
+            container.add(stationsPanel, BorderLayout.LINE_START);
 
-            // Display the window.
-            jFrame.setSize(600,600);
+            // Observations panel - callable directly from observations view
+            createObservationsPanel();
+
+            // Display the main window.
+            jFrame.setSize(800,800);
             jFrame.setLocationRelativeTo(null);
             jFrame.setVisible(true);
         }
@@ -64,8 +79,32 @@ public class Main {
             return uniqueInstance;
         }
 
-        public JComponent getContentPane() {
-            return mContentPane;
+        public Container getContainer() {
+            return container;
+        }
+
+        public JPanel getStationsPanel() {
+            return stationsPanel;
+        }
+
+        public JPanel getObservationsPanel() {
+            return observationsPanel;
+        }
+
+        public void createObservationsPanel() {
+            observationsPanel = new JPanel();
+            observationsPanel.setBorder(new LineBorder(Color.black));
+            JLabel observationsLabel = new JLabel("Observations Panel");
+            observationsPanel.add(observationsLabel);
+            observationsPanel.add(Box.createRigidArea(new Dimension(500, 0)));
+            container.add(observationsPanel, BorderLayout.CENTER);
+        }
+
+        public void clearObservationsPanel() {
+            if (observationsPanel != null) {
+                container.remove(observationsPanel);
+                createObservationsPanel();
+            }
         }
     }
 }
