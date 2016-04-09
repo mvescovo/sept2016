@@ -32,9 +32,9 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
         });
     }
 
-    public void loadStations(String stateName, boolean forceUpdate) {
+    public void loadStations(String stateName, boolean favourite, boolean forceUpdate) {
         mView.setProgressBar(true);
-        mWeatherRepository.getStations(stateName, new WeatherRepository.LoadStationsCallback() {
+        mWeatherRepository.getStations(stateName, favourite, new WeatherRepository.LoadStationsCallback() {
             public void onStationsLoaded(List<Station> stations) {
                 mView.setProgressBar(false);
                 mView.showStations(stations);
@@ -43,7 +43,7 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
     }
 
     public void addFavouriteStation(Station station) {
-        // TODO Steve implement me
+        mWeatherRepository.saveFavouriteStation(station);
     }
 
     public void openObservations(Station station) {

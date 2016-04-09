@@ -34,7 +34,7 @@ interface StationsContract {
 
         void loadStates(boolean forceUpdate);
 
-        void loadStations(String stateName, boolean forceUpdate);
+        void loadStations(String stateName, boolean favourite, boolean forceUpdate);
 
         void addFavouriteStation(Station station);
 

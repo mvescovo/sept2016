@@ -111,7 +111,7 @@ public class StationsView implements StationsContract.View, ActionListener {
         if (e.getSource() == mStatesComboList) {
             JComboBox cb = (JComboBox)e.getSource();
             String stateName = (String)cb.getSelectedItem();
-            mActionsListener.loadStations(stateName, true);
+            mActionsListener.loadStations(stateName, false, true); // second argument false means load non-favourite stations
         } else if (e.getSource() == mStationsComboList) {
             JComboBox cb = (JComboBox)e.getSource();
             String stationName = (String)cb.getSelectedItem();

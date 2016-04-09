@@ -16,7 +16,7 @@ interface WeatherServiceApi {
 
     void getStates(WeatherServiceCallback<List<State>> callback);
 
-    void getStations(WeatherServiceCallback<HashMap<String,List<Station>>> callback);
+    void getStations(boolean favourite, WeatherServiceCallback<HashMap<String,List<Station>>> callback);
 
     void getObservations(Station station, WeatherServiceCallback<List<Observation>> callback);
 

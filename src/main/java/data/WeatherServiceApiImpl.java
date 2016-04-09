@@ -15,16 +15,22 @@ public class WeatherServiceApiImpl implements WeatherServiceApi {
     * Get data from WeatherServiceApiEndpoint
     * */
     private static final List<State> STATES_SERVICE_DATA = WeatherServiceApiEndpoint.loadPersistedStates();
-    private static final HashMap<String,List<Station>> STATIONS_SERVICE_DATA = WeatherServiceApiEndpoint.loadPersistedStations();
+    private static final HashMap<String,List<Station>> STATIONS_SERVICE_DATA = WeatherServiceApiEndpoint.loadPersistedStations(false);
+    private static final HashMap<String,List<Station>> FAVOURITE_STATIONS_SERVICE_DATA = WeatherServiceApiEndpoint.loadPersistedStations(true);
 
     public void getStates(WeatherServiceCallback<List<State>> callback) {
         List<State> states = new ArrayList<State>(STATES_SERVICE_DATA);
         callback.onLoaded(states);
     }
 
-    public void getStations(WeatherServiceCallback<HashMap<String,List<Station>>> callback) {
-        HashMap<String,List<Station>> stations = new HashMap<String, List<Station>>(STATIONS_SERVICE_DATA);
-        callback.onLoaded(stations);
+    public void getStations(boolean favourite, WeatherServiceCallback<HashMap<String,List<Station>>> callback) {
+        if (favourite) {
+            HashMap<String,List<Station>> stations = new HashMap<String, List<Station>>(FAVOURITE_STATIONS_SERVICE_DATA);
+            callback.onLoaded(stations);
+        } else {
+            HashMap<String,List<Station>> stations = new HashMap<String, List<Station>>(STATIONS_SERVICE_DATA);
+            callback.onLoaded(stations);
+        }
     }
 
     public void getObservations(Station station, final WeatherServiceCallback<List<Observation>> callback) {
@@ -36,6 +42,6 @@ public class WeatherServiceApiImpl implements WeatherServiceApi {
     }
 
     public void saveFavouriteStation(Station station) {
-        // TODO Steve implement me
+        WeatherServiceApiEndpoint.saveFavouriteStation(station);
     }
 }

@@ -37,10 +37,10 @@ class InMemoryWeatherRepository implements WeatherRepository {
         }
     }
 
-    public void getStations(final String state, final LoadStationsCallback callback) {
+    public void getStations(final String state, final boolean favourite, final LoadStationsCallback callback) {
         checkNotNull(callback);
         if (mCachedStations == null) {
-            mWeatherServiceApi.getStations(new WeatherServiceApi.WeatherServiceCallback<HashMap<String, List<Station>>>() {
+            mWeatherServiceApi.getStations(favourite,new WeatherServiceApi.WeatherServiceCallback<HashMap<String, List<Station>>>() {
                 public void onLoaded(HashMap<String, List<Station>> data) {
                     mCachedStations = data;
                     callback.onStationsLoaded(mCachedStations.get(state));
@@ -70,8 +70,8 @@ class InMemoryWeatherRepository implements WeatherRepository {
         }
     }
 
-    public void saveFavouriteStation(Station station, boolean favourite) {
-        // TODO Implement me
+    public void saveFavouriteStation(Station station) {
+        mWeatherServiceApi.saveFavouriteStation(station);
     }
 
     public void refreshData() {

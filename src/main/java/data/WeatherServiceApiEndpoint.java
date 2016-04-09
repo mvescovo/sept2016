@@ -45,7 +45,11 @@ class WeatherServiceApiEndpoint {
     }
 
     // Get stations from file
-    static HashMap<String,List<Station>> loadPersistedStations() {
+    static HashMap<String,List<Station>> loadPersistedStations(boolean favourite) {
+
+        // TODO Steve. Modify to also return favourite stations if favourite is true.
+        // First implement saving of favourites in other method below.
+
         HashMap<String, List<Station>> allStations = new HashMap<String, List<Station>>();
         JsonParser jsonParser = new JsonParser();
         JsonArray jsonArray;
@@ -70,6 +74,20 @@ class WeatherServiceApiEndpoint {
         return allStations;
     }
 
+    static void saveFavouriteStation(Station station) {
+
+        // TODO Steve implement me. Save to file under resources.
+
+    }
+
+    // Get observations from files rather than from the BOM (historical data)
+    static void getObservationsByDate(String date) {
+
+        // TODO Steve implement me. First implement the other TODO below to save the appropriate data.
+        // Change method paramaters as appropriate.
+
+    }
+
     // Get observations from the BOM
     static void getObservations(Station station, final WeatherServiceApi.WeatherServiceCallback callback) {
         final List<Observation> observations = new ArrayList<Observation>();
@@ -89,6 +107,13 @@ class WeatherServiceApiEndpoint {
                     for (int i = 0; i < dataArray.size(); i++) {
 
                         // TODO Steve implement me. Only two fields have been done. Need all relevant fields.
+                        // Follow the chain through and also update other relevant methods.
+
+
+                        // TODO Steve implement me. Data also needs to be saved to files (under resources directory).
+                        // Possibly name files by date or whatever makes sense. Then implement the
+                        // getObservationsByDate function.
+
 
                         String name = "";
                         String air_temp = "";

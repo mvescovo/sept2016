@@ -23,11 +23,11 @@ public interface WeatherRepository {
 
     void getStates(LoadStatesCallback callback);
 
-    void getStations(String state, LoadStationsCallback callback);
+    void getStations(String state, boolean favourite, LoadStationsCallback callback);
 
     void getObservations(Station station, LoadObservationsCallback callback);
 
-    void saveFavouriteStation(Station station, boolean favourite);
+    void saveFavouriteStation(Station station);
 
     void refreshData();
 }
