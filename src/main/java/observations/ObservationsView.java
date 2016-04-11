@@ -17,7 +17,7 @@ import java.util.List;
  * UI for the observations.
  */
 public class ObservationsView implements ObservationsContract.View, ActionListener {
-    // TODO Kendall to UI parts and modify as necessary - delete comment when done.
+    // TODO Kendall to modify as necessary - delete comment when done.
 
     private ObservationsContract.UserActionsListener mActionsListener;
     private JProgressBar mJProgressBar;

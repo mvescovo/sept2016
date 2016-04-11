@@ -36,7 +36,7 @@ public class Main {
     *
     * */
     public static class MainWindow {
-        // TODO Kendall to UI parts and modify as necessary - delete comment when done.
+        // TODO Kendall to modify as necessary - delete comment when done.
 
         private volatile static MainWindow uniqueInstance;
         private static Container container;

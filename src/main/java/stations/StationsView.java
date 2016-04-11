@@ -22,7 +22,7 @@ import java.util.List;
  * UI for the stations list.
  */
 public class StationsView implements StationsContract.View, ActionListener {
-    // TODO Kendall to UI parts and modify as necessary - delete comment when done.
+    // TODO Kendall to modify as necessary - delete comment when done.
 
     private StationsContract.UserActionsListener mActionsListener;
     private JProgressBar mJProgressBar;
