@@ -17,6 +17,7 @@ Software Engineering Process and Tools.
 
 ####Bonus marks
 - Junit testing
+- Continous integration using Travis CI
 - Singleton pattern
 - MVP (model view presenter) pattern
 - Repository pattern
