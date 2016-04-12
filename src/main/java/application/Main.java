@@ -19,7 +19,7 @@ public class Main {
 
 	// fonts
 	private static final String fontFamily = "SansSerif";
-	private static final Font fontTitle = new Font(fontFamily, Font.BOLD, 56);
+	private static final Font fontTitle = new Font(fontFamily, Font.BOLD, 24);
 	private static final Font fontSmall = new Font(fontFamily, Font.PLAIN, 11);
 	private static final Font fontNormal = new Font(fontFamily, Font.PLAIN, 14);
 	private static final Font fontNormalBold = new Font(fontFamily, Font.BOLD, 14);
@@ -157,6 +157,7 @@ public class Main {
             observationsPanel.setBorder(new LineBorder(Color.black));
 
             stationName = new JLabel("Observations Panel");
+            stationName.setFont(Main.getFonttitle());
             observationsPanel.add(stationName, cons);
 
             observationsPanel.setBackground(colorLight);
@@ -220,6 +221,14 @@ public class Main {
 
 	public static Font getFontsmall() {
 		return fontSmall;
+	}
+
+	public static Font getFonttitle() {
+		return fontTitle;
+	}
+
+	public static Font getFontnormal() {
+		return fontNormal;
 	}
 
 }

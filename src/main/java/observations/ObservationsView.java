@@ -130,7 +130,8 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
     	tableScrollPane.setViewportView(table);
     	
     	// Update Station name
-        Main.MainWindow.getInstance().getStationName().setText(observations.get(0).getName());
+    	String stationTitle = observations.get(0).getName() + " - State name";
+        Main.MainWindow.getInstance().getStationName().setText(stationTitle);
 
 
     }
@@ -172,7 +173,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         chart.getTitle().setHorizontalAlignment(HorizontalAlignment.LEFT);
         chart.getTitle().setFont(Main.getFontnormalbold());
         
-
+        chart.setBackgroundPaint(Main.MainWindow.getInstance().getObservationsPanel().getBackground());
         chart.getXYPlot().getDomainAxis().setLabelFont(Main.getFontsmall());
         chart.getXYPlot().getRangeAxis().setLabelFont(Main.getFontsmall());
         
