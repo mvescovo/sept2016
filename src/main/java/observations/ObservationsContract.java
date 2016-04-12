@@ -21,7 +21,7 @@ interface ObservationsContract {
         void showObservations(List<Observation> observations);
 
         // Show chart
-        void showChart();
+        void showChart(List<Observation> observations);
     }
 
     interface UserActionsListener {

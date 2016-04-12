@@ -137,13 +137,17 @@ class WeatherServiceApiEndpoint {
                     	
                         String name = "";
                         String air_temp = "";
+                        String date = "";
                         if (!dataArray.get(i).getAsJsonObject().get("name").isJsonNull()) {
                             name = dataArray.get(i).getAsJsonObject().get("name").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("local_date_time").isJsonNull()) {
+                            date = dataArray.get(i).getAsJsonObject().get("local_date_time").getAsString();
                         }
                         if (!dataArray.get(i).getAsJsonObject().get("air_temp").isJsonNull()) {
                             air_temp = dataArray.get(i).getAsJsonObject().get("air_temp").getAsString();
                         }
-                        Observation observation = new Observation(air_temp, name);
+                        Observation observation = new Observation(air_temp, name, date);
                         observations.add(observation);
                     }
                 } else {

@@ -21,8 +21,8 @@ public class Main {
 	private static final String fontFamily = "SansSerif";
 	private static final Font fontTitle = new Font(fontFamily, Font.BOLD, 56);
 	private static final Font fontSmall = new Font(fontFamily, Font.PLAIN, 16);
-	private static final Font fontNormal = new Font(fontFamily, Font.PLAIN, 24);
-	private static final Font fontNormalBold = new Font(fontFamily, Font.BOLD, 24);
+	private static final Font fontNormal = new Font(fontFamily, Font.PLAIN, 14);
+	private static final Font fontNormalBold = new Font(fontFamily, Font.BOLD, 14);
 
 	// colors
 	private static final Color colorDark = new Color(50, 50, 50);
@@ -43,6 +43,10 @@ public class Main {
             }
         });
     }
+
+	public static Font getFontnormalbold() {
+		return fontNormalBold;
+	}
 
 	/*
     * Singleton class to create and show the main window for the app.
