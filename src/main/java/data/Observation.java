@@ -18,10 +18,20 @@ public class Observation {
     private String mRain;
     private String mHumidity;
 
-    public Observation(String airTemp, String name, String date) {
+
+    public Observation(String airTemp, String name, String wmo, String history_product, 
+    		String local_date_time, String local_date_time_full, String aifstime_utc, String lat, 
+    		String lon, String apparent_t, String cloud, String cloud_base_m, String cloud_oktas, 
+    		String cloud_type, String cloud_type_id, String delta_t, String gust_kmh, String dewpt, 
+    		String press, String press_msl, String press_qnh, String press_tend, String rain_trace, 
+    		String rel_hum, String sea_state, String swell_dir_worded, String swell_height, 
+    		String swell_period, String vis_km, String weather, String wind_dir, String wind_spd_kmh, 
+    		String wind_spd_kt) {
+    	
+
         mAirtemp = airTemp;
         mName = name;
-        mDateTime = date;
+        mDateTime = local_date_time;
     }
 
     public Observation(String id, String name, String dateTime, String apparentTemp, String cloud, String airtemp, String rain, String humidity) {

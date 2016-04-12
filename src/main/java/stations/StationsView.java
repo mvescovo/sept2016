@@ -15,6 +15,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
         mJProgressBar.setIndeterminate(true);
         mJProgressBar.setVisible(false);
         Main.MainWindow.getInstance().getStationsPanel().add(mJProgressBar);
-        //Main.MainWindow.getInstance().getStationsPanel().add(Box.createRigidArea(new Dimension(300, 0)));
+        Main.MainWindow.getInstance().getStationsPanel().add(Box.createRigidArea(new Dimension(300, 0)));
     }
 
     // Set the presenter for this view
@@ -72,6 +73,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
         mStatesComboList.setModel(comboModel);
         mStatesComboList.setSelectedIndex(0);
         mStatesComboList.addActionListener(this);
+
         GridBagConstraints cons = new GridBagConstraints();
         cons.gridx = 0;
         cons.gridy = 1;
@@ -80,6 +82,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
         cons.anchor = GridBagConstraints.WEST;
         cons.fill = GridBagConstraints.BOTH;
         Main.MainWindow.getInstance().getStationsPanel().add(mStatesComboList, cons);
+
     }
 
     // Show the stations
@@ -90,9 +93,8 @@ public class StationsView implements StationsContract.View, ActionListener, List
         }
 
         if (mStationsJList != null) {
-            Main.MainWindow.getInstance().getStationsScrollPane().remove(mStationsJList);
-            Main.MainWindow.getInstance().getStationsScrollPane().revalidate();
-            Main.MainWindow.getInstance().getStationsScrollPane().repaint();
+            Main.MainWindow.getInstance().getStationsPanel().remove(mStationsJList);
+            Main.MainWindow.getInstance().getStationsPanel().repaint();
         }
         mStationsJList = new JList<Station>();
         DefaultListModel<Station> listModel = new DefaultListModel<Station>();
@@ -102,17 +104,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
         mStationsJList.setModel(listModel);
         mStationsJList.setSelectedIndex(0);
         mStationsJList.addListSelectionListener(this);
-        
-        GridBagConstraints cons = new GridBagConstraints();
-        cons.gridx = 0;
-        cons.gridy = 2;
-        cons.weighty = 1;
-        cons.anchor = GridBagConstraints.NORTH;
-        cons.fill = GridBagConstraints.BOTH;
-        
-        Main.MainWindow.getInstance().getStationsScrollPane().setViewportView(mStationsJList);
-        Main.MainWindow.getInstance().getStationsScrollPane().repaint();
-
+        Main.MainWindow.getInstance().getStationsPanel().add(mStationsJList);
     }
 
     public void showStationAsFavourited(String stationId, boolean favourite) {
@@ -133,22 +125,20 @@ public class StationsView implements StationsContract.View, ActionListener, List
             JComboBox<State> cb = (JComboBox<State>)e.getSource();
             String stateName = cb.getSelectedItem().toString();
             mActionsListener.loadStations(stateName, false, true); // second argument false means load non-favourite stations
-        }
+        } 
     }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void valueChanged(ListSelectionEvent e) {
-
-		if (e.getSource() == mStationsJList) {
-			// Ensure the user has finished selecting
-			if (!e.getValueIsAdjusting()) {
-				JList<Station> list = (JList<Station>) e.getSource();
-				String stationName = list.getSelectedValue().toString();
-				mActionsListener.openObservations(mStationHashMap.get(stationName));
-			}
-		}
-
-	}
-
+    @SuppressWarnings("unchecked")
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+	if (e.getSource() == mStationsJList) {
+	    // Ensure the user has finished selecting
+	    if ( !e.getValueIsAdjusting()) {
+		JList<Station> list = (JList<Station>)e.getSource();
+		String stationName = list.getSelectedValue().toString();
+		mActionsListener.openObservations(mStationHashMap.get(stationName));
+	    }
+        }
+	
+    }
 }

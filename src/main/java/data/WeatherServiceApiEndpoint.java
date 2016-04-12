@@ -134,7 +134,29 @@ class WeatherServiceApiEndpoint {
                     	String cloud_base_m = "";
                     	String cloud_oktas = "";
                     	String cloud_type = "";
+                    	String cloud_type_id = "";
+                    	String delta_t = "";
+                    	String gust_kmh = "";
+                    	String gust_kt = "";
+                    	String dewpt = "";
+                    	String press = "";
+                    	String press_msl = "";
+                    	String press_qnh = "";
+                    	String press_tend = "";
+                    	String rain_trace = "";
                     	
+                    	String rel_hum = "";
+                    	String sea_state = "";
+                    	String swell_dir_worded = "";
+                    	String swell_height = "";
+                    	String swell_period = "";
+                    	String vis_km = "";
+                    	
+                    	String weather = "";
+                    	String wind_dir = "";
+                    	
+                    	String wind_spd_kmh = "";
+                    	String wind_spd_kt = "";
                         String name = "";
                         String air_temp = "";
                         String date = "";
@@ -147,7 +169,112 @@ class WeatherServiceApiEndpoint {
                         if (!dataArray.get(i).getAsJsonObject().get("air_temp").isJsonNull()) {
                             air_temp = dataArray.get(i).getAsJsonObject().get("air_temp").getAsString();
                         }
-                        Observation observation = new Observation(air_temp, name, date);
+                        if (!dataArray.get(i).getAsJsonObject().get("wind_spd_kt").isJsonNull()) {
+                        	wind_spd_kt = dataArray.get(i).getAsJsonObject().get("wind_spd_kt").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("wind_spd_kmh").isJsonNull()) {
+                        	wind_spd_kmh = dataArray.get(i).getAsJsonObject().get("wind_spd_kmh").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("wind_dir").isJsonNull()) {
+                        	wind_dir = dataArray.get(i).getAsJsonObject().get("wind_dir").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("weather").isJsonNull()) {
+                        	weather = dataArray.get(i).getAsJsonObject().get("weather").getAsString();
+                        }
+                        
+                        if (!dataArray.get(i).getAsJsonObject().get("vis_km").isJsonNull()) {
+                        	vis_km = dataArray.get(i).getAsJsonObject().get("vis_km").getAsString();
+                        }
+                        
+                        if (!dataArray.get(i).getAsJsonObject().get("swell_period").isJsonNull()) {
+                        	swell_period = dataArray.get(i).getAsJsonObject().get("swell_period").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("swell_height").isJsonNull()) {
+                        	swell_height = dataArray.get(i).getAsJsonObject().get("swell_height").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("swell_dir_worded").isJsonNull()) {
+                        	swell_dir_worded = dataArray.get(i).getAsJsonObject().get("swell_dir_worded").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("sea_state").isJsonNull()) {
+                        	sea_state = dataArray.get(i).getAsJsonObject().get("sea_state").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("rel_hum").isJsonNull()) {
+                        	rel_hum = dataArray.get(i).getAsJsonObject().get("rel_hum").getAsString();
+                        }
+                        
+                        
+                        
+                        if (!dataArray.get(i).getAsJsonObject().get("rain_trace").isJsonNull()) {
+                        	rain_trace = dataArray.get(i).getAsJsonObject().get("rain_trace").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("press_tend").isJsonNull()) {
+                        	press_tend = dataArray.get(i).getAsJsonObject().get("press_tend").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("press_qnh").isJsonNull()) {
+                        	press_qnh = dataArray.get(i).getAsJsonObject().get("press_qnh").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("press_msl").isJsonNull()) {
+                        	press_msl = dataArray.get(i).getAsJsonObject().get("press_msl").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("press").isJsonNull()) {
+                        	press = dataArray.get(i).getAsJsonObject().get("press").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("dewpt").isJsonNull()) {
+                        	dewpt = dataArray.get(i).getAsJsonObject().get("dewpt").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("gust_kt").isJsonNull()) {
+                        	gust_kt = dataArray.get(i).getAsJsonObject().get("gust_kt").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("gust_kmh").isJsonNull()) {
+                        	gust_kmh = dataArray.get(i).getAsJsonObject().get("gust_kmh").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("delta_t").isJsonNull()) {
+                        	delta_t = dataArray.get(i).getAsJsonObject().get("delta_t").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("cloud_type_id").isJsonNull()) {
+                        	cloud_type_id = dataArray.get(i).getAsJsonObject().get("cloud_type_id").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("cloud_oktas").isJsonNull()) {
+                        	cloud_oktas = dataArray.get(i).getAsJsonObject().get("cloud_oktas").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("cloud_base_m").isJsonNull()) {
+                        	cloud_base_m = dataArray.get(i).getAsJsonObject().get("cloud_base_m").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("cloud").isJsonNull()) {
+                        	cloud = dataArray.get(i).getAsJsonObject().get("cloud").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("apparent_t").isJsonNull()) {
+                        	apparent_t = dataArray.get(i).getAsJsonObject().get("apparent_t").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("lon").isJsonNull()) {
+                        	lon = dataArray.get(i).getAsJsonObject().get("lon").getAsString();
+                        }
+                        
+                        if (!dataArray.get(i).getAsJsonObject().get("lat").isJsonNull()) {
+                        	lat = dataArray.get(i).getAsJsonObject().get("lat").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("aifstime_utc").isJsonNull()) {
+                        	aifstime_utc = dataArray.get(i).getAsJsonObject().get("aifstime_utc").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("local_date_time_full").isJsonNull()) {
+                        	local_date_time_full = dataArray.get(i).getAsJsonObject().get("local_date_time_full").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("local_date_time").isJsonNull()) {
+                        	local_date_time = dataArray.get(i).getAsJsonObject().get("local_date_time").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("history_product").isJsonNull()) {
+                        	history_product = dataArray.get(i).getAsJsonObject().get("history_product").getAsString();
+                        }
+                        if (!dataArray.get(i).getAsJsonObject().get("wmo").isJsonNull()) {
+                        	wmo = dataArray.get(i).getAsJsonObject().get("wmo").getAsString();
+                        }
+                        
+                        
+                        Observation observation = new Observation(air_temp, name, wmo, history_product, local_date_time, local_date_time_full,
+                        		aifstime_utc, lat, lon, apparent_t, cloud, cloud_base_m, cloud_oktas, cloud_type, cloud_type_id, delta_t, gust_kmh,
+                        		dewpt, press, press_msl, press_qnh, press_tend, rain_trace, rel_hum, sea_state, swell_dir_worded, swell_height, swell_period,
+                        		vis_km, weather, wind_dir, wind_spd_kmh, wind_spd_kt);
+
                         observations.add(observation);
                     }
                 } else {
