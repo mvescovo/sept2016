@@ -20,7 +20,7 @@ public class Main {
 	// fonts
 	private static final String fontFamily = "SansSerif";
 	private static final Font fontTitle = new Font(fontFamily, Font.BOLD, 56);
-	private static final Font fontSmall = new Font(fontFamily, Font.PLAIN, 16);
+	private static final Font fontSmall = new Font(fontFamily, Font.PLAIN, 11);
 	private static final Font fontNormal = new Font(fontFamily, Font.PLAIN, 14);
 	private static final Font fontNormalBold = new Font(fontFamily, Font.BOLD, 14);
 
@@ -30,6 +30,9 @@ public class Main {
 	private static final Color colorWhite = new Color(255, 255, 255 );
 	private static final Color colorContrast1 = new Color(119, 60, 31);
 	private static final Color colorContrast2 = new Color(119, 98, 31);
+	
+	//Symbols
+	private static final String symbolDegree  = "\u00b0";
 	
     public static void main(String[] args) {
         // Start the app on the event dispatch thread
@@ -44,9 +47,6 @@ public class Main {
         });
     }
 
-	public static Font getFontnormalbold() {
-		return fontNormalBold;
-	}
 
 	/*
     * Singleton class to create and show the main window for the app.
@@ -205,7 +205,21 @@ public class Main {
 			this.stationName = stationName;
 		}
 
-	    
+
+
 
     }
+
+	public static Font getFontnormalbold() {
+		return fontNormalBold;
+	}
+
+	public static String getSymboldegree() {
+		return symbolDegree;
+	}
+
+	public static Font getFontsmall() {
+		return fontSmall;
+	}
+
 }

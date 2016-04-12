@@ -25,6 +25,7 @@ dependencies {
     compile "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofit2Version"
     compile "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofit2Version"
     compile "com.google.guava:guava:$rootProject.ext.guavaVersion"
+    compile "jfree:jfreechart:1.0.12"
 
     // Dependencies for local unit tests
     testCompile "junit:junit:$rootProject.ext.junitVersion"

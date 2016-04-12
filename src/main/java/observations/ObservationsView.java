@@ -74,8 +74,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         // Add chart panel
         mChartPanel = new JPanel();
         mChartPanel.setLayout(new BorderLayout());
-        JLabel chartLabel = new JLabel("Chart Panel");
-        mChartPanel.add(chartLabel, BorderLayout.NORTH);       
+
         
         cons.gridy = 2;
         cons.weightx = 1;
@@ -134,7 +133,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
     	String chtTitle = observations.get(0).getName() + " - Temperature observations";
 
     	String chtXAxisLabel = "Date and time";
-        String chtYAxisLabel = "Temperature";
+        String chtYAxisLabel = "Temperature " + Main.getSymboldegree() + "C";
         
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         double temp;
@@ -149,6 +148,12 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         JFreeChart chart = ChartFactory.createBarChart(chtTitle, chtXAxisLabel, chtYAxisLabel, dataset);
         chart.getTitle().setHorizontalAlignment(HorizontalAlignment.LEFT);
         chart.getTitle().setFont(Main.getFontnormalbold());
+        chart.getLegend().setVisible(false);
+        
+        chart.getCategoryPlot().getDomainAxis().setLabelFont(Main.getFontsmall());
+        chart.getCategoryPlot().getRangeAxis().setLabelFont(Main.getFontsmall());
+        
+        
         ChartPanel chartPanel = new ChartPanel(chart);
 
         mChartPanel.add(chartPanel, BorderLayout.CENTER);
