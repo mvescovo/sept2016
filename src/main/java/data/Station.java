@@ -15,19 +15,19 @@ public class Station {
 
     public Station(String url, String city) {
         mUrl = url;
-        mCity = city;
+        setmCity(city);
     }
 
     public Station(String url, String city, HashMap<String, Observation> observations) {
         mUrl = url;
-        mCity = city;
+        setmCity(city);
         mObservations = observations;
     }
     
     @Override
     public String toString() {
 	StringBuilder result = new StringBuilder();
-	result.append(mCity);
+	result.append(getmCity());
 	return result.toString();
     }
 
@@ -40,11 +40,11 @@ public class Station {
     }
 
     public String getCity() {
-        return mCity;
+        return getmCity();
     }
 
     public void setCity(String city) {
-        mCity = city;
+        setmCity(city);
     }
 
     public HashMap<String, Observation> getObservations() {
@@ -54,4 +54,12 @@ public class Station {
     public void setObservations(HashMap<String, Observation> observations) {
         mObservations = observations;
     }
+
+	public String getmCity() {
+		return mCity;
+	}
+
+	public void setmCity(String mCity) {
+		this.mCity = mCity;
+	}
 }
