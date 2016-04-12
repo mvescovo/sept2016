@@ -38,6 +38,7 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
             public void onStationsLoaded(List<Station> stations) {
                 mView.setProgressBar(false);
                 mView.showStations(stations);
+            	
             }
         });
     }

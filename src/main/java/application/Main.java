@@ -42,22 +42,42 @@ public class Main {
         private static Container container;
         private static JPanel stationsPanel;
         private static JPanel observationsPanel;
+        private static JScrollPane stationsScrollPane;
 
         private MainWindow() {
             // Container frame for the main window
             JFrame jFrame;
             jFrame = new JFrame("SEPT Weather App");
             jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            container = jFrame.getContentPane();
 
+            container = jFrame.getContentPane();
+            
+            // set layout type
+                    
             // Stations panel - callable directly from stations view
             stationsPanel = new JPanel();
+            stationsPanel.setLayout(new GridBagLayout());
+            GridBagConstraints stationCons = new GridBagConstraints();
+            stationCons.gridx = 0;
+            stationCons.gridy = 0;
+            stationCons.weighty = 0;
+            stationCons.anchor = GridBagConstraints.NORTH;
+            stationCons.fill = GridBagConstraints.BOTH;
+            
             stationsPanel.setBorder(new LineBorder(Color.black));
-            stationsPanel.setPreferredSize(new Dimension(300, 0));
+            //stationsPanel.setPreferredSize(new Dimension(300, 0));
             JLabel stationsLabel = new JLabel("Stations Panel");
-            stationsPanel.add(stationsLabel);
-            stationsPanel.add(Box.createRigidArea(new Dimension(300, 0)));
-            container.add(stationsPanel, BorderLayout.LINE_START);
+            stationsPanel.add(stationsLabel, stationCons);
+            stationsPanel.setBackground(new Color(122,133,144));
+            
+            stationsScrollPane = new JScrollPane();
+            stationCons.gridy = 2;
+            stationCons.weighty = 1;
+            stationsPanel.add(stationsScrollPane, stationCons);
+
+            
+            //stationsPanel.add(Box.createRigidArea(new Dimension(300, 0)));
+            container.add(stationsPanel, BorderLayout.WEST);
 
             // Observations panel - callable directly from observations view
             createObservationsPanel();
@@ -96,7 +116,8 @@ public class Main {
             observationsPanel.setBorder(new LineBorder(Color.black));
             JLabel observationsLabel = new JLabel("Observations Panel");
             observationsPanel.add(observationsLabel);
-            observationsPanel.add(Box.createRigidArea(new Dimension(500, 0)));
+            //observationsPanel.add(Box.createRigidArea(new Dimension(500, 0)));
+
             container.add(observationsPanel, BorderLayout.CENTER);
         }
 
@@ -106,5 +127,10 @@ public class Main {
                 createObservationsPanel();
             }
         }
+
+		public JScrollPane getStationsScrollPane() {
+			return stationsScrollPane;
+		}
+
     }
 }
