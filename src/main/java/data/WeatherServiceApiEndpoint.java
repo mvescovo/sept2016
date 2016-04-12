@@ -1,6 +1,7 @@
 package data;
 
 import com.google.gson.JsonArray;
+import java.io.BufferedWriter;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import retrofit2.Call;
@@ -16,7 +17,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+import java.io.FileWriter;
 /**
  * Created by michael on 5/04/16.
  *
@@ -77,15 +78,22 @@ class WeatherServiceApiEndpoint {
     static void saveFavouriteStation(Station station) {
 
         // TODO Steve implement me. Save to file under resources.
-
+        try{
+            FileWriter fstream = new FileWriter(System.currentTimeMillis() + "stations.txt");
+                BufferedWriter out = new BufferedWriter(fstream);
+            out.write(station.getmCity());
+            out.write(station.getUrl());
+            out.close();
+            }catch (Exception e){
+              System.err.println("Error: " + e.getMessage());
+            }
     }
-
+  
     // Get observations from files rather than from the BOM (historical data)
     static void getObservationsByDate(String date) {
 
         // TODO Steve implement me. First implement the other TODO below to save the appropriate data.
         // Change method paramaters as appropriate.
-
     }
 
     // Get observations from the BOM
@@ -113,8 +121,20 @@ class WeatherServiceApiEndpoint {
                         // TODO Steve implement me. Data also needs to be saved to files (under resources directory).
                         // Possibly name files by date or whatever makes sense. Then implement the
                         // getObservationsByDate function.
-
-
+                    	
+                    	String wmo = "";
+                    	String history_product = "";
+                    	String local_date_time = "";
+                    	String local_date_time_full = "";
+                    	String aifstime_utc = "";
+                    	String lat = "";
+                    	String lon = "";
+                    	String apparent_t = "";
+                    	String cloud = "";
+                    	String cloud_base_m = "";
+                    	String cloud_oktas = "";
+                    	String cloud_type = "";
+                    	
                         String name = "";
                         String air_temp = "";
                         if (!dataArray.get(i).getAsJsonObject().get("name").isJsonNull()) {
