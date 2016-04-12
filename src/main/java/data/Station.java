@@ -23,6 +23,13 @@ public class Station {
         mCity = city;
         mObservations = observations;
     }
+    
+    @Override
+    public String toString() {
+	StringBuilder result = new StringBuilder();
+	result.append(mCity);
+	return result.toString();
+    }
 
     public String getUrl() {
         return mUrl;

@@ -27,7 +27,7 @@ public class StationsView implements StationsContract.View, ActionListener {
     private StationsContract.UserActionsListener mActionsListener;
     private JProgressBar mJProgressBar;
     private JComboBox<State> mStatesComboList;
-    private JComboBox mStationsComboList;
+    private JComboBox<Station> mStationsComboList;
     private HashMap<String, Station> mStationHashMap = new HashMap<String, Station>();
     private ObservationsView mObservationsView;
     private ObservationsPresenter mObservationsPresenter;
@@ -61,10 +61,6 @@ public class StationsView implements StationsContract.View, ActionListener {
 
     // Show the states
     public void showStates(List<State> states) {
-       /* ArrayList stateNames = new ArrayList();
-        for (int i = 0; i < states.size(); i++) {
-            stateNames.add(states.get(i).getName());
-        }*/
 
         mStatesComboList = new JComboBox<State>();
         DefaultComboBoxModel<State> comboModel = new DefaultComboBoxModel<State>();
@@ -85,16 +81,16 @@ public class StationsView implements StationsContract.View, ActionListener {
             mStationHashMap.put(stations.get(i).getCity(), stations.get(i));
         }
 
-        ArrayList stationNames = new ArrayList();
-        for (int i = 0; i < stations.size(); i++) {
-            stationNames.add(stations.get(i).getCity());
-        }
-
         if (mStationsComboList != null) {
             Main.MainWindow.getInstance().getStationsPanel().remove(mStationsComboList);
             Main.MainWindow.getInstance().getStationsPanel().repaint();
         }
-        mStationsComboList = new JComboBox(stationNames.toArray());
+        mStationsComboList = new JComboBox<Station>();
+        DefaultComboBoxModel<Station> comboModel = new DefaultComboBoxModel<Station>();
+        for(Station s : stations) {
+            comboModel.addElement(s);
+        }
+        mStationsComboList.setModel(comboModel);
         mStationsComboList.setSelectedIndex(0);
         mStationsComboList.addActionListener(this);
         Main.MainWindow.getInstance().getStationsPanel().add(mStationsComboList);
@@ -119,8 +115,8 @@ public class StationsView implements StationsContract.View, ActionListener {
             String stateName = cb.getSelectedItem().toString();
             mActionsListener.loadStations(stateName, false, true); // second argument false means load non-favourite stations
         } else if (e.getSource() == mStationsComboList) {
-            JComboBox cb = (JComboBox)e.getSource();
-            String stationName = (String)cb.getSelectedItem();
+            JComboBox<Station> cb = (JComboBox<Station>)e.getSource();
+            String stationName = cb.getSelectedItem().toString();
             mActionsListener.openObservations(mStationHashMap.get(stationName));
         }
     }
