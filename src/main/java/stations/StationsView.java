@@ -26,7 +26,7 @@ public class StationsView implements StationsContract.View, ActionListener {
 
     private StationsContract.UserActionsListener mActionsListener;
     private JProgressBar mJProgressBar;
-    private JComboBox mStatesComboList;
+    private JComboBox<State> mStatesComboList;
     private JComboBox mStationsComboList;
     private HashMap<String, Station> mStationHashMap = new HashMap<String, Station>();
     private ObservationsView mObservationsView;
@@ -61,12 +61,17 @@ public class StationsView implements StationsContract.View, ActionListener {
 
     // Show the states
     public void showStates(List<State> states) {
-        ArrayList stateNames = new ArrayList();
+       /* ArrayList stateNames = new ArrayList();
         for (int i = 0; i < states.size(); i++) {
             stateNames.add(states.get(i).getName());
-        }
+        }*/
 
-        mStatesComboList = new JComboBox(stateNames.toArray());
+        mStatesComboList = new JComboBox<State>();
+        DefaultComboBoxModel<State> comboModel = new DefaultComboBoxModel<State>();
+        for(State s : states) {
+            comboModel.addElement(s);
+        }
+        mStatesComboList.setModel(comboModel);
         mStatesComboList.setSelectedIndex(0);
         mStatesComboList.addActionListener(this);
         Main.MainWindow.getInstance().getStationsPanel().add(mStatesComboList);
@@ -107,10 +112,11 @@ public class StationsView implements StationsContract.View, ActionListener {
         mObservationsView.onReady(station);
     }
 
+    @SuppressWarnings("unchecked")
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == mStatesComboList) {
-            JComboBox cb = (JComboBox)e.getSource();
-            String stateName = (String)cb.getSelectedItem();
+            JComboBox<State> cb = (JComboBox<State>)e.getSource();
+            String stateName = cb.getSelectedItem().toString();
             mActionsListener.loadStations(stateName, false, true); // second argument false means load non-favourite stations
         } else if (e.getSource() == mStationsComboList) {
             JComboBox cb = (JComboBox)e.getSource();

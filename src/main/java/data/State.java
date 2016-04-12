@@ -12,6 +12,13 @@ public class State {
     private String mName;
     private HashMap<String, Station> mWeatherStations; // use station id for first param
 
+    @Override
+    public String toString() {
+	StringBuilder result = new StringBuilder();
+	result.append(mName);
+	return result.toString();
+    }
+    
     public State(String name) {
         mName = name;
     }
