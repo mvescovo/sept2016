@@ -1,5 +1,7 @@
 package data;
 
+import java.util.Vector;
+
 /**
  * Created by michael on 5/04/16.
  *
@@ -32,6 +34,18 @@ public class Observation {
         mHumidity = humidity;
     }
 
+	public Vector<String> getObsVector() {
+    	Vector<String> data = new Vector<String>();
+    	data.addElement(getDateTime());
+    	data.addElement(getApparentTemp());
+    	data.addElement(getCloud());
+    	data.addElement(getAirtemp());
+    	data.addElement(getRain());
+    	data.addElement(getHumidity());
+    	
+    	return data;
+    }
+    
     public String getId() {
         return mId;
     }

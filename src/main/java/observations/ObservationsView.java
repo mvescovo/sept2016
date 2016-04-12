@@ -6,10 +6,13 @@ import data.Station;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Created by michael on 5/04/16.
@@ -23,24 +26,34 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
     private JProgressBar mJProgressBar;
     private JPanel mTablePanel;
     private JPanel mChartPanel;
-    private JTextArea mObservationsTextArea;
+    private JScrollPane tableScrollPane;
 
     public ObservationsView() {
         // Add a progress bar
         mJProgressBar = new JProgressBar();
         mJProgressBar.setIndeterminate(true);
         mJProgressBar.setVisible(false);
-        Main.MainWindow.getInstance().getObservationsPanel().add(mJProgressBar);
-        Main.MainWindow.getInstance().getObservationsPanel().add(Box.createRigidArea(new Dimension(500, 0)));
+
+        GridBagConstraints cons = new GridBagConstraints();
+        cons.gridx = 0;
+        cons.gridy = 0;
+        cons.fill = GridBagConstraints.BOTH;
+        cons.anchor = GridBagConstraints.CENTER;
+        Main.MainWindow.getInstance().getObservationsPanel().add(mJProgressBar, cons);
 
         // Add table panel
         mTablePanel = new JPanel();
         mTablePanel.setPreferredSize(new Dimension(500,350));
-        mTablePanel.setBorder(new LineBorder(Color.blue));
         JLabel tableLabel = new JLabel("Table Panel");
         mTablePanel.add(tableLabel);
-        Main.MainWindow.getInstance().getObservationsPanel().add(mTablePanel);
-        Main.MainWindow.getInstance().getObservationsPanel().add(Box.createRigidArea(new Dimension(500, 0)));
+        cons.gridy = 1;
+        cons.weightx = 1;
+        cons.weighty = 1;
+        Main.MainWindow.getInstance().getObservationsPanel().add(mTablePanel, cons);
+       
+        tableScrollPane = new JScrollPane();
+
+        mTablePanel.add(tableScrollPane);
 
         // Add chart panel
         mChartPanel = new JPanel();
@@ -48,7 +61,10 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         mChartPanel.setBorder(new LineBorder(Color.red));
         JLabel chartLabel = new JLabel("Chart Panel");
         mChartPanel.add(chartLabel);
-        Main.MainWindow.getInstance().getObservationsPanel().add(mChartPanel);
+        cons.gridy = 2;
+        cons.weightx = 1;
+        cons.weighty = 1;
+        Main.MainWindow.getInstance().getObservationsPanel().add(mChartPanel, cons);
     }
 
     // Set the presenter for this view
@@ -71,13 +87,26 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
     }
 
     public void showObservations(List<Observation> observations) {
-        mObservationsTextArea = new JTextArea(10, 40);
-        mObservationsTextArea.setLineWrap(true);
-        mTablePanel.add(mObservationsTextArea);
+    	String[] columnNames = { "Date Time",
+    			"Apparent temperature",
+    			"Cloud",
+    			"Air temperature",
+    			"Rain",
+    			"Humidity" };
+    	JTable table = new JTable();
+    	DefaultTableModel dataModel = new DefaultTableModel(columnNames, 0);
 
-        for (int i = 0; i < observations.size(); i++) {
-            mObservationsTextArea.append(observations.get(i).getName());
-        }
+
+    	for(Observation obs : observations) {
+    		dataModel.addRow(obs.getObsVector());
+    		System.out.println(obs.getObsVector());
+    	}
+    	
+    	table.setModel(dataModel);
+    	tableScrollPane.setViewportView(table);
+        Main.MainWindow.getInstance().getStationName().setText(observations.get(0).getName());
+
+
     }
 
     public void showChart() {
@@ -87,4 +116,12 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
     public void actionPerformed(ActionEvent e) {
 
     }
+
+	public JScrollPane getTableScrollPane() {
+		return tableScrollPane;
+	}
+
+	public void setTableScrollPane(JScrollPane tableScrollPane) {
+		this.tableScrollPane = tableScrollPane;
+	}
 }

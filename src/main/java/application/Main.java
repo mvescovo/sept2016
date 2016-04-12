@@ -59,6 +59,7 @@ public class Main {
         private static JPanel observationsPanel;
         private static JScrollPane stationsScrollPane;
         private static JMenuBar menubar;
+        private JLabel stationName;
 
         private MainWindow() {
             // Container frame for the main window
@@ -139,11 +140,16 @@ public class Main {
 
         public void createObservationsPanel() {
             observationsPanel = new JPanel();
-            
-            
+            observationsPanel.setLayout(new GridBagLayout());
+            GridBagConstraints cons = new GridBagConstraints();
+            cons.anchor = GridBagConstraints.NORTHWEST;
+            cons.gridx = 0;
+            cons.gridy = 0;
+            cons.insets = new Insets(10, 10, 10, 10);
+            cons.fill = GridBagConstraints.BOTH;
             observationsPanel.setBorder(new LineBorder(Color.black));
-            JLabel observationsLabel = new JLabel("Observations Panel");
-            observationsPanel.add(observationsLabel);
+            stationName = new JLabel("Observations Panel");
+            observationsPanel.add(stationName, cons);
             observationsPanel.setBackground(colorLight);
             container.add(observationsPanel, BorderLayout.CENTER);
         }
@@ -178,6 +184,14 @@ public class Main {
 
 		public static void setMenubar(JMenuBar menubar) {
 			MainWindow.menubar = menubar;
+		}
+
+		public JLabel getStationName() {
+			return stationName;
+		}
+
+		public void setStationName(JLabel stationName) {
+			this.stationName = stationName;
 		}
 
 	    
