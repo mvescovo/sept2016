@@ -8,6 +8,7 @@ import stations.StationsView;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 /**
  * Created by michael on 20/03/16.
@@ -16,6 +17,20 @@ import java.awt.*;
  */
 public class Main {
 
+	// fonts
+	private static final String fontFamily = "SansSerif";
+	private static final Font fontTitle = new Font(fontFamily, Font.BOLD, 56);
+	private static final Font fontSmall = new Font(fontFamily, Font.PLAIN, 16);
+	private static final Font fontNormal = new Font(fontFamily, Font.PLAIN, 24);
+	private static final Font fontNormalBold = new Font(fontFamily, Font.BOLD, 24);
+
+	// colors
+	private static final Color colorDark = new Color(50, 50, 50);
+	private static final Color colorLight = new Color(250, 250, 250);
+	private static final Color colorWhite = new Color(255, 255, 255 );
+	private static final Color colorContrast1 = new Color(119, 60, 31);
+	private static final Color colorContrast2 = new Color(119, 98, 31);
+	
     public static void main(String[] args) {
         // Start the app on the event dispatch thread
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -29,7 +44,7 @@ public class Main {
         });
     }
 
-    /*
+	/*
     * Singleton class to create and show the main window for the app.
     *
     * This window is then used by other parts of the app to add and update relevant GUI components.
@@ -43,6 +58,7 @@ public class Main {
         private static JPanel stationsPanel;
         private static JPanel observationsPanel;
         private static JScrollPane stationsScrollPane;
+        private static JMenuBar menubar;
 
         private MainWindow() {
             // Container frame for the main window
@@ -52,8 +68,10 @@ public class Main {
 
             container = jFrame.getContentPane();
             
-            // set layout type
-                    
+            // add menubar
+            createMenuBar();
+            container.add(menubar, BorderLayout.NORTH);
+            
             // Stations panel - callable directly from stations view
             stationsPanel = new JPanel();
             stationsPanel.setLayout(new GridBagLayout());
@@ -61,22 +79,30 @@ public class Main {
             stationCons.gridx = 0;
             stationCons.gridy = 0;
             stationCons.weighty = 0;
+            stationCons.insets = new Insets(10, 10, 0, 10);
             stationCons.anchor = GridBagConstraints.NORTH;
             stationCons.fill = GridBagConstraints.BOTH;
             
-            stationsPanel.setBorder(new LineBorder(Color.black));
-            //stationsPanel.setPreferredSize(new Dimension(300, 0));
-            JLabel stationsLabel = new JLabel("Stations Panel");
+            stationsPanel.setBorder(new LineBorder(colorWhite));
+
+            JLabel statesLabel = new JLabel("Select a State");
+            statesLabel.setForeground(colorWhite);
+            stationsPanel.add(statesLabel, stationCons);
+            stationsPanel.setBackground(colorDark);
+            
+            stationCons.gridy = 2;
+            stationCons.insets = new Insets(10, 10, 0, 10);
+            JLabel stationsLabel = new JLabel("Select a Station");
+            stationsLabel.setForeground(colorWhite);
             stationsPanel.add(stationsLabel, stationCons);
-            stationsPanel.setBackground(new Color(122,133,144));
             
             stationsScrollPane = new JScrollPane();
-            stationCons.gridy = 2;
+            stationCons.gridy = 3;
             stationCons.weighty = 1;
+            stationCons.insets = new Insets(0, 10, 10, 10);
             stationsPanel.add(stationsScrollPane, stationCons);
 
             
-            //stationsPanel.add(Box.createRigidArea(new Dimension(300, 0)));
             container.add(stationsPanel, BorderLayout.WEST);
 
             // Observations panel - callable directly from observations view
@@ -113,11 +139,12 @@ public class Main {
 
         public void createObservationsPanel() {
             observationsPanel = new JPanel();
+            
+            
             observationsPanel.setBorder(new LineBorder(Color.black));
             JLabel observationsLabel = new JLabel("Observations Panel");
             observationsPanel.add(observationsLabel);
-            //observationsPanel.add(Box.createRigidArea(new Dimension(500, 0)));
-
+            observationsPanel.setBackground(colorLight);
             container.add(observationsPanel, BorderLayout.CENTER);
         }
 
@@ -128,9 +155,31 @@ public class Main {
             }
         }
 
+        public void createMenuBar() {
+            menubar = new JMenuBar();
+            JMenu menu;
+            JMenuItem menuItem;
+            
+          //Build the first menu.
+            menu = new JMenu("File");
+            menu.setMnemonic(KeyEvent.VK_F);
+            menuItem = new JMenuItem("Exit");
+            menu.add(menuItem);
+            menubar.add(menu);
+        }
+        
 		public JScrollPane getStationsScrollPane() {
 			return stationsScrollPane;
 		}
 
+		public static JMenuBar getMenubar() {
+			return menubar;
+		}
+
+		public static void setMenubar(JMenuBar menubar) {
+			MainWindow.menubar = menubar;
+		}
+
+	    
     }
 }

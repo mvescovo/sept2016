@@ -76,6 +76,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
         cons.gridx = 0;
         cons.gridy = 1;
         cons.weighty = 0;
+        cons.insets = new Insets(0, 10, 0, 10);
         cons.anchor = GridBagConstraints.WEST;
         cons.fill = GridBagConstraints.BOTH;
         Main.MainWindow.getInstance().getStationsPanel().add(mStatesComboList, cons);
