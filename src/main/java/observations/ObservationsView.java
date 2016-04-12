@@ -13,11 +13,16 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.time.*;
+import org.jfree.data.xy.XYDataset;
 import org.jfree.ui.HorizontalAlignment;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -51,6 +56,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         // Add table panel
         mTablePanel = new JPanel();
         mTablePanel.setLayout(new GridBagLayout());
+        mTablePanel.setBackground(Main.MainWindow.getInstance().getObservationsPanel().getBackground());
         GridBagConstraints tableCons = new GridBagConstraints();
         tableCons.gridx = 0;
         tableCons.gridy = 0;
@@ -62,6 +68,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         cons.gridy = 1;
         cons.weightx = 1;
         cons.weighty = 0.5;
+        cons.insets = new Insets(10, 10, 10, 10);
         Main.MainWindow.getInstance().getObservationsPanel().add(mTablePanel, cons);
        
         tableScrollPane = new JScrollPane();
@@ -74,7 +81,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         // Add chart panel
         mChartPanel = new JPanel();
         mChartPanel.setLayout(new BorderLayout());
-
+        mChartPanel.setBackground(Main.MainWindow.getInstance().getObservationsPanel().getBackground());
         
         cons.gridy = 2;
         cons.weightx = 1;
@@ -134,24 +141,40 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 
     	String chtXAxisLabel = "Date and time";
         String chtYAxisLabel = "Temperature " + Main.getSymboldegree() + "C";
-        
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        TimeSeries series = new TimeSeries("Temp");
         double temp;
+    	SimpleDateFormat standardDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
+
+    	
         for(Observation obs : observations) {
         	try {
         		temp = Double.parseDouble(obs.getAirtemp());
         	} catch (NumberFormatException e) {
         	   temp = 0.0;
         	}
-        	dataset.setValue(temp, chtYAxisLabel, obs.getDateTime());
+
+
+        	Date myDate = null;
+			try {
+				myDate = standardDateFormat.parse(obs.getDateTime());
+	        	series.addOrUpdate(new Hour(myDate), temp);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+
         }
-        JFreeChart chart = ChartFactory.createBarChart(chtTitle, chtXAxisLabel, chtYAxisLabel, dataset);
+        
+        TimeSeriesCollection dataset = new TimeSeriesCollection();
+        dataset.addSeries(series);
+        
+        JFreeChart chart = ChartFactory.createTimeSeriesChart(chtTitle, chtXAxisLabel, chtYAxisLabel, dataset, false, true, false);
         chart.getTitle().setHorizontalAlignment(HorizontalAlignment.LEFT);
         chart.getTitle().setFont(Main.getFontnormalbold());
-        chart.getLegend().setVisible(false);
         
-        chart.getCategoryPlot().getDomainAxis().setLabelFont(Main.getFontsmall());
-        chart.getCategoryPlot().getRangeAxis().setLabelFont(Main.getFontsmall());
+
+        chart.getXYPlot().getDomainAxis().setLabelFont(Main.getFontsmall());
+        chart.getXYPlot().getRangeAxis().setLabelFont(Main.getFontsmall());
         
         
         ChartPanel chartPanel = new ChartPanel(chart);

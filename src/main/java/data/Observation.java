@@ -31,7 +31,7 @@ public class Observation {
 
         mAirtemp = airTemp;
         mName = name;
-        mDateTime = local_date_time;
+        mDateTime = local_date_time_full;
     }
 
     public Observation(String id, String name, String dateTime, String apparentTemp, String cloud, String airtemp, String rain, String humidity) {
