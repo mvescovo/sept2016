@@ -57,16 +57,18 @@ public class Main {
         private static Container container;
         private static JPanel stationsPanel;
         private static JPanel observationsPanel;
+
         private static JScrollPane stationsScrollPane;
         private static JMenuBar menubar;
+
 
         private MainWindow() {
             // Container frame for the main window
             JFrame jFrame;
             jFrame = new JFrame("SEPT Weather App");
             jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
             container = jFrame.getContentPane();
+
             
             // add menubar
             createMenuBar();
@@ -104,6 +106,7 @@ public class Main {
 
             
             container.add(stationsPanel, BorderLayout.WEST);
+
 
             // Observations panel - callable directly from observations view
             createObservationsPanel();
@@ -144,7 +147,9 @@ public class Main {
             observationsPanel.setBorder(new LineBorder(Color.black));
             JLabel observationsLabel = new JLabel("Observations Panel");
             observationsPanel.add(observationsLabel);
+
             observationsPanel.setBackground(colorLight);
+
             container.add(observationsPanel, BorderLayout.CENTER);
         }
 
@@ -154,6 +159,7 @@ public class Main {
                 createObservationsPanel();
             }
         }
+
 
         public void createMenuBar() {
             menubar = new JMenuBar();
@@ -181,5 +187,6 @@ public class Main {
 		}
 
 	    
+
     }
 }
