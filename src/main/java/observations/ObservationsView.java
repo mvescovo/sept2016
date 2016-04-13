@@ -133,6 +133,9 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
     	String stationTitle = observations.get(0).getName() + " - State name";
         Main.MainWindow.getInstance().getStationName().setText(stationTitle);
 
+        // set component visibilities
+        Main.MainWindow.getInstance().getStationName().setVisible(true);
+        Main.MainWindow.getInstance().getBtnFavourite().setVisible(true);
 
     }
 

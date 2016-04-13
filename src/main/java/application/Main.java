@@ -63,9 +63,12 @@ public class Main {
         private static JPanel observationsPanel;
 
         private static JScrollPane stationsScrollPane;
+        private static JScrollPane favouritesScrollPane;
+        
         private static JMenuBar menubar;
         private JLabel stationName;
 
+        private JButton btnFavourite;
 
         private MainWindow() {
             // Container frame for the main window
@@ -80,34 +83,7 @@ public class Main {
             container.add(menubar, BorderLayout.NORTH);
             
             // Stations panel - callable directly from stations view
-            stationsPanel = new JPanel();
-            stationsPanel.setLayout(new GridBagLayout());
-            GridBagConstraints stationCons = new GridBagConstraints();
-            stationCons.gridx = 0;
-            stationCons.gridy = 0;
-            stationCons.weighty = 0;
-            stationCons.insets = new Insets(10, 10, 0, 10);
-            stationCons.anchor = GridBagConstraints.NORTH;
-            stationCons.fill = GridBagConstraints.BOTH;
-            
-            stationsPanel.setBorder(new LineBorder(colorWhite));
-
-            JLabel statesLabel = new JLabel("Select a State");
-            statesLabel.setForeground(colorWhite);
-            stationsPanel.add(statesLabel, stationCons);
-            stationsPanel.setBackground(colorDark);
-            
-            stationCons.gridy = 2;
-            stationCons.insets = new Insets(10, 10, 0, 10);
-            JLabel stationsLabel = new JLabel("Select a Station");
-            stationsLabel.setForeground(colorWhite);
-            stationsPanel.add(stationsLabel, stationCons);
-            
-            stationsScrollPane = new JScrollPane();
-            stationCons.gridy = 3;
-            stationCons.weighty = 1;
-            stationCons.insets = new Insets(0, 10, 10, 10);
-            stationsPanel.add(stationsScrollPane, stationCons);
+            createStationsPanel();
 
             
             container.add(stationsPanel, BorderLayout.WEST);
@@ -122,7 +98,9 @@ public class Main {
             jFrame.setVisible(true);
         }
 
-        public static MainWindow getInstance() {
+        
+
+		public static MainWindow getInstance() {
             if (uniqueInstance == null) {
                 synchronized (MainWindow.class) {
                     if (uniqueInstance == null) {
@@ -145,6 +123,56 @@ public class Main {
             return observationsPanel;
         }
 
+        
+        private void createStationsPanel() {
+        	stationsPanel = new JPanel();
+            stationsPanel.setLayout(new GridBagLayout());
+            GridBagConstraints stationCons = new GridBagConstraints();
+            stationCons.gridx = 0;
+            stationCons.gridy = 0;
+            stationCons.weighty = 0;
+            stationCons.insets = new Insets(10, 10, 0, 10);
+            stationCons.anchor = GridBagConstraints.NORTH;
+            stationCons.fill = GridBagConstraints.BOTH;
+            
+            stationsPanel.setBorder(new LineBorder(colorWhite));
+            stationsPanel.setBackground(colorDark);
+            
+            // favourites
+            JLabel favlabel = new JLabel("Favourites");
+            favlabel.setForeground(colorWhite);
+            stationsPanel.add(favlabel, stationCons);
+            
+            stationCons.gridy = 1;
+            stationCons.weighty = 0.5;
+            stationCons.insets = new Insets(0, 10, 10, 10);
+            favouritesScrollPane = new JScrollPane();
+            stationsPanel.add(favouritesScrollPane, stationCons);
+            
+            // states
+            stationCons.gridy = 2;
+            stationCons.weighty = 0;
+            stationCons.insets = new Insets(0, 10, 10, 10);
+            JLabel statesLabel = new JLabel("Select a State");
+            statesLabel.setForeground(colorWhite);
+            stationsPanel.add(statesLabel, stationCons);
+            stationsPanel.setBackground(colorDark);
+            
+            stationCons.gridy = 4;
+            stationCons.insets = new Insets(10, 10, 0, 10);
+            JLabel stationsLabel = new JLabel("Select a Station");
+            stationsLabel.setForeground(colorWhite);
+            stationsPanel.add(stationsLabel, stationCons);
+            
+            stationsScrollPane = new JScrollPane();
+            stationCons.gridy = 6;
+            stationCons.weighty = 1;
+            stationCons.insets = new Insets(0, 10, 10, 10);
+            stationsPanel.add(stationsScrollPane, stationCons);
+			
+		}
+        
+        
         public void createObservationsPanel() {
             observationsPanel = new JPanel();
             observationsPanel.setLayout(new GridBagLayout());
@@ -160,6 +188,13 @@ public class Main {
             stationName.setFont(Main.getFonttitle());
             observationsPanel.add(stationName, cons);
 
+            // add to favourites button
+            btnFavourite = new JButton("Add to favourites");
+            cons.gridx = 1;
+            cons.weightx = 0;
+            cons.anchor = GridBagConstraints.EAST;
+            btnFavourite.setVisible(false);
+            observationsPanel.add(btnFavourite, cons);
             observationsPanel.setBackground(colorLight);
 
             container.add(observationsPanel, BorderLayout.CENTER);
@@ -204,6 +239,30 @@ public class Main {
 
 		public void setStationName(JLabel stationName) {
 			this.stationName = stationName;
+		}
+
+
+
+		public static JScrollPane getFavouritesScrollPane() {
+			return favouritesScrollPane;
+		}
+
+
+
+		public static void setFavouritesScrollPane(JScrollPane favouritesScrollPane) {
+			MainWindow.favouritesScrollPane = favouritesScrollPane;
+		}
+
+
+
+		public JButton getBtnFavourite() {
+			return btnFavourite;
+		}
+
+
+
+		public void setBtnFavourite(JButton btnFavourite) {
+			this.btnFavourite = btnFavourite;
 		}
 
 

@@ -40,7 +40,6 @@ public class StationsView implements StationsContract.View, ActionListener, List
         mJProgressBar.setIndeterminate(true);
         mJProgressBar.setVisible(false);
         Main.MainWindow.getInstance().getStationsPanel().add(mJProgressBar);
-        //Main.MainWindow.getInstance().getStationsPanel().add(Box.createRigidArea(new Dimension(300, 0)));
     }
 
     // Set the presenter for this view
@@ -74,7 +73,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
         mStatesComboList.addActionListener(this);
         GridBagConstraints cons = new GridBagConstraints();
         cons.gridx = 0;
-        cons.gridy = 1;
+        cons.gridy = 3;
         cons.weighty = 0;
         cons.insets = new Insets(0, 10, 0, 10);
         cons.anchor = GridBagConstraints.WEST;
@@ -103,12 +102,6 @@ public class StationsView implements StationsContract.View, ActionListener, List
         mStationsJList.setSelectedIndex(0);
         mStationsJList.addListSelectionListener(this);
         
-        GridBagConstraints cons = new GridBagConstraints();
-        cons.gridx = 0;
-        cons.gridy = 2;
-        cons.weighty = 1;
-        cons.anchor = GridBagConstraints.NORTH;
-        cons.fill = GridBagConstraints.BOTH;
         
         Main.MainWindow.getInstance().getStationsScrollPane().setViewportView(mStationsJList);
         Main.MainWindow.getInstance().getStationsScrollPane().repaint();
