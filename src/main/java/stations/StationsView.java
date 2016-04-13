@@ -113,7 +113,13 @@ public class StationsView implements StationsContract.View, ActionListener, List
     }
 
     public void showObservationsUi(Station station) {
+        // Clear previous favourite listener upon selecting a new station.
+        if (Main.MainWindow.getInstance().getBtnFavourite().getActionListeners() != null) {
+            Main.MainWindow.getInstance().getBtnFavourite().removeActionListener(this);
+        }
         Main.MainWindow.getInstance().clearObservationsPanel();
+        // TODO: 14/04/16 Kendall. Possibly just delete this comment but I moved the add action listener line here. See other comment.
+        Main.MainWindow.getInstance().getBtnFavourite().addActionListener(this);
         mObservationsView = new ObservationsView();
         mObservationsPresenter = new ObservationsPresenter(WeatherRepositories.getInMemoryRepoInstance(new WeatherServiceApiImpl()), mObservationsView);
         mObservationsView.setActionListener(mObservationsPresenter);
@@ -126,6 +132,9 @@ public class StationsView implements StationsContract.View, ActionListener, List
             JComboBox<State> cb = (JComboBox<State>)e.getSource();
             String stateName = cb.getSelectedItem().toString();
             mActionsListener.loadStations(stateName, false, true); // second argument false means load non-favourite stations
+        } else if (e.getSource() == Main.MainWindow.getInstance().getBtnFavourite()) {
+            // // TODO: 14/04/16 Kendall. To confirm it's working. Just delete or modify.
+            System.out.println("fav clicked");
         }
     }
 
@@ -138,7 +147,8 @@ public class StationsView implements StationsContract.View, ActionListener, List
 			if (!e.getValueIsAdjusting()) {
 				JList<Station> list = (JList<Station>) e.getSource();
 				String stationName = list.getSelectedValue().toString();
-				Main.MainWindow.getInstance().getBtnFavourite().addActionListener(this);
+                // // TODO: 14/04/16 Kendall. Setting the listener here didn't work because the favourite button hasn't been created yet. I've moved it to the place just after it's created.
+//				Main.MainWindow.getInstance().getBtnFavourite().addActionListener(this);
 				mActionsListener.openObservations(mStationHashMap.get(stationName));
 			}
 		}
