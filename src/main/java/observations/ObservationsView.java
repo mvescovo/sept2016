@@ -68,6 +68,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         cons.gridy = 1;
         cons.weightx = 1;
         cons.weighty = 0.5;
+        cons.gridwidth = 2;
         cons.insets = new Insets(10, 10, 10, 10);
         Main.MainWindow.getInstance().getObservationsPanel().add(mTablePanel, cons);
        
@@ -136,6 +137,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         // set component visibilities
         Main.MainWindow.getInstance().getStationName().setVisible(true);
         Main.MainWindow.getInstance().getBtnFavourite().setVisible(true);
+        Main.MainWindow.getInstance().getMenubar().getMenu(1).getItem(0).setEnabled(true);
 
     }
 

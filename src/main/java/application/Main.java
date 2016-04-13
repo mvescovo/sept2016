@@ -192,6 +192,7 @@ public class Main {
             btnFavourite = new JButton("Add to favourites");
             cons.gridx = 1;
             cons.weightx = 0;
+            cons.fill = GridBagConstraints.NONE;
             cons.anchor = GridBagConstraints.EAST;
             btnFavourite.setVisible(false);
             observationsPanel.add(btnFavourite, cons);
@@ -210,8 +211,8 @@ public class Main {
 
         public void createMenuBar() {
             menubar = new JMenuBar();
-            JMenu menu;
-            JMenuItem menuItem;
+            JMenu menu, menuFav;
+            JMenuItem menuItem, menuItemFav1, menuItemFav2;
             
           //Build the first menu.
             menu = new JMenu("File");
@@ -219,13 +220,22 @@ public class Main {
             menuItem = new JMenuItem("Exit");
             menu.add(menuItem);
             menubar.add(menu);
+            menuFav = new JMenu("Favourites");
+            menuFav.setMnemonic(KeyEvent.VK_V);
+            menuItemFav1 = new JMenuItem("Add current station");
+            menuItemFav1.setEnabled(false);
+            menuFav.add(menuItemFav1);
+            menuItemFav2 = new JMenuItem("Remove current station");
+            menuItemFav2.setEnabled(false);
+            menuFav.add(menuItemFav2);
+            menubar.add(menuFav);
         }
         
 		public JScrollPane getStationsScrollPane() {
 			return stationsScrollPane;
 		}
 
-		public static JMenuBar getMenubar() {
+		public JMenuBar getMenubar() {
 			return menubar;
 		}
 
