@@ -118,11 +118,20 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
     	
     	// Table settings
     	String[] columnNames = { "Date Time",
-    			"App. temp",
-    			"Cloud",
-    			"Air temp",
-    			"Rain",
-    			"Humidity" };
+    			"Temp C" + Main.getSymboldegree(),
+    			"App Temp C" + Main.getSymboldegree(),
+    			"Dew point",
+    			"Humidity %",
+    			"Delta-T C" + Main.getSymboldegree(),
+    			"Wind Dir",
+    			"Wind spd kmh",
+    			"Wind gust kmh",
+    			"Wind spd kts",
+    			"Wind gust kts",
+    			"Press QNH hPa",
+    			"Press MSL hPa",
+    			"Rain since 9am, mm"};
+    	
     	JTable table = new JTable();
     	DefaultTableModel dataModel = new DefaultTableModel(columnNames, 0);
 
@@ -134,7 +143,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
     	tableScrollPane.setViewportView(table);
     	
     	// Update Station name
-    	String stationTitle = observations.get(0).getName() + " - State name";
+    	String stationTitle = observations.get(0).getmName() + " - State name";
         Main.MainWindow.getInstance().getStationName().setText(stationTitle);
 
         
@@ -147,7 +156,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 
     public void showChart(List<Observation> observations) {
 
-    	String chtTitle = observations.get(0).getName() + " - Temperature observations";
+    	String chtTitle = observations.get(0).getmName() + " - Temperature observations";
 
     	String chtXAxisLabel = "Date and time";
         String chtYAxisLabel = "Temperature " + Main.getSymboldegree() + "C";
@@ -159,7 +168,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
     	
         for(Observation obs : observations) {
         	try {
-        		temp = Double.parseDouble(obs.getAirtemp());
+        		temp = Double.parseDouble(obs.getmAirtemp());
         	} catch (NumberFormatException e) {
         	   temp = 0.0;
         	}
@@ -167,7 +176,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 
         	Date myDate = null;
 			try {
-				myDate = standardDateFormat.parse(obs.getDateTime());
+				myDate = standardDateFormat.parse(obs.getmDateTime());
 	        	series.addOrUpdate(new Hour(myDate), temp);
 			} catch (ParseException e) {
 				e.printStackTrace();
