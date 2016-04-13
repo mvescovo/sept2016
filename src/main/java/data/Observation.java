@@ -1,6 +1,13 @@
 package data;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 import java.util.Vector;
+
+import application.Main;
 
 /**
  * Created by michael on 5/04/16.
@@ -32,6 +39,10 @@ public class Observation {
         mAirtemp = airTemp;
         mName = name;
         mDateTime = local_date_time_full;
+        mApparentTemp = apparent_t;
+        mCloud = cloud;
+        mRain =rain_trace;
+        mHumidity = rel_hum;
     }
 
     public Observation(String id, String name, String dateTime, String apparentTemp, String cloud, String airtemp, String rain, String humidity) {
@@ -47,10 +58,25 @@ public class Observation {
 
 	public Vector<String> getObsVector() {
     	Vector<String> data = new Vector<String>();
-    	data.addElement(getDateTime());
-    	data.addElement(getApparentTemp());
-    	data.addElement(getCloud());
-    	data.addElement(getAirtemp());
+    	SimpleDateFormat standardDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
+    	Date thisDate = null;
+    	try {
+			thisDate = standardDateFormat.parse(getDateTime());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        c.setTime(thisDate);
+        
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("EEEEE");
+    	String dayOfWeek = dateFormat.format(c.getTime());
+    	
+    	data.addElement(dayOfWeek);
+    	data.addElement(getApparentTemp() + Main.getSymboldegree());
+    	data.addElement( (getCloud().equals("-")) ? "Clear": getCloud());
+    	data.addElement(getAirtemp() + Main.getSymboldegree());
     	data.addElement(getRain());
     	data.addElement(getHumidity());
     	

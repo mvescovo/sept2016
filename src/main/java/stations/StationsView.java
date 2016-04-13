@@ -138,6 +138,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
 			if (!e.getValueIsAdjusting()) {
 				JList<Station> list = (JList<Station>) e.getSource();
 				String stationName = list.getSelectedValue().toString();
+				Main.MainWindow.getInstance().getBtnFavourite().addActionListener(this);
 				mActionsListener.openObservations(mStationHashMap.get(stationName));
 			}
 		}

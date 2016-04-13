@@ -8,6 +8,8 @@ import stations.StationsView;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 
 /**
@@ -17,6 +19,10 @@ import java.awt.event.KeyEvent;
  */
 public class Main {
 
+	// default window size
+	private static final int frameWidth = 1024;
+	private static final int frameHeight = 768;
+	
 	// fonts
 	private static final String fontFamily = "SansSerif";
 	private static final Font fontTitle = new Font(fontFamily, Font.BOLD, 24);
@@ -75,6 +81,37 @@ public class Main {
             JFrame jFrame;
             jFrame = new JFrame("SEPT Weather App");
             jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            
+            // add window listener to persist data
+            /*jFrame.addComponentListener(new ComponentListener() {
+
+				@Override
+				public void componentResized(ComponentEvent e) {
+					System.out.println("Resized Height: " + e.getComponent().getHeight());
+					System.out.println("Resized Width: " + e.getComponent().getWidth());
+					
+				}
+
+				@Override
+				public void componentMoved(ComponentEvent e) {
+					System.out.println("Moved X: " + e.getComponent().getX());
+					System.out.println("Moved Y: " + e.getComponent().getY());
+				}
+
+				@Override
+				public void componentShown(ComponentEvent e) {
+					System.out.println("Shown: " + e.getSource());
+					
+				}
+
+				@Override
+				public void componentHidden(ComponentEvent e) {
+					System.out.println("Hidden: " + e.getSource());
+					
+				}
+            	
+            });*/
+            
             container = jFrame.getContentPane();
 
             
@@ -93,7 +130,7 @@ public class Main {
             createObservationsPanel();
 
             // Display the main window.
-            jFrame.setSize(800,800);
+            jFrame.setSize(frameWidth,frameHeight);
             jFrame.setLocationRelativeTo(null);
             jFrame.setVisible(true);
         }

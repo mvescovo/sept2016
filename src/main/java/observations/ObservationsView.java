@@ -49,6 +49,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         GridBagConstraints cons = new GridBagConstraints();
         cons.gridx = 0;
         cons.gridy = 0;
+        cons.gridwidth = 2;
         cons.fill = GridBagConstraints.BOTH;
         cons.anchor = GridBagConstraints.CENTER;
         Main.MainWindow.getInstance().getObservationsPanel().add(mJProgressBar, cons);
@@ -99,9 +100,11 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 
     public void setProgressBar(boolean active) {
         if (active) {
+        	Main.MainWindow.getInstance().getStationName().setVisible(false);
             mJProgressBar.setVisible(true);
         } else {
             mJProgressBar.setVisible(false);
+            Main.MainWindow.getInstance().getStationName().setVisible(false);
         }
         Main.MainWindow.getInstance().getObservationsPanel().repaint();
     }
@@ -115,9 +118,9 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
     	
     	// Table settings
     	String[] columnNames = { "Date Time",
-    			"Apparent temperature",
+    			"App. temp",
     			"Cloud",
-    			"Air temperature",
+    			"Air temp",
     			"Rain",
     			"Humidity" };
     	JTable table = new JTable();
@@ -134,6 +137,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
     	String stationTitle = observations.get(0).getName() + " - State name";
         Main.MainWindow.getInstance().getStationName().setText(stationTitle);
 
+        
         // set component visibilities
         Main.MainWindow.getInstance().getStationName().setVisible(true);
         Main.MainWindow.getInstance().getBtnFavourite().setVisible(true);
@@ -149,7 +153,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         String chtYAxisLabel = "Temperature " + Main.getSymboldegree() + "C";
 
         TimeSeries series = new TimeSeries("Temp");
-        double temp;
+        double temp = 0.0;
     	SimpleDateFormat standardDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
 
     	
