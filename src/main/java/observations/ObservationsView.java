@@ -149,7 +149,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         
         // set component visibilities
         Main.MainWindow.getInstance().getStationName().setVisible(true);
-        Main.MainWindow.getInstance().getBtnFavourite().setVisible(true);
+        //Main.MainWindow.getInstance().getToolbar().get.setVisible(true);
         Main.MainWindow.getInstance().getMenubar().getMenu(1).getItem(0).setEnabled(true);
 
     }

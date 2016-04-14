@@ -79,9 +79,9 @@ public class Main {
 		private static JFrame jFrame;
 
 		private static JMenuBar menubar;
+		private static JToolBar toolbar;
 		private JLabel stationName;
 
-		private JButton btnFavourite;
 
 		private MainWindow() {
 			// Container frame for the main window
@@ -102,9 +102,20 @@ public class Main {
 
 			container = jFrame.getContentPane();
 
+			// add panel for menu and toolbar
+			JPanel menuPanel = new JPanel();
+			menuPanel.setLayout(new GridLayout(2, 1));
+			
 			// add menubar
 			createMenuBar();
-			container.add(menubar, BorderLayout.NORTH);
+			
+			
+			// Add toolbar
+			createToolBar();
+		    menuPanel.add(menubar);
+		    menuPanel.add(toolbar);
+		    container.add(menuPanel, BorderLayout.NORTH);
+		    
 
 			// Stations panel - callable directly from stations view
 			createStationsPanel();
@@ -118,6 +129,24 @@ public class Main {
 
 			jFrame.setVisible(true);
 
+		}
+
+		private void createToolBar() {
+			toolbar = new JToolBar();
+			toolbar.setFloatable(false);
+			
+		    JButton button = new JButton("Refresh");
+		    button.setMargin(new Insets(10, 10, 10, 10));
+		    toolbar.add(button);
+		    toolbar.addSeparator();
+		    button = new JButton("Add to Favourites");
+		    button.setMargin(new Insets(10, 10, 10, 10));
+		    toolbar.add(button);
+		    button = new JButton("Remove from Favourites");
+		    button.setMargin(new Insets(10, 10, 10, 10));
+		    toolbar.add(button);
+		    toolbar.addSeparator();
+			
 		}
 
 		public static MainWindow getInstance() {
@@ -206,14 +235,6 @@ public class Main {
 			stationName.setFont(Main.getFonttitle());
 			observationsPanel.add(stationName, cons);
 
-			// add to favourites button
-			btnFavourite = new JButton("Add to favourites");
-			cons.gridx = 1;
-			cons.weightx = 0;
-			cons.fill = GridBagConstraints.NONE;
-			cons.anchor = GridBagConstraints.EAST;
-			btnFavourite.setVisible(false);
-			observationsPanel.add(btnFavourite, cons);
 			observationsPanel.setBackground(colorLight);
 
 			container.add(observationsPanel, BorderLayout.CENTER);
@@ -360,12 +381,13 @@ public class Main {
 			MainWindow.favouritesScrollPane = favouritesScrollPane;
 		}
 
-		public JButton getBtnFavourite() {
-			return btnFavourite;
+
+		public static JToolBar getToolbar() {
+			return toolbar;
 		}
 
-		public void setBtnFavourite(JButton btnFavourite) {
-			this.btnFavourite = btnFavourite;
+		public static void setToolbar(JToolBar toolbar) {
+			MainWindow.toolbar = toolbar;
 		}
 
 	}

@@ -33,6 +33,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
     private HashMap<String, Station> mStationHashMap = new HashMap<String, Station>();
     private ObservationsView mObservationsView;
     private ObservationsPresenter mObservationsPresenter;
+    private Station selectedStation;
 
     public StationsView() {
         // Add a progress bar
@@ -137,12 +138,21 @@ public class StationsView implements StationsContract.View, ActionListener, List
 			// Ensure the user has finished selecting
 			if (!e.getValueIsAdjusting()) {
 				JList<Station> list = (JList<Station>) e.getSource();
-				String stationName = list.getSelectedValue().toString();
-				Main.MainWindow.getInstance().getBtnFavourite().addActionListener(this);
+				Station thisStation = list.getSelectedValue();
+				String stationName = thisStation.toString();
+				this.setSelectedStation(thisStation);
 				mActionsListener.openObservations(mStationHashMap.get(stationName));
 			}
 		}
 
+	}
+
+	public Station getSelectedStation() {
+		return selectedStation;
+	}
+
+	public void setSelectedStation(Station selectedStation) {
+		this.selectedStation = selectedStation;
 	}
 
 }
