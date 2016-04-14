@@ -24,6 +24,9 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
 
     public void loadStates(final boolean forceUpdate) {
         mView.setProgressBar(true);
+        if (forceUpdate) {
+            mWeatherRepository.refreshData();
+        }
         mWeatherRepository.getStates(new WeatherRepository.LoadStatesCallback() {
             public void onStatesLoaded(List<State> states) {
                 mView.setProgressBar(false);
@@ -34,6 +37,9 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
 
     public void loadStations(String stateName, boolean favourite, boolean forceUpdate) {
         mView.setProgressBar(true);
+        if (forceUpdate) {
+            mWeatherRepository.refreshData();
+        }
         mWeatherRepository.getStations(stateName, favourite, new WeatherRepository.LoadStationsCallback() {
             public void onStationsLoaded(List<Station> stations) {
                 mView.setProgressBar(false);
