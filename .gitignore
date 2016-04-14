@@ -5,6 +5,7 @@ build/
 # For Eclipse users
 *.project
 .classpath
+.settings
 
 # Ignore Gradle GUI config
 gradle-app.setting

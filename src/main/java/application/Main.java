@@ -8,8 +8,6 @@ import stations.StationsView;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -79,9 +77,12 @@ public class Main {
 		private static JFrame jFrame;
 
 		private static JMenuBar menubar;
-		private static JToolBar toolbar;
+		private JToolBar toolbar;
 		private JLabel stationName;
 
+		private JButton btnFavourite;
+		private JButton btnRefresh;
+		private JButton btnRemove;
 
 		private MainWindow() {
 			// Container frame for the main window
@@ -135,16 +136,17 @@ public class Main {
 			toolbar = new JToolBar();
 			toolbar.setFloatable(false);
 			
-		    JButton button = new JButton("Refresh");
-		    button.setMargin(new Insets(10, 10, 10, 10));
-		    toolbar.add(button);
+			
+		    btnRefresh = new JButton("Refresh");
+		    btnRefresh.setMargin(new Insets(10, 10, 10, 10));
+		    toolbar.add(btnRefresh);
 		    toolbar.addSeparator();
-		    button = new JButton("Add to Favourites");
-		    button.setMargin(new Insets(10, 10, 10, 10));
-		    toolbar.add(button);
-		    button = new JButton("Remove from Favourites");
-		    button.setMargin(new Insets(10, 10, 10, 10));
-		    toolbar.add(button);
+		    btnFavourite = new JButton("Add to Favourites");
+		    btnFavourite.setMargin(new Insets(10, 10, 10, 10));
+		    toolbar.add(btnFavourite);
+		    btnRemove = new JButton("Remove from Favourites");
+		    btnRemove.setMargin(new Insets(10, 10, 10, 10));
+		    toolbar.add(btnRemove);
 		    toolbar.addSeparator();
 			
 		}
@@ -382,12 +384,36 @@ public class Main {
 		}
 
 
-		public static JToolBar getToolbar() {
+		public JToolBar getToolbar() {
 			return toolbar;
 		}
 
-		public static void setToolbar(JToolBar toolbar) {
-			MainWindow.toolbar = toolbar;
+		public void setToolbar(JToolBar toolbar) {
+			this.toolbar = toolbar;
+		}
+
+		public JButton getBtnFavourite() {
+			return btnFavourite;
+		}
+
+		public void setBtnFavourite(JButton btnFavourite) {
+			this.btnFavourite = btnFavourite;
+		}
+
+		public JButton getBtnRefresh() {
+			return btnRefresh;
+		}
+
+		public void setBtnRefresh(JButton btnRefresh) {
+			this.btnRefresh = btnRefresh;
+		}
+
+		public JButton getBtnRemove() {
+			return btnRemove;
+		}
+
+		public void setBtnRemove(JButton btnRemove) {
+			this.btnRemove = btnRemove;
 		}
 
 	}

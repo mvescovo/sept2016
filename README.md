@@ -12,7 +12,7 @@ Software Engineering Process and Tools.
   - Architecture, 25% contribution
 
 ####Tutor
-- Homy Ash
+- Aditya Jagtap
   - Wednesday 5:30 - 7:30
 
 ####Bonus marks

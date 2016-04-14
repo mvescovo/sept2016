@@ -114,7 +114,22 @@ public class StationsView implements StationsContract.View, ActionListener, List
     }
 
     public void showObservationsUi(Station station) {
+        // Clear previous favourite listener upon selecting a new station.
+        if (Main.MainWindow.getInstance().getBtnFavourite().getActionListeners() != null) {
+            Main.MainWindow.getInstance().getBtnFavourite().removeActionListener(this);
+        }
+        if (Main.MainWindow.getInstance().getBtnRefresh().getActionListeners() != null) {
+            Main.MainWindow.getInstance().getBtnRefresh().removeActionListener(this);
+        }
+        if (Main.MainWindow.getInstance().getBtnRemove().getActionListeners() != null) {
+            Main.MainWindow.getInstance().getBtnRemove().removeActionListener(this);
+        }
         Main.MainWindow.getInstance().clearObservationsPanel();
+
+        Main.MainWindow.getInstance().getBtnFavourite().addActionListener(this);
+        Main.MainWindow.getInstance().getBtnRefresh().addActionListener(this);
+        Main.MainWindow.getInstance().getBtnRemove().addActionListener(this);
+        
         mObservationsView = new ObservationsView();
         mObservationsPresenter = new ObservationsPresenter(WeatherRepositories.getInMemoryRepoInstance(new WeatherServiceApiImpl()), mObservationsView);
         mObservationsView.setActionListener(mObservationsPresenter);
@@ -127,6 +142,8 @@ public class StationsView implements StationsContract.View, ActionListener, List
             JComboBox<State> cb = (JComboBox<State>)e.getSource();
             String stateName = cb.getSelectedItem().toString();
             mActionsListener.loadStations(stateName, false, true); // second argument false means load non-favourite stations
+        } else if (e.getSource() == Main.MainWindow.getInstance().getBtnFavourite()) {
+            System.out.println("fav clicked");
         }
     }
 
@@ -138,9 +155,11 @@ public class StationsView implements StationsContract.View, ActionListener, List
 			// Ensure the user has finished selecting
 			if (!e.getValueIsAdjusting()) {
 				JList<Station> list = (JList<Station>) e.getSource();
+
 				Station thisStation = list.getSelectedValue();
 				String stationName = thisStation.toString();
 				this.setSelectedStation(thisStation);
+
 				mActionsListener.openObservations(mStationHashMap.get(stationName));
 			}
 		}
