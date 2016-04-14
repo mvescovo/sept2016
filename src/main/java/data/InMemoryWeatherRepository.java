@@ -77,6 +77,6 @@ class InMemoryWeatherRepository implements WeatherRepository {
     public void refreshData() {
         mCachedStates = null;
         mCachedStations = null;
-        mCachedObservations = null;
+        mCachedObservations.clear();
     }
 }

@@ -3,20 +3,16 @@ package observations;
 import application.Main;
 import data.Observation;
 import data.Station;
-
-import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.title.TextTitle;
-import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.time.*;
-import org.jfree.data.xy.XYDataset;
+import org.jfree.data.time.Hour;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.ui.HorizontalAlignment;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,7 +20,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Created by michael on 5/04/16.
@@ -111,7 +106,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 
     // When everything is initialised
     public void onReady(Station station) {
-        mActionsListener.loadObservations(station, true);
+        mActionsListener.loadObservations(station, false);
     }
 
     public void showObservations(List<Observation> observations) {
