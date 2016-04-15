@@ -48,12 +48,35 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
         });
     }
 
-    public void addFavouriteStation(Station station) {
-        mWeatherRepository.saveFavouriteStation(station);
+    
+    public void addFavouriteStation(Station favourite) {
+        mWeatherRepository.saveFavouriteStation(favourite);
+        
     }
 
     public void openObservations(Station station) {
         mView.showObservationsUi(station);
     }
+
+    
+	public void loadFavourites(boolean forceUpdate) {
+        if (forceUpdate) {
+            mWeatherRepository.refreshData();
+        }
+		mWeatherRepository.getFavourites( new WeatherRepository.LoadFavouritesCallback() {
+			@Override
+			public void onFavouritesLoaded(List<Station> favourites) {
+				mView.showFavourites(favourites);
+				
+			}
+		});
+	}
+
+	public void removeFavouriteStation(Station favourite) {
+		mWeatherRepository.removeFavouriteStation(favourite);
+		
+	}
+
+
 
 }

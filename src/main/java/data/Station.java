@@ -1,5 +1,6 @@
 package data;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -7,21 +8,31 @@ import java.util.HashMap;
  *
  * Observation station entity.
  */
-public class Station {
+public class Station implements Serializable{
 
-    private String mUrl;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1970346110178787000L;
+	
+	private String mUrl;
     private String mCity;
+    private String mStateName;
+    
     private HashMap<String, Observation> mObservations;
 
-    public Station(String url, String city) {
+    
+    public Station(String url, String city, String stateName) {
         mUrl = url;
         setmCity(city);
+        this.setmStateName(stateName);
     }
 
-    public Station(String url, String city, HashMap<String, Observation> observations) {
+    public Station(String url, String city, HashMap<String, Observation> observations, String stateName) {
         mUrl = url;
         setmCity(city);
         mObservations = observations;
+        this.setmStateName(stateName);
     }
     
     @Override
@@ -31,7 +42,16 @@ public class Station {
 	return result.toString();
     }
 
-    public String getUrl() {
+    @Override
+	public boolean equals(Object obj) {
+		Station s = (Station) obj;
+		if (s.getmCity().equals(mCity))
+			return true;
+		return false;
+	}
+
+
+	public String getUrl() {
         return mUrl;
     }
 
@@ -61,5 +81,13 @@ public class Station {
 
 	public void setmCity(String mCity) {
 		this.mCity = mCity;
+	}
+
+	public String getmStateName() {
+		return mStateName;
+	}
+
+	public void setmStateName(String mStateName) {
+		this.mStateName = mStateName;
 	}
 }

@@ -18,6 +18,7 @@ public class Observation {
 
 	private String mId;
 	private String mName;
+	private String mStateName;
 	private String mDateTime;
 	private String mApparentTemp;
 	private String mCloud;
@@ -59,6 +60,7 @@ public class Observation {
 		mGustKt = "-";
 		mPressQnh = press_qnh;
 		mPressMsl = press_msl;
+
 		
 	}
 
@@ -247,6 +249,14 @@ public class Observation {
 
 	public void setmPressMsl(String mPressMsl) {
 		this.mPressMsl = mPressMsl;
+	}
+
+	public String getmStateName() {
+		return mStateName;
+	}
+
+	public void setmStateName(String mStateName) {
+		this.mStateName = mStateName;
 	}
 
 }

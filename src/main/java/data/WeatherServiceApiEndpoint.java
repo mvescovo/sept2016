@@ -1,9 +1,16 @@
 package data;
 
 import com.google.gson.JsonArray;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import application.Main;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -13,11 +20,19 @@ import retrofit2.http.GET;
 import retrofit2.http.Url;
 
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 /**
  * Created by michael on 5/04/16.
  *
@@ -64,7 +79,7 @@ class WeatherServiceApiEndpoint {
                 for (int j = 0; j < stationArray.size(); j++) {
                     String url = stationArray.get(j).getAsJsonObject().get("url").getAsString();
                     String city = stationArray.get(j).getAsJsonObject().get("city").getAsString();
-                    Station station = new Station(url, city);
+                    Station station = new Station(url, city, stateName);
                     stations.add(station);
                 }
                 allStations.put(stateName, stations);
@@ -75,10 +90,27 @@ class WeatherServiceApiEndpoint {
         return allStations;
     }
 
-    static void saveFavouriteStation(Station station) {
 
+	static void saveFavouriteStation(Station favourite) {
+    	
+		List<Station> list = loadPersistedFavourites();
+
+		if (!list.contains(favourite)) {
+			list.add(favourite);
+
+			// serialize the List
+			try (OutputStream file = new FileOutputStream("favourites.ser");
+					OutputStream buffer = new BufferedOutputStream(file);
+					ObjectOutput output = new ObjectOutputStream(buffer);) {
+				output.writeObject(list);
+			} catch (IOException ex) {
+
+			}
+		}
+        
+    	
         // TODO Steve implement me. Save to file under resources.
-        try{
+       /* try{
             FileWriter fstream = new FileWriter(System.currentTimeMillis() + "stations.txt");
                 BufferedWriter out = new BufferedWriter(fstream);
             out.write(station.getmCity());
@@ -86,7 +118,7 @@ class WeatherServiceApiEndpoint {
             out.close();
             }catch (Exception e){
               System.err.println("Error: " + e.getMessage());
-            }
+            }*/
     }
   
     // Get observations from files rather than from the BOM (historical data)
@@ -97,7 +129,8 @@ class WeatherServiceApiEndpoint {
     }
 
     // Get observations from the BOM
-    static void getObservations(Station station, final WeatherServiceApi.WeatherServiceCallback callback) {
+    @SuppressWarnings("rawtypes")
+	static void getObservations(Station station, final WeatherServiceApi.WeatherServiceCallback callback) {
         final List<Observation> observations = new ArrayList<Observation>();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -108,7 +141,8 @@ class WeatherServiceApiEndpoint {
         BomWeatherService service = retrofit.create(BomWeatherService.class);
         Call<JsonObject> call = service.loadObservations(station.getUrl());
         call.enqueue(new Callback<JsonObject>() {
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            @SuppressWarnings("unchecked")
+			public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.body() != null) {
                     JsonObject observationsObject = response.body().getAsJsonObject("observations");
                     JsonArray dataArray = observationsObject.get("data").getAsJsonArray();
@@ -283,7 +317,8 @@ class WeatherServiceApiEndpoint {
                 callback.onLoaded(observations);
             }
 
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            @SuppressWarnings("unchecked")
+			public void onFailure(Call<JsonObject> call, Throwable t) {
                 callback.onLoaded(observations);
             }
         });
@@ -294,4 +329,49 @@ class WeatherServiceApiEndpoint {
         Call<JsonObject> loadObservations(@Url String url);
     }
 
+
+	 @SuppressWarnings("unchecked")
+	static List<Station> loadPersistedFavourites() {
+		 List<Station> restoredFavs = new ArrayList<Station>();
+			// deserialize the favourites.ser file
+			try (InputStream file = new FileInputStream("favourites.ser");
+					InputStream buffer = new BufferedInputStream(file);
+					ObjectInput input = new ObjectInputStream(buffer);) {
+				// deserialize the List
+				restoredFavs = (List<Station>) input.readObject();
+				// display its data
+				for (Station s : restoredFavs) {
+					System.out.println("Recovered Favourite: " + s);
+				}
+			} catch (FileNotFoundException e) {
+				return new ArrayList<Station>();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return restoredFavs;
+	    }
+
+	public static void removeFavouriteStation(Station favourite) {
+		List<Station> list = loadPersistedFavourites();
+
+		if (list.contains(favourite)) {
+			list.remove(favourite);
+
+			// serialize the List
+			try (OutputStream file = new FileOutputStream("favourites.ser");
+					OutputStream buffer = new BufferedOutputStream(file);
+					ObjectOutput output = new ObjectOutputStream(buffer);) {
+				output.writeObject(list);
+			} catch (IOException ex) {
+
+			}
+		}
+		
+	}
+	
 }

@@ -29,8 +29,8 @@ public class StationsPresenterTest {
     private static List<Station> EMPTY_STATES = new ArrayList(0);
 
     private static List<Station> STATIONS = Lists.newArrayList(
-            new Station("94866", "Melbourne Airport"),
-            new Station("95936", "Melbourne Olympic Park"));
+            new Station("94866", "Melbourne Airport", "Victoria"),
+            new Station("95936", "Melbourne Olympic Park", "Victoria"));
     private static List<Station> EMPTY_STATIONS = new ArrayList(0);
 
     @Mock
@@ -77,7 +77,7 @@ public class StationsPresenterTest {
 
     @Test
     public void clickOnStationAndShowObservations() {
-        Station station = new Station("94866", "Melbourne Airport");
+        Station station = new Station("94866", "Melbourne Airport", "Victoria");
         mStationsPresenter.openObservations(station);
         verify(mStationsView).showObservationsUi(station);
     }

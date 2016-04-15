@@ -20,5 +20,9 @@ interface WeatherServiceApi {
 
     void getObservations(Station station, WeatherServiceCallback<List<Observation>> callback);
 
-    void saveFavouriteStation(Station station);
+    void saveFavouriteStation(Station favourite);
+
+    void getFavourites(WeatherServiceCallback<List<Station>> callback);
+
+	void removeFavouriteStation(Station favourite);
 }

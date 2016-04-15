@@ -23,8 +23,8 @@ interface StationsContract {
         // Show a list of stations in the current view
         void showStations(List<Station> stations);
 
-        // Show a station as a favourite in the current view
-        void showStationAsFavourited(String stationId, boolean favourite);
+        // Show favourite stations in the current view
+        void showFavourites(List<Station> favourites);
 
         // Show observations in the the observations view
         void showObservationsUi(Station station);
@@ -36,9 +36,14 @@ interface StationsContract {
 
         void loadStations(String stateName, boolean favourite, boolean forceUpdate);
 
-        void addFavouriteStation(Station station);
+        void addFavouriteStation(Station favourite);
 
         void openObservations(Station station);
+        
+        void loadFavourites(boolean forceUpdate);
+
+		void removeFavouriteStation(Station selectedStation);
+
     }
 
 }

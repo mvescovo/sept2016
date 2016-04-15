@@ -138,14 +138,17 @@ public class Main {
 			
 			
 		    btnRefresh = new JButton("Refresh");
+		    btnRefresh.setName("refresh");
 		    btnRefresh.setMargin(new Insets(10, 10, 10, 10));
 		    toolbar.add(btnRefresh);
 		    toolbar.addSeparator();
 		    btnFavourite = new JButton("Add to Favourites");
 		    btnFavourite.setMargin(new Insets(10, 10, 10, 10));
+		    btnFavourite.setName("add");
 		    toolbar.add(btnFavourite);
 		    btnRemove = new JButton("Remove from Favourites");
 		    btnRemove.setMargin(new Insets(10, 10, 10, 10));
+		    btnRemove.setName("remove");
 		    toolbar.add(btnRemove);
 		    toolbar.addSeparator();
 			
@@ -375,11 +378,11 @@ public class Main {
 			this.stationName = stationName;
 		}
 
-		public static JScrollPane getFavouritesScrollPane() {
+		public JScrollPane getFavouritesScrollPane() {
 			return favouritesScrollPane;
 		}
 
-		public static void setFavouritesScrollPane(JScrollPane favouritesScrollPane) {
+		public void setFavouritesScrollPane(JScrollPane favouritesScrollPane) {
 			MainWindow.favouritesScrollPane = favouritesScrollPane;
 		}
 

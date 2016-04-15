@@ -6,6 +6,7 @@ import data.Station;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.data.time.Day;
 import org.jfree.data.time.Hour;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -18,6 +19,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -138,7 +141,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
     	tableScrollPane.setViewportView(table);
     	
     	// Update Station name
-    	String stationTitle = observations.get(0).getmName() + " - State name";
+    	String stationTitle = observations.get(0).getmName();
         Main.MainWindow.getInstance().getStationName().setText(stationTitle);
 
         
@@ -156,23 +159,54 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
     	String chtXAxisLabel = "Date and time";
         String chtYAxisLabel = "Temperature " + Main.getSymboldegree() + "C";
 
-        TimeSeries series = new TimeSeries("Temp");
+        
+        
+        TimeSeries seriesTemp = new TimeSeries("Temp");
+       // TimeSeries seriesMin = new TimeSeries("Min");
+       // TimeSeries seriesMax = new TimeSeries("Max");
+        
         double temp = 0.0;
     	SimpleDateFormat standardDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
 
-    	
-        for(Observation obs : observations) {
+    	for(Observation obs : observations) {
+        	
         	try {
         		temp = Double.parseDouble(obs.getmAirtemp());
         	} catch (NumberFormatException e) {
         	   temp = 0.0;
         	}
 
-
+        	// Date previousDate = null;
         	Date myDate = null;
 			try {
 				myDate = standardDateFormat.parse(obs.getmDateTime());
-	        	series.addOrUpdate(new Hour(myDate), temp);
+				// System.out.println(myDate);
+
+	        	/*double minTemp = Double.NaN;
+	        	double maxTemp = Double.NaN;
+	        	
+	        	// Check for next day
+	        	if( !myDate.equals( previousDate ) ) {
+	        		// start new max and min
+	        		minTemp = temp;
+		        	maxTemp = temp;
+	        		
+	        	}
+	        	else {
+	        		// same day, so update existing max and min
+	        		if (temp < minTemp) {
+	        			minTemp = temp;
+	        		}
+	        		if (temp > maxTemp) {
+	        			maxTemp = temp;
+	        		}
+	        	}
+	        	previousDate = myDate;*/
+	        	
+	        	seriesTemp.addOrUpdate(new Hour(myDate), temp);
+	        	/*seriesMin.addOrUpdate(new Day(myDate), minTemp);
+	        	seriesMax.addOrUpdate(new Day(myDate), maxTemp);*/
+	        	
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -180,8 +214,9 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         }
         
         TimeSeriesCollection dataset = new TimeSeriesCollection();
-        dataset.addSeries(series);
-        
+        dataset.addSeries(seriesTemp);
+        /*dataset.addSeries(seriesMin);
+        dataset.addSeries(seriesMax)*/;
         JFreeChart chart = ChartFactory.createTimeSeriesChart(chtTitle, chtXAxisLabel, chtYAxisLabel, dataset, false, true, false);
         chart.getTitle().setHorizontalAlignment(HorizontalAlignment.LEFT);
         chart.getTitle().setFont(Main.getFontnormalbold());
