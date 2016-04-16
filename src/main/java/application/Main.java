@@ -177,6 +177,7 @@ public class Main {
 			return observationsPanel;
 		}
 
+		
 		private void createStationsPanel() {
 			stationsPanel = new JPanel();
 			stationsPanel.setLayout(new GridBagLayout());
@@ -251,6 +252,7 @@ public class Main {
 				createObservationsPanel();
 			}
 		}
+		
 
 		public void createMenuBar() {
 			menubar = new JMenuBar();

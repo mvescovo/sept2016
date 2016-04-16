@@ -48,7 +48,7 @@ public class Observation {
 		mName = name;
 		mDateTime = local_date_time_full;
 		mApparentTemp = apparent_t;
-		mCloud = cloud;
+		mCloud = cloud.equals("-") ? "Clear" : cloud;
 		mRain = rain_trace;
 		mHumidity = rel_hum;
 		mDewpt = dewpt;
@@ -90,7 +90,7 @@ public class Observation {
 		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		c.setTime(thisDate);
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("EEEEE");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a EE dd/MM/yy");
 		String dayOfWeek = dateFormat.format(c.getTime());
 
 		data.addElement(dayOfWeek);

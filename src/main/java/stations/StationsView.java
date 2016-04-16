@@ -130,7 +130,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
 		mFavouritesJList.setModel(listModel);
 		mFavouritesJList.setSelectedIndex(-1);
 		mFavouritesJList.addListSelectionListener(this);
-
+	
 		Main.MainWindow.getInstance().getFavouritesScrollPane().setViewportView(mFavouritesJList);
 		Main.MainWindow.getInstance().getFavouritesScrollPane().revalidate();
 		Main.MainWindow.getInstance().getFavouritesScrollPane().repaint();
@@ -176,7 +176,8 @@ public class StationsView implements StationsContract.View, ActionListener, List
 			} else if (btn.getName().equals("add")) {
 				mActionsListener.addFavouriteStation(getSelectedStation());	
 				mActionsListener.loadFavourites(true);
-				
+				Main.MainWindow.getInstance().getFavouritesScrollPane().revalidate();
+				Main.MainWindow.getInstance().getFavouritesScrollPane().repaint();
 				
 			} else if (btn.getName().equals("remove")) {
 				mActionsListener.removeFavouriteStation(getSelectedStation());	

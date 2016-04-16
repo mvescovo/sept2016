@@ -68,6 +68,7 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
 			public void onFavouritesLoaded(List<Station> favourites) {
 				mView.showFavourites(favourites);
 				
+				
 			}
 		});
 	}

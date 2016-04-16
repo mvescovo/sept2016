@@ -17,6 +17,9 @@ interface ObservationsContract {
         // Enable/disable a progress bar while data is loading
         void setProgressBar(boolean active);
 
+        // show latest observation
+        void showLatestObservation(Observation obs);
+        
         // Show observations in the current view
         void showObservations(List<Observation> observations);
 

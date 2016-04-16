@@ -308,7 +308,7 @@ class WeatherServiceApiEndpoint {
                         		aifstime_utc, lat, lon, apparent_t, cloud, cloud_base_m, cloud_oktas, cloud_type, cloud_type_id, delta_t, gust_kmh,
                         		dewpt, press, press_msl, press_qnh, press_tend, rain_trace, rel_hum, sea_state, swell_dir_worded, swell_height, swell_period,
                         		vis_km, weather, wind_dir, wind_spd_kmh, wind_spd_kt);
-
+                        observation.setmStateName(station.getmStateName());
                         observations.add(observation);
                     }
                 } else {
