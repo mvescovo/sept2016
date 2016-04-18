@@ -21,7 +21,7 @@ interface ObservationsContract {
         void showLatestObservation(Observation obs);
         
         // Show observations in the current view
-        void showObservations(List<Observation> observations);
+        void showObservationTable(List<Observation> observations);
 
         // Show chart
         void showChart(List<Observation> observations);

@@ -20,12 +20,15 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ * The user interface view for presenting favourites, states and weather stations.
  * Created by michael on 5/04/16.
+ * Modified by kendall on 18/04/16.
  *
- * UI for the stations list.
+ * @author michael, kendall
+ * 
+ *
  */
 public class StationsView implements StationsContract.View, ActionListener, ListSelectionListener {
-	// TODO Kendall to modify as necessary - delete comment when done.
 
 	private StationsContract.UserActionsListener mActionsListener;
 	private JProgressBar mJProgressBar;
@@ -38,21 +41,34 @@ public class StationsView implements StationsContract.View, ActionListener, List
 	private List<Station> mFavouritesList = new ArrayList<Station>();
 	private JList<Station> mFavouritesJList;
 
+	/**
+	 * Instantiates the stations view component.
+	 */
 	public StationsView() {
 		// Add a progress bar
 		mJProgressBar = new JProgressBar();
 		mJProgressBar.setIndeterminate(true);
 		mJProgressBar.setVisible(false);
 		Main.MainWindow.getInstance().getStationsPanel().add(mJProgressBar);
-		
 
 	}
 
-	// Set the presenter for this view
+	/**
+	 * Sets the presenter for this view.
+	 * 
+	 * @param actionListener
+	 *            The contract for available user actions
+	 */
 	public void setActionListener(StationsContract.UserActionsListener actionListener) {
 		mActionsListener = actionListener;
 	}
 
+	/**
+	 * Changes the visual state of the progress (loading) component
+	 * 
+	 * @param active
+	 *            when true the progress bar is visible. Not visible otherwise.
+	 */
 	public void setProgressBar(final boolean active) {
 		if (active) {
 			mJProgressBar.setVisible(true);
@@ -61,13 +77,21 @@ public class StationsView implements StationsContract.View, ActionListener, List
 		}
 	}
 
-	// When everything is initialised
+	/**
+	 * When the app initialisation has completed, get the states and favourites
+	 * collections and force an update.
+	 */
 	public void onReady() {
 		mActionsListener.loadStates(true);
 		mActionsListener.loadFavourites(true);
 	}
 
-	// Show the states
+	/**
+	 * Displays the list of States,for which weather stations are available.
+	 * 
+	 * @param states
+	 *            collection of states to display.
+	 */
 	public void showStates(List<State> states) {
 
 		mStatesComboList = new JComboBox<State>();
@@ -88,7 +112,13 @@ public class StationsView implements StationsContract.View, ActionListener, List
 		Main.MainWindow.getInstance().getStationsPanel().add(mStatesComboList, cons);
 	}
 
-	// Show the stations
+	/**
+	 * Displays a list of weather stations in the UI. Updated when the State
+	 * combo box is changed.
+	 * 
+	 * @param stations
+	 *            a collection of Station objects.
+	 */
 	public void showStations(List<Station> stations) {
 		mStationHashMap.clear();
 		for (int i = 0; i < stations.size(); i++) {
@@ -114,9 +144,15 @@ public class StationsView implements StationsContract.View, ActionListener, List
 
 	}
 
+	/**
+	 * Displays the user's favourite stations with an updated list of stations.
+	 * 
+	 * @param favourites
+	 *            A collection of weather stations.
+	 */
 	public void showFavourites(List<Station> favourites) {
 		mFavouritesList.clear();
-		for( Station s : favourites) {
+		for (Station s : favourites) {
 			mFavouritesList.add(s);
 		}
 		if (mFavouritesJList != null) {
@@ -130,12 +166,19 @@ public class StationsView implements StationsContract.View, ActionListener, List
 		mFavouritesJList.setModel(listModel);
 		mFavouritesJList.setSelectedIndex(-1);
 		mFavouritesJList.addListSelectionListener(this);
-	
+
 		Main.MainWindow.getInstance().getFavouritesScrollPane().setViewportView(mFavouritesJList);
 		Main.MainWindow.getInstance().getFavouritesScrollPane().revalidate();
 		Main.MainWindow.getInstance().getFavouritesScrollPane().repaint();
 	}
 
+	/**
+	 * Gets the application instance, resets the Observation panel and displays
+	 * data for the selected weather station.
+	 * 
+	 * @param station
+	 *            a weather station with observations to display.
+	 */
 	public void showObservationsUi(Station station) {
 		// Clear previous favourite listener upon selecting a new station.
 		if (Main.MainWindow.getInstance().getBtnFavourite().getActionListeners() != null) {
@@ -160,6 +203,12 @@ public class StationsView implements StationsContract.View, ActionListener, List
 		mObservationsView.onReady(station);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	@SuppressWarnings("unchecked")
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == mStatesComboList) {
@@ -167,27 +216,33 @@ public class StationsView implements StationsContract.View, ActionListener, List
 			String stateName = cb.getSelectedItem().toString();
 			// second argument false means load non-favourite stations
 			mActionsListener.loadStations(stateName, false, true);
-			
+
 		} else if (e.getSource() instanceof JButton) {
 			JButton btn = (JButton) e.getSource();
 			if (btn.getName().equals("refresh")) {
 				System.out.println("Refresh clicked");
-				
+
 			} else if (btn.getName().equals("add")) {
-				mActionsListener.addFavouriteStation(getSelectedStation());	
+				mActionsListener.addFavouriteStation(getSelectedStation());
 				mActionsListener.loadFavourites(true);
 				Main.MainWindow.getInstance().getFavouritesScrollPane().revalidate();
 				Main.MainWindow.getInstance().getFavouritesScrollPane().repaint();
-				
+
 			} else if (btn.getName().equals("remove")) {
-				mActionsListener.removeFavouriteStation(getSelectedStation());	
-				//mActionsListener.loadFavourites(true);
+				mActionsListener.removeFavouriteStation(getSelectedStation());
+				// mActionsListener.loadFavourites(true);
 			}
 
-			
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.
+	 * ListSelectionEvent)
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
@@ -202,9 +257,8 @@ public class StationsView implements StationsContract.View, ActionListener, List
 				this.setSelectedStation(thisStation);
 
 				mActionsListener.openObservations(mStationHashMap.get(stationName));
-			} 
-		}
-		else if (e.getSource() == mFavouritesJList) {
+			}
+		} else if (e.getSource() == mFavouritesJList) {
 			JList<Station> list = (JList<Station>) e.getSource();
 			Station thisStation = list.getSelectedValue();
 			this.setSelectedStation(thisStation);
@@ -213,6 +267,9 @@ public class StationsView implements StationsContract.View, ActionListener, List
 
 	}
 
+	/*
+	 * Getters and setters for class variables
+	 */
 	public Station getSelectedStation() {
 		return selectedStation;
 	}
@@ -220,11 +277,5 @@ public class StationsView implements StationsContract.View, ActionListener, List
 	public void setSelectedStation(Station selectedStation) {
 		this.selectedStation = selectedStation;
 	}
-
-
-
-
-
-
 
 }

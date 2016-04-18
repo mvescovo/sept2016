@@ -12,7 +12,8 @@ import application.Main;
 /**
  * Created by michael on 5/04/16.
  *
- * Observation entity.
+ * Observation entity containing all available properties populated with a call
+ * to the Australian Bureau of Meteorology JSON web service.
  */
 public class Observation {
 
@@ -34,8 +35,44 @@ public class Observation {
 	private String mGustKt;
 	private String mPressQnh;
 	private String mPressMsl;
-	
 
+	/**
+	 * Constructor for a weather observation with all properties.
+	 * 
+	 * @param airTemp
+	 * @param name
+	 * @param wmo
+	 * @param history_product
+	 * @param local_date_time
+	 * @param local_date_time_full
+	 * @param aifstime_utc
+	 * @param lat
+	 * @param lon
+	 * @param apparent_t
+	 * @param cloud
+	 * @param cloud_base_m
+	 * @param cloud_oktas
+	 * @param cloud_type
+	 * @param cloud_type_id
+	 * @param delta_t
+	 * @param gust_kmh
+	 * @param dewpt
+	 * @param press
+	 * @param press_msl
+	 * @param press_qnh
+	 * @param press_tend
+	 * @param rain_trace
+	 * @param rel_hum
+	 * @param sea_state
+	 * @param swell_dir_worded
+	 * @param swell_height
+	 * @param swell_period
+	 * @param vis_km
+	 * @param weather
+	 * @param wind_dir
+	 * @param wind_spd_kmh
+	 * @param wind_spd_kt
+	 */
 	public Observation(String airTemp, String name, String wmo, String history_product, String local_date_time,
 			String local_date_time_full, String aifstime_utc, String lat, String lon, String apparent_t, String cloud,
 			String cloud_base_m, String cloud_oktas, String cloud_type, String cloud_type_id, String delta_t,
@@ -61,9 +98,20 @@ public class Observation {
 		mPressQnh = press_qnh;
 		mPressMsl = press_msl;
 
-		
 	}
 
+	/**
+	 * Constructor for a weather observation with minimal properties.
+	 * 
+	 * @param id
+	 * @param name
+	 * @param dateTime
+	 * @param apparentTemp
+	 * @param cloud
+	 * @param airtemp
+	 * @param rain
+	 * @param humidity
+	 */
 	public Observation(String id, String name, String dateTime, String apparentTemp, String cloud, String airtemp,
 			String rain, String humidity) {
 		mId = id;
@@ -76,6 +124,12 @@ public class Observation {
 		mHumidity = humidity;
 	}
 
+	/**
+	 * Creates a vector for the observation's data including processing the date
+	 * string into a more human readable format.
+	 * 
+	 * @return a vector of observation properties
+	 */
 	public Vector<String> getObsVector() {
 		Vector<String> data = new Vector<String>();
 		SimpleDateFormat standardDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
@@ -107,14 +161,13 @@ public class Observation {
 		data.addElement(getmPressQnh());
 		data.addElement(getmPressMsl());
 		data.addElement(getmRain());
-		//data.addElement((getmCloud().equals("-")) ? "Clear" : getmCloud());
-		
-		
-		
 
 		return data;
 	}
 
+	/*
+	 * Getters and setters for the class.
+	 */
 	public String getmId() {
 		return mId;
 	}

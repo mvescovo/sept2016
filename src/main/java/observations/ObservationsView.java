@@ -29,10 +29,10 @@ import java.util.TimeZone;
 /**
  * Created by michael on 5/04/16.
  *
- * UI for the observations.
+ * User interface for the display of weather observation data for the selected
+ * Station.
  */
-public class ObservationsView implements ObservationsContract.View, ActionListener {
-	// TODO Kendall to modify as necessary - delete comment when done.
+public class ObservationsView implements ObservationsContract.View {
 
 	private ObservationsContract.UserActionsListener mActionsListener;
 	private JProgressBar mJProgressBar;
@@ -41,6 +41,11 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 	private JPanel mHeadPanel;
 	private JScrollPane tableScrollPane;
 
+	/**
+	 * Instantiates the view and adds, a progress bar, header panel (for the
+	 * title and latest weather data), and table panel and a chart of
+	 * temperature data.
+	 */
 	public ObservationsView() {
 		// Add a progress bar
 		mJProgressBar = new JProgressBar();
@@ -101,11 +106,12 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 
 	}
 
-	// Set the presenter for this view
-	public void setActionListener(ObservationsContract.UserActionsListener actionListener) {
-		mActionsListener = actionListener;
-	}
-
+	/**
+	 * Displays and hides the progress bar used while waiting for data
+	 * 
+	 * @param active
+	 *            true displays the progress bar and false hides it.
+	 */
 	public void setProgressBar(boolean active) {
 		if (active) {
 			Main.MainWindow.getInstance().getStationName().setVisible(false);
@@ -117,11 +123,24 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 		Main.MainWindow.getInstance().getObservationsPanel().repaint();
 	}
 
-	// When everything is initialised
+	/**
+	 * When the view has finished initalising load the observations from the
+	 * presenter.
+	 * 
+	 * @param station
+	 *            the selected weather station
+	 */
 	public void onReady(Station station) {
 		mActionsListener.loadObservations(station, false);
 	}
 
+	/**
+	 * Creates a header panel containing the selection station details and a
+	 * summary of the latest weather observation for that station.
+	 * 
+	 * @param obs
+	 *            a collection of observations for a weather station.
+	 */
 	public void showLatestObservation(Observation obs) {
 		// Update Station name
 		String stationTitle = obs.getmName() + " - " + obs.getmStateName();
@@ -195,7 +214,14 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 
 	}
 
-	public void showObservations(List<Observation> observations) {
+	/**
+	 * Create a table to display all observations and attributes and add it to
+	 * the table scroll pane.
+	 * 
+	 * @param observations
+	 *            a collection of observations for a weather station.
+	 */
+	public void showObservationTable(List<Observation> observations) {
 
 		// Table settings
 		String[] columnNames = { "Date Time", "Temp C" + Main.getSymboldegree(), "App Temp C" + Main.getSymboldegree(),
@@ -222,6 +248,13 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 
 	}
 
+	/**
+	 * Creates and displays a graph of temperatures for the selected weather
+	 * station. Uses JFreeChart to build the image.
+	 * 
+	 * @param observations
+	 *            a collection of observations for a weather station.
+	 */
 	public void showChart(List<Observation> observations) {
 
 		String chtTitle = observations.get(0).getmName() + " - Temperature observations";
@@ -275,10 +308,16 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 		Main.MainWindow.getInstance().getObservationsPanel().repaint();
 	}
 
-	public void actionPerformed(ActionEvent e) {
-
+	/*
+	 * Setter for this view's action listener.
+	 */
+	public void setActionListener(ObservationsContract.UserActionsListener actionListener) {
+		mActionsListener = actionListener;
 	}
 
+	/*
+	 * Getters and setters for the table scroll pane.
+	 */
 	public JScrollPane getTableScrollPane() {
 		return tableScrollPane;
 	}

@@ -30,7 +30,7 @@ public class ObservationsPresenter implements ObservationsContract.UserActionsLi
             public void onObservationsLoaded(List<Observation> observations) {
                 mView.setProgressBar(false);
                 mView.showLatestObservation(observations.get(0));
-                mView.showObservations(observations);
+                mView.showObservationTable(observations);
                 mView.showChart(observations);
             }
         });

@@ -15,9 +15,10 @@ import java.util.StringTokenizer;
 import java.util.prefs.Preferences;
 
 /**
- * Created by michael on 20/03/16.
+ * Start up the application - contains the main method and application constants.
+ * 
+ * @author michael, kendall
  *
- * Start up the app - contains the main method.
  */
 public class Main {
 
@@ -42,6 +43,10 @@ public class Main {
 	// Symbols
 	private static final String symbolDegree = "\u00b0";
 
+	/**
+	 * Creates and updates the Stations view on the event dispatch thread.
+	 * @param args Standard  command arguments for main()
+	 */
 	public static void main(String[] args) {
 		// Start the app on the event dispatch thread
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -56,15 +61,16 @@ public class Main {
 		});
 	}
 
-	/*
+	/**
 	 * Singleton class to create and show the main window for the app.
 	 *
 	 * This window is then used by other parts of the app to add and update
 	 * relevant GUI components.
+	 * 
+	 * @author michael, kendall
 	 *
 	 */
 	public static class MainWindow {
-		// TODO Kendall to modify as necessary - delete comment when done.
 
 		private volatile static MainWindow uniqueInstance;
 		private static Container container;
@@ -84,6 +90,11 @@ public class Main {
 		private JButton btnRefresh;
 		private JButton btnRemove;
 
+		/**
+		 * Creates the application's user interface window. Restores previous
+		 * settings and constructs the window's layout, containers and
+		 * components.
+		 */
 		private MainWindow() {
 			// Container frame for the main window
 
@@ -106,17 +117,15 @@ public class Main {
 			// add panel for menu and toolbar
 			JPanel menuPanel = new JPanel();
 			menuPanel.setLayout(new GridLayout(2, 1));
-			
+
 			// add menubar
 			createMenuBar();
-			
-			
+
 			// Add toolbar
 			createToolBar();
-		    menuPanel.add(menubar);
-		    menuPanel.add(toolbar);
-		    container.add(menuPanel, BorderLayout.NORTH);
-		    
+			menuPanel.add(menubar);
+			menuPanel.add(toolbar);
+			container.add(menuPanel, BorderLayout.NORTH);
 
 			// Stations panel - callable directly from stations view
 			createStationsPanel();
@@ -132,28 +141,37 @@ public class Main {
 
 		}
 
+		/**
+		 * Creates a new Toolbar object with action buttons to update the
+		 * observation and to add or remove the currently viewed station from
+		 * the favourites list. Updates the class's toolbar reference.
+		 */
 		private void createToolBar() {
 			toolbar = new JToolBar();
 			toolbar.setFloatable(false);
-			
-			
-		    btnRefresh = new JButton("Refresh");
-		    btnRefresh.setName("refresh");
-		    btnRefresh.setMargin(new Insets(10, 10, 10, 10));
-		    toolbar.add(btnRefresh);
-		    toolbar.addSeparator();
-		    btnFavourite = new JButton("Add to Favourites");
-		    btnFavourite.setMargin(new Insets(10, 10, 10, 10));
-		    btnFavourite.setName("add");
-		    toolbar.add(btnFavourite);
-		    btnRemove = new JButton("Remove from Favourites");
-		    btnRemove.setMargin(new Insets(10, 10, 10, 10));
-		    btnRemove.setName("remove");
-		    toolbar.add(btnRemove);
-		    toolbar.addSeparator();
-			
+
+			btnRefresh = new JButton("Refresh");
+			btnRefresh.setName("refresh");
+			btnRefresh.setMargin(new Insets(10, 10, 10, 10));
+			toolbar.add(btnRefresh);
+			toolbar.addSeparator();
+			btnFavourite = new JButton("Add to Favourites");
+			btnFavourite.setMargin(new Insets(10, 10, 10, 10));
+			btnFavourite.setName("add");
+			toolbar.add(btnFavourite);
+			btnRemove = new JButton("Remove from Favourites");
+			btnRemove.setMargin(new Insets(10, 10, 10, 10));
+			btnRemove.setName("remove");
+			toolbar.add(btnRemove);
+			toolbar.addSeparator();
+
 		}
 
+		/**
+		 * Instantiates a unique instance of the applications main window.
+		 * 
+		 * @return A MainWindow object instance.
+		 */
 		public static MainWindow getInstance() {
 			if (uniqueInstance == null) {
 				synchronized (MainWindow.class) {
@@ -165,19 +183,13 @@ public class Main {
 			return uniqueInstance;
 		}
 
-		public Container getContainer() {
-			return container;
-		}
-
-		public JPanel getStationsPanel() {
-			return stationsPanel;
-		}
-
-		public JPanel getObservationsPanel() {
-			return observationsPanel;
-		}
-
-		
+		/**
+		 * Creates a JPanel to display States and weather stations. It adds
+		 * labels, a favourite station scrollpane, a combo box for States and
+		 * another scrollpane for Stations (updated by selecting a State). Uses
+		 * a GridBag layout with constraints. Updates the class's stationsPanel
+		 * object. Called during UI build.
+		 */
 		private void createStationsPanel() {
 			stationsPanel = new JPanel();
 			stationsPanel.setLayout(new GridBagLayout());
@@ -226,6 +238,11 @@ public class Main {
 
 		}
 
+		/**
+		 * Creates a JPanel for weather observation data. Uses a GridBag layout
+		 * with constraints and adds the initial label to the panel. Updates the
+		 * class's observationsPanel object. Called during UI build.
+		 */
 		public void createObservationsPanel() {
 			observationsPanel = new JPanel();
 			observationsPanel.setLayout(new GridBagLayout());
@@ -246,14 +263,22 @@ public class Main {
 			container.add(observationsPanel, BorderLayout.CENTER);
 		}
 
+		/**
+		 * Resets the observation panel. Called when a user selects a different
+		 * weather station for viewing.
+		 * 
+		 */
 		public void clearObservationsPanel() {
 			if (observationsPanel != null) {
 				container.remove(observationsPanel);
 				createObservationsPanel();
 			}
 		}
-		
 
+		/**
+		 * Creates a JMenubar object and adds default menu items and actions.
+		 * Updates the class's menubar object. Called during UI build.
+		 */
 		public void createMenuBar() {
 			menubar = new JMenuBar();
 			JMenu menu, menuFav;
@@ -279,11 +304,8 @@ public class Main {
 		}
 
 		/**
-		 * Called when the program ends to try to save window bounds and current
-		 * directory to user's preferences, so they can be restored the next
-		 * time the program is run. Since this is not a critical function,
-		 * errors are ignored. If an error occurs, the data simply won't be
-		 * saved.
+		 * Saves the session's window settings to a node using the Java
+		 * Preferences API. Called on application end or any other time really.
 		 */
 		private static void savePreferences() {
 			try {
@@ -303,14 +325,15 @@ public class Main {
 				node.put("window.bounds", boundsString);
 
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 
 		/**
-		 * This method is called when the program starts to read and apply the
-		 * preferences that were saved the last time the program ran. Since this
-		 * is not a critical function, errors are ignored. If an error occurs,
-		 * preferences will simply not be restored.
+		 * Retrieve window settings from last session and apply them. Called at
+		 * application start. If not previous settings exist or an error occurs
+		 * the default settings will be used.
+		 * 
 		 */
 		private static void applyPreferences() {
 			try {
@@ -346,10 +369,13 @@ public class Main {
 		}
 
 		/**
-		 * A convenience method that breaks up a string into tokens, where the
-		 * tokens are substrings separated by specified delimiters. For example,
-		 * explode("ab,cde,f,ghij", ",") produces an array of the four
-		 * substrings "ab" "cde" "f" "ghi".
+		 * Helper method to tokenise a String.
+		 * 
+		 * @param str
+		 *            is the String to be tokenised.
+		 * @param separators
+		 *            is the token delimiter as a String
+		 * @return An array of String tokens.
 		 */
 		private static String[] explode(String str, String separators) {
 			StringTokenizer tokenizer = new StringTokenizer(str, separators);
@@ -358,6 +384,21 @@ public class Main {
 			for (int i = 0; i < ct; i++)
 				tokens[i] = tokenizer.nextToken();
 			return tokens;
+		}
+
+		/*
+		 * Getters and setters for UI components.
+		 */
+		public Container getContainer() {
+			return container;
+		}
+
+		public JPanel getStationsPanel() {
+			return stationsPanel;
+		}
+
+		public JPanel getObservationsPanel() {
+			return observationsPanel;
 		}
 
 		public JScrollPane getStationsScrollPane() {
@@ -387,7 +428,6 @@ public class Main {
 		public void setFavouritesScrollPane(JScrollPane favouritesScrollPane) {
 			MainWindow.favouritesScrollPane = favouritesScrollPane;
 		}
-
 
 		public JToolBar getToolbar() {
 			return toolbar;
@@ -423,6 +463,10 @@ public class Main {
 
 	}
 
+	/*
+	 * Getters for the application constants.
+	 *
+	 */
 	public static Font getFontnormalbold() {
 		return fontNormalBold;
 	}
