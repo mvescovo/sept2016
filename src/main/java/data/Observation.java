@@ -136,7 +136,6 @@ public class Observation {
 		try {
 			thisDate = standardDateFormat.parse(getmDateTime());
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

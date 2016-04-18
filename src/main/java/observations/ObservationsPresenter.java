@@ -29,9 +29,14 @@ public class ObservationsPresenter implements ObservationsContract.UserActionsLi
         mWeatherRepository.getObservations(station, new WeatherRepository.LoadObservationsCallback() {
             public void onObservationsLoaded(List<Observation> observations) {
                 mView.setProgressBar(false);
-                mView.showLatestObservation(observations.get(0));
-                mView.showObservationTable(observations);
-                mView.showChart(observations);
+                if(observations == null) {
+                	System.out.println("Cannot get data!");
+                } else {
+                    mView.showLatestObservation(observations.get(0));
+                    mView.showObservationTable(observations);
+                    mView.showChart(observations);
+                }
+
             }
         });
     }

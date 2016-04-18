@@ -48,6 +48,16 @@ public class Main {
 	 * @param args Standard  command arguments for main()
 	 */
 	public static void main(String[] args) {
+/*		try {
+			UIManager.setLookAndFeel(
+			        UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+
+		
 		// Start the app on the event dispatch thread
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -485,6 +495,14 @@ public class Main {
 
 	public static Font getFontnormal() {
 		return fontNormal;
+	}
+
+	public static Color getColorcontrast1() {
+		return colorContrast1;
+	}
+
+	public static Color getColorcontrast2() {
+		return colorContrast2;
 	}
 
 }

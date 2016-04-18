@@ -5,6 +5,9 @@ import data.Observation;
 import data.Station;
 
 import org.jfree.chart.*;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.time.*;
 import org.jfree.ui.*;
 
@@ -49,13 +52,14 @@ public class ObservationsView implements ObservationsContract.View {
 		GridBagConstraints cons = new GridBagConstraints();
 		cons.gridx = 0;
 		cons.gridy = 0;
-		cons.gridwidth = 2;
 		cons.fill = GridBagConstraints.BOTH;
 		cons.anchor = GridBagConstraints.CENTER;
 		Main.MainWindow.getInstance().getObservationsPanel().add(mJProgressBar, cons);
 
 		// add header panel
 		mHeadPanel = new JPanel();
+		cons.gridx = 0;
+		cons.gridy = 0;
 		cons.fill = GridBagConstraints.BOTH;
 		cons.anchor = GridBagConstraints.NORTHWEST;
 		cons.insets = new Insets(10, 10, 10, 10);
@@ -76,7 +80,6 @@ public class ObservationsView implements ObservationsContract.View {
 		cons.gridy = 1;
 		cons.weightx = 1;
 		cons.weighty = 0.5;
-		cons.gridwidth = 2;
 		cons.fill = GridBagConstraints.BOTH;
 		cons.anchor = GridBagConstraints.CENTER;
 		Main.MainWindow.getInstance().getObservationsPanel().add(mTablePanel, cons);
@@ -169,7 +172,6 @@ public class ObservationsView implements ObservationsContract.View {
 		try {
 			thisDate = standardDateFormat.parse(obs.getmDateTime());
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -189,7 +191,7 @@ public class ObservationsView implements ObservationsContract.View {
 		lblTemp.setFont(Main.getFonttitle());
 		headCons.gridx = 1;
 		headCons.gridy = 2;
-		headCons.weightx = 1;
+		headCons.weightx = 0;
 		headCons.weighty = 1;
 		headCons.gridheight = 2;
 		headCons.anchor = GridBagConstraints.EAST;
@@ -257,37 +259,91 @@ public class ObservationsView implements ObservationsContract.View {
 		String chtYAxisLabel = "Temperature " + Main.getSymboldegree() + "C";
 
 		TimeSeries seriesTemp = new TimeSeries("Temp");
-		// TimeSeries seriesMin = new TimeSeries("Min");
-		// TimeSeries seriesMax = new TimeSeries("Max");
+		TimeSeries seriesMin = new TimeSeries("Min");
+		TimeSeries seriesMax = new TimeSeries("Max");
 
-		double temp = 0.0;
+		double temp = Double.NaN;
+		double minTemp = Double.NaN;
+		double maxTemp = Double.NaN;
 		SimpleDateFormat standardDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
 
+		String previousDay = null;
+		Date minDate = null;
+		Date maxDate = null;
 		for (Observation obs : observations) {
 
+			// format the temperature
 			try {
 				temp = Double.parseDouble(obs.getmAirtemp());
 			} catch (NumberFormatException e) {
 				temp = 0.0;
 			}
 
+			// format the date
 			Date myDate = null;
+			String day = obs.getmDateTime().substring(0, 8);
+
 			try {
 				myDate = standardDateFormat.parse(obs.getmDateTime());
-
-				seriesTemp.addOrUpdate(new Hour(myDate), temp);
+				seriesTemp.addOrUpdate(new Minute(myDate), temp);
 
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 
+			if (previousDay == null) {
+				previousDay = day;
+			}
+
+			if (Double.isNaN(minTemp)) {
+				minTemp = temp;
+				minDate = myDate;
+			}
+			if (Double.isNaN(maxTemp)) {
+				maxTemp = temp;
+				maxDate = myDate;
+			}
+
+			if (day.equals(previousDay)) {
+				if (temp < minTemp) {
+					minTemp = temp;
+					minDate = myDate;
+				}
+				if (temp > maxTemp) {
+					maxTemp = temp;
+					maxDate = myDate;
+				}
+
+			} else {
+				seriesMin.addOrUpdate(new Minute(minDate), minTemp);
+				seriesMax.addOrUpdate(new Minute(maxDate), maxTemp);
+				minTemp = temp;
+				maxTemp = temp;
+			}
+			previousDay = day;
 		}
 
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(seriesTemp);
+		dataset.addSeries(seriesMin);
+		dataset.addSeries(seriesMax);
 
-		JFreeChart chart = ChartFactory.createTimeSeriesChart(chtTitle, chtXAxisLabel, chtYAxisLabel, dataset, false,
+		JFreeChart chart = ChartFactory.createTimeSeriesChart(chtTitle, chtXAxisLabel, chtYAxisLabel, dataset, true,
 				true, false);
+
+		XYPlot plot = (XYPlot) chart.getPlot();
+		XYItemRenderer r = plot.getRenderer();
+		if (r instanceof XYLineAndShapeRenderer) {
+			XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
+			renderer.setSeriesShapesVisible(1, true);
+			renderer.setSeriesShapesFilled(1, true);
+			renderer.setSeriesLinesVisible(1, false);
+			renderer.setSeriesShapesVisible(2, true);
+			renderer.setSeriesShapesFilled(2, true);
+			renderer.setSeriesLinesVisible(2, false);
+
+		}
+
 		chart.getTitle().setHorizontalAlignment(HorizontalAlignment.LEFT);
 		chart.getTitle().setFont(Main.getFontnormalbold());
 
