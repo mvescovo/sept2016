@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.Vector;
 
-import application.Main;
 
 /**
  * Created by michael on 5/04/16.

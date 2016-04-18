@@ -3,25 +3,19 @@ package observations;
 import application.Main;
 import data.Observation;
 import data.Station;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.data.time.Day;
-import org.jfree.data.time.Hour;
-import org.jfree.data.time.TimeSeries;
-import org.jfree.data.time.TimeSeriesCollection;
-import org.jfree.ui.HorizontalAlignment;
+
+import org.jfree.chart.*;
+import org.jfree.data.time.*;
+import org.jfree.ui.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;

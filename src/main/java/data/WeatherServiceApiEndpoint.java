@@ -2,15 +2,11 @@ package data;
 
 import com.google.gson.JsonArray;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
+import java.io.*;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import application.Main;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,20 +15,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Url;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+
+
 /**
  * Created by michael on 5/04/16.
  *
