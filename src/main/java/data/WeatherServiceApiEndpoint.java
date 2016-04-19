@@ -1,12 +1,8 @@
 package data;
 
 import com.google.gson.JsonArray;
-
-import java.io.*;
-
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -15,6 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Url;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -117,7 +114,7 @@ class WeatherServiceApiEndpoint {
 
     // Get observations from the BOM
     @SuppressWarnings("rawtypes")
-	static void getObservations(Station station, final WeatherServiceApi.WeatherServiceCallback callback) {
+	static void getObservations(final Station station, final WeatherServiceApi.WeatherServiceCallback callback) {
         final List<Observation> observations = new ArrayList<Observation>();
 
         Retrofit retrofit = new Retrofit.Builder()

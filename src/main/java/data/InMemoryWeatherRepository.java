@@ -81,7 +81,6 @@ class InMemoryWeatherRepository implements WeatherRepository {
         mCachedObservations.clear();
     }
 
-	@Override
 	public void getFavourites(final LoadFavouritesCallback callback) {
 		 checkNotNull(callback);
 	        if (mCachedFavourites == null) {
@@ -94,7 +93,7 @@ class InMemoryWeatherRepository implements WeatherRepository {
 	        } else {
 	            callback.onFavouritesLoaded(mCachedFavourites);
 	        }
-		
+
 	}
 
 
