@@ -349,11 +349,6 @@ public class ObservationsView implements ObservationsContract.View {
 
 		
 		XYPlot plot = (XYPlot) chart.getPlot();
-/*		NumberAxis axis2 = new NumberAxis("Temperature");
-	     axis2.setLabelFont(plot.getDomainAxis().getLabelFont());
-	     axis2.setAutoRangeIncludesZero(true);
-	     plot.setRangeAxis(1, axis2);
-	     plot.mapDatasetToRangeAxis(1, 1);*/
 		
 		XYItemRenderer r = plot.getRenderer();
 		if (r instanceof XYLineAndShapeRenderer) {
