@@ -80,6 +80,7 @@ public class Observation {
 			String swell_period, String vis_km, String weather, String wind_dir, String wind_spd_kmh,
 			String wind_spd_kt) {
 
+		mId = 
 		mAirtemp = airTemp;
 		mName = name;
 		mDateTime = local_date_time_full;

@@ -184,8 +184,8 @@ class WeatherServiceApiEndpoint {
                         if (!dataArray.get(i).getAsJsonObject().get("name").isJsonNull()) {
                             name = dataArray.get(i).getAsJsonObject().get("name").getAsString();
                         }
-                        if (!dataArray.get(i).getAsJsonObject().get("local_date_time").isJsonNull()) {
-                            date = dataArray.get(i).getAsJsonObject().get("local_date_time").getAsString();
+                        if (!dataArray.get(i).getAsJsonObject().get("local_date_time_full").isJsonNull()) {
+                            date = dataArray.get(i).getAsJsonObject().get("local_date_time_full").getAsString();
                         }
                         if (!dataArray.get(i).getAsJsonObject().get("air_temp").isJsonNull()) {
                             air_temp = dataArray.get(i).getAsJsonObject().get("air_temp").getAsString();

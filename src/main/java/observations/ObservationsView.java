@@ -5,9 +5,13 @@ import data.Observation;
 import data.Station;
 
 import org.jfree.chart.*;
+import org.jfree.chart.axis.Axis;
+import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.general.SeriesException;
 import org.jfree.data.time.*;
 import org.jfree.ui.*;
 
@@ -17,7 +21,7 @@ import java.awt.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -128,7 +132,7 @@ public class ObservationsView implements ObservationsContract.View {
 	 *            the selected weather station
 	 */
 	public void onReady(Station station) {
-		mActionsListener.loadObservations(station, false);
+		mActionsListener.loadObservations(station, true);
 	}
 
 	/**
@@ -252,26 +256,30 @@ public class ObservationsView implements ObservationsContract.View {
 	 *            a collection of observations for a weather station.
 	 */
 	public void showChart(List<Observation> observations) {
-
+		System.out.println(observations.get(0).getmDateTime());
 		String chtTitle = observations.get(0).getmName() + " - Temperature observations";
 
 		String chtXAxisLabel = "Date and time";
 		String chtYAxisLabel = "Temperature " + Main.getSymboldegree() + "C";
 
-		TimeSeries seriesTemp = new TimeSeries("Temp");
-		TimeSeries seriesMin = new TimeSeries("Min");
-		TimeSeries seriesMax = new TimeSeries("Max");
+		TimeSeries seriesTemp = new TimeSeries("Temp", Minute.class);
+		TimeSeries seriesMin = new TimeSeries("Min", Minute.class);
+		TimeSeries seriesMax = new TimeSeries("Max", Minute.class);
 
 		double temp = Double.NaN;
 		double minTemp = Double.NaN;
 		double maxTemp = Double.NaN;
+		List<String> dates = new ArrayList<String>();
 		SimpleDateFormat standardDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
 
 		String previousDay = null;
 		Date minDate = null;
 		Date maxDate = null;
 		for (Observation obs : observations) {
-
+			if(dates.contains(obs.getmDateTime())) {
+				continue;
+			}
+			dates.add(obs.getmDateTime());
 			// format the temperature
 			try {
 				temp = Double.parseDouble(obs.getmAirtemp());
@@ -285,12 +293,17 @@ public class ObservationsView implements ObservationsContract.View {
 
 			try {
 				myDate = standardDateFormat.parse(obs.getmDateTime());
-				seriesTemp.addOrUpdate(new Minute(myDate), temp);
-
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 
+			try {
+			//System.out.println(myDate);
+			seriesTemp.addOrUpdate(new Minute(myDate), temp);
+			} catch (SeriesException e) {
+				e.printStackTrace();
+				System.out.println(myDate);
+			}
 			if (previousDay == null) {
 				previousDay = day;
 			}
@@ -317,11 +330,14 @@ public class ObservationsView implements ObservationsContract.View {
 			} else {
 				seriesMin.addOrUpdate(new Minute(minDate), minTemp);
 				seriesMax.addOrUpdate(new Minute(maxDate), maxTemp);
-				minTemp = temp;
-				maxTemp = temp;
+				minDate = null;
+				maxDate = null;
+				minTemp = Double.NaN;
+				maxTemp = Double.NaN;
 			}
 			previousDay = day;
 		}
+
 
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(seriesTemp);
@@ -331,7 +347,14 @@ public class ObservationsView implements ObservationsContract.View {
 		JFreeChart chart = ChartFactory.createTimeSeriesChart(chtTitle, chtXAxisLabel, chtYAxisLabel, dataset, true,
 				true, false);
 
+		
 		XYPlot plot = (XYPlot) chart.getPlot();
+/*		NumberAxis axis2 = new NumberAxis("Temperature");
+	     axis2.setLabelFont(plot.getDomainAxis().getLabelFont());
+	     axis2.setAutoRangeIncludesZero(true);
+	     plot.setRangeAxis(1, axis2);
+	     plot.mapDatasetToRangeAxis(1, 1);*/
+		
 		XYItemRenderer r = plot.getRenderer();
 		if (r instanceof XYLineAndShapeRenderer) {
 			XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
@@ -351,6 +374,9 @@ public class ObservationsView implements ObservationsContract.View {
 		chart.getXYPlot().getDomainAxis().setLabelFont(Main.getFontsmall());
 		chart.getXYPlot().getRangeAxis().setLabelFont(Main.getFontsmall());
 
+		 DateAxis axis = (DateAxis) plot.getDomainAxis();
+		 axis.setDateFormatOverride(new SimpleDateFormat("hh:mm a dd-MM-yy"));
+		
 		ChartPanel chartPanel = new ChartPanel(chart);
 
 		mChartPanel.add(chartPanel, BorderLayout.CENTER);

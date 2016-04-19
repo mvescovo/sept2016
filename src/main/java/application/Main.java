@@ -34,10 +34,10 @@ public class Main {
 	private static final Font fontNormalBold = new Font(fontFamily, Font.BOLD, 14);
 
 	// colors
-	private static final Color colorDark = new Color(50, 50, 50);
-	private static final Color colorLight = new Color(250, 250, 250);
+	private static final Color colorDark = new Color(112, 112, 114);
+	private static final Color colorLight = new Color(241, 239, 226);
 	private static final Color colorWhite = new Color(255, 255, 255);
-	private static final Color colorContrast1 = new Color(119, 60, 31);
+	private static final Color colorContrast1 = new Color(32, 107, 164);
 	private static final Color colorContrast2 = new Color(119, 98, 31);
 
 	// Symbols
@@ -126,15 +126,23 @@ public class Main {
 
 			// add panel for menu and toolbar
 			JPanel menuPanel = new JPanel();
-			menuPanel.setLayout(new GridLayout(2, 1));
-
+			menuPanel.setLayout(new GridBagLayout());
+			menuPanel.setBackground(colorDark);
+			GridBagConstraints menuCons = new GridBagConstraints();
+			menuCons.gridx = 0;
+			menuCons.gridy = 0;
+			menuCons.weightx = 1;
+			menuCons.anchor = GridBagConstraints.WEST;
+			menuCons.fill = GridBagConstraints.HORIZONTAL;
 			// add menubar
 			createMenuBar();
 
 			// Add toolbar
 			createToolBar();
-			menuPanel.add(menubar);
-			menuPanel.add(toolbar);
+			menuPanel.add(menubar, menuCons);
+			menuCons.gridy = 1;
+
+			menuPanel.add(toolbar, menuCons);
 			container.add(menuPanel, BorderLayout.NORTH);
 
 			// Stations panel - callable directly from stations view
@@ -159,7 +167,8 @@ public class Main {
 		private void createToolBar() {
 			toolbar = new JToolBar();
 			toolbar.setFloatable(false);
-
+			toolbar.setBackground(colorDark);
+			toolbar.setBorder(null);
 			btnRefresh = new JButton("Refresh");
 			btnRefresh.setName("refresh");
 			btnRefresh.setMargin(new Insets(10, 10, 10, 10));
@@ -220,7 +229,7 @@ public class Main {
 			stationsPanel.add(favlabel, stationCons);
 
 			stationCons.gridy = 1;
-			stationCons.weighty = 0.5;
+			stationCons.weighty = 0;
 			stationCons.insets = new Insets(0, 10, 10, 10);
 			favouritesScrollPane = new JScrollPane();
 			stationsPanel.add(favouritesScrollPane, stationCons);
