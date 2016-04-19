@@ -59,6 +59,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
      * @param actionListener
      *            The contract for available user actions
      */
+    @Override
     public void setActionListener(StationsContract.UserActionsListener actionListener) {
         mActionsListener = actionListener;
     }
@@ -69,6 +70,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
      * @param active
      *            when true the progress bar is visible. Not visible otherwise.
      */
+    @Override
     public void setProgressBar(final boolean active) {
         if (active) {
             mJProgressBar.setVisible(true);
@@ -81,6 +83,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
      * When the app initialisation has completed, get the states and favourites
      * collections and force an update.
      */
+    @Override
     public void onReady() {
         mActionsListener.loadStates(false);
         mActionsListener.loadFavourites(false);
@@ -92,6 +95,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
      * @param states
      *            collection of states to display.
      */
+    @Override
     public void showStates(List<State> states) {
 
         mStatesComboList = new JComboBox<State>();
@@ -119,6 +123,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
      * @param stations
      *            a collection of Station objects.
      */
+    @Override
     public void showStations(List<Station> stations) {
         mStationHashMap.clear();
         for (int i = 0; i < stations.size(); i++) {
@@ -150,6 +155,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
      * @param favourites
      *            A collection of weather stations.
      */
+    @Override
     public void showFavourites(List<Station> favourites) {
         mFavouritesList = favourites;
 //        mFavouritesList.clear();
@@ -181,6 +187,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
      * @param station
      *            a weather station with observations to display.
      */
+    @Override
     public void showObservationsUi(Station station) {
         // Clear previous favourite listener upon selecting a new station.
         if (Main.MainWindow.getInstance().getBtnFavourite().getActionListeners() != null) {
@@ -211,6 +218,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     @SuppressWarnings("unchecked")
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == mStatesComboList) {
             JComboBox<State> cb = (JComboBox<State>) e.getSource();
@@ -266,11 +274,11 @@ public class StationsView implements StationsContract.View, ActionListener, List
     /*
      * Getters and setters for class variables
      */
-    public Station getSelectedStation() {
+    private Station getSelectedStation() {
         return mSelectedStation;
     }
 
-    public void setSelectedStation(Station selectedStation) {
+    private void setSelectedStation(Station selectedStation) {
         mSelectedStation = selectedStation;
     }
 

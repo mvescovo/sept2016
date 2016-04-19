@@ -22,6 +22,7 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
         mView = view;
     }
 
+    @Override
     public void loadStates(final boolean forceUpdate) {
         mView.setProgressBar(true);
         if (forceUpdate) {
@@ -35,6 +36,7 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
         });
     }
 
+    @Override
     public void loadStations(String stateName, boolean favourite, boolean forceUpdate) {
         mView.setProgressBar(true);
         if (forceUpdate) {
@@ -48,16 +50,17 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
         });
     }
 
-    
+    @Override
     public void addFavouriteStation(Station favourite) {
         mWeatherRepository.saveFavouriteStation(favourite);
     }
 
+    @Override
     public void openObservations(Station station) {
         mView.showObservationsUi(station);
     }
 
-    
+    @Override
 	public void loadFavourites(boolean forceUpdate) {
         if (forceUpdate) {
             mWeatherRepository.refreshFavouriteStations();
@@ -70,6 +73,7 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
 		});
 	}
 
+    @Override
 	public void removeFavouriteStation(Station favourite) {
 		mWeatherRepository.removeFavouriteStation(favourite);
 	}

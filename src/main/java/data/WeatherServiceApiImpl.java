@@ -11,52 +11,45 @@ import java.util.List;
  */
 public class WeatherServiceApiImpl implements WeatherServiceApi {
 
-	/*
-	 * Get data from WeatherServiceApiEndpoint
-	 */
-	private static final List<State> STATES_SERVICE_DATA = WeatherServiceApiEndpoint.loadPersistedStates();
-	private static final HashMap<String, List<Station>> STATIONS_SERVICE_DATA = WeatherServiceApiEndpoint.loadPersistedStations(false);
-//	private static final List<Station> FAVOURITE_STATIONS_SERVICE_DATA = WeatherServiceApiEndpoint.getFavouriteStations();
+    /*
+     * Get data from WeatherServiceApiEndpoint
+     */
+    private static final List<State> STATES_SERVICE_DATA = WeatherServiceApiEndpoint.loadPersistedStates();
+    private static final HashMap<String, List<Station>> STATIONS_SERVICE_DATA = WeatherServiceApiEndpoint.loadPersistedStations();
 
-	public void getStates(WeatherServiceCallback<List<State>> callback) {
-		List<State> states = new ArrayList<State>(STATES_SERVICE_DATA);
-		callback.onLoaded(states);
-	}
+    public void getStates(WeatherServiceCallback<List<State>> callback) {
+        List<State> states = new ArrayList<State>(STATES_SERVICE_DATA);
+        callback.onLoaded(states);
+    }
 
-	public void getStations(boolean favourite, WeatherServiceCallback<HashMap<String, List<Station>>> callback) {
-		if (favourite) {
-			/*
-			 * HashMap<String,List<Station>> stations = new HashMap<String,
-			 * List<Station>>(FAVOURITE_STATIONS_SERVICE_DATA);
-			 * callback.onLoaded(stations);
-			 */
-		} else {
-			HashMap<String, List<Station>> stations = new HashMap<String, List<Station>>(STATIONS_SERVICE_DATA);
-			callback.onLoaded(stations);
-		}
-	}
+    @Override
+    public void getStations(WeatherServiceCallback<HashMap<String, List<Station>>> callback) {
+        HashMap<String, List<Station>> stations = new HashMap<String, List<Station>>(STATIONS_SERVICE_DATA);
+        callback.onLoaded(stations);
+    }
 
-	public void getObservations(Station station, final WeatherServiceCallback<List<Observation>> callback) {
-		WeatherServiceApiEndpoint.getObservations(station,
-				new WeatherServiceApi.WeatherServiceCallback<List<Observation>>() {
-					public void onLoaded(List<Observation> data) {
-						callback.onLoaded(data);
-					}
-				});
-	}
+    @Override
+    public void getObservations(Station station, final WeatherServiceCallback<List<Observation>> callback) {
+        WeatherServiceApiEndpoint.getObservations(station, new WeatherServiceApi.WeatherServiceCallback<List<Observation>>() {
+            public void onLoaded(List<Observation> data) {
+                callback.onLoaded(data);
+            }
+        });
+    }
 
-	public void saveFavouriteStation(Station favourite) {
-		WeatherServiceApiEndpoint.saveFavouriteStation(favourite);
-	}
+    @Override
+    public void saveFavouriteStation(Station favourite) {
+        WeatherServiceApiEndpoint.saveFavouriteStation(favourite);
+    }
 
-	public void getFavourites(WeatherServiceCallback<List<Station>> callback) {
-//		List<Station> favourites = new ArrayList<Station>(FAVOURITE_STATIONS_SERVICE_DATA);
-		callback.onLoaded(WeatherServiceApiEndpoint.getFavourites());
-	}
+    @Override
+    public void getFavouriteStations(WeatherServiceCallback<List<Station>> callback) {
+        callback.onLoaded(WeatherServiceApiEndpoint.getFavourites());
+    }
 
-	public void removeFavouriteStation(Station favourite) {
-		WeatherServiceApiEndpoint.removeFavouriteStation(favourite);
-
-	}
+    @Override
+    public void removeFavouriteStation(Station favourite) {
+        WeatherServiceApiEndpoint.removeFavouriteStation(favourite);
+    }
 
 }

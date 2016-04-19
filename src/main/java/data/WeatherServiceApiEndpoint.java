@@ -45,7 +45,7 @@ class WeatherServiceApiEndpoint {
     }
 
     // Get stations from file
-    static HashMap<String,List<Station>> loadPersistedStations(boolean favourite) {
+    static HashMap<String,List<Station>> loadPersistedStations() {
 
         // TODO Steve. Modify to also return favourite stations if favourite is true.
         // First implement saving of favourites in other method below.
@@ -341,7 +341,7 @@ class WeatherServiceApiEndpoint {
 			return restoredFavs;
 	    }
 
-	public static void removeFavouriteStation(Station favourite) {
+	static void removeFavouriteStation(Station favourite) {
 		List<Station> list = getFavourites();
 
 		if (list.contains(favourite)) {

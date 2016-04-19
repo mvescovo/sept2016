@@ -109,6 +109,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 	 * @param active
 	 *            true displays the progress bar and false hides it.
 	 */
+    @Override
 	public void setProgressBar(boolean active) {
 		if (active) {
 			Main.MainWindow.getInstance().getStationName().setVisible(false);
@@ -127,6 +128,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 	 * @param station
 	 *            the selected weather station
 	 */
+    @Override
 	public void onReady(Station station) {
         mStation = station;
 		mActionsListener.loadObservations(mStation, false);
@@ -139,6 +141,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 	 * @param obs
 	 *            a collection of observations for a weather station.
 	 */
+    @Override
 	public void showLatestObservation(Observation obs) {
 		// Update Station name
 		String stationTitle = obs.getmName() + " - " + obs.getmStateName();
@@ -218,6 +221,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 	 * @param observations
 	 *            a collection of observations for a weather station.
 	 */
+    @Override
 	public void showObservationTable(List<Observation> observations) {
 
 		// Table settings
@@ -252,6 +256,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 	 * @param observations
 	 *            a collection of observations for a weather station.
 	 */
+    @Override
 	public void showChart(List<Observation> observations) {
 		System.out.println(observations.get(0).getmDateTime());
 		String chtTitle = observations.get(0).getmName() + " - Temperature observations";
@@ -384,19 +389,9 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 	/*
 	 * Setter for this view's action listener.
 	 */
+    @Override
 	public void setActionListener(ObservationsContract.UserActionsListener actionListener) {
 		mActionsListener = actionListener;
-	}
-
-	/*
-	 * Getters and setters for the table scroll pane.
-	 */
-	public JScrollPane getTableScrollPane() {
-		return mTableScrollPane;
-	}
-
-	public void setTableScrollPane(JScrollPane tableScrollPane) {
-		this.mTableScrollPane = tableScrollPane;
 	}
 
     @Override
@@ -409,6 +404,17 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
             }
         }
     }
+
+	/*
+	 * Getters and setters for the table scroll pane.
+	 */
+	private JScrollPane getTableScrollPane() {
+		return mTableScrollPane;
+	}
+
+	private void setTableScrollPane(JScrollPane tableScrollPane) {
+		this.mTableScrollPane = tableScrollPane;
+	}
 
     // Refresh needs to recreate this. Otherwise it overwrites.
     private void recreateHeadPanel() {
@@ -429,4 +435,5 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         cons.insets = new Insets(10, 10, 10, 10);
         Main.MainWindow.getInstance().getObservationsPanel().add(mHeadPanel, cons);
     }
+
 }

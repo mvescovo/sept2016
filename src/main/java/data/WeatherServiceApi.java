@@ -16,13 +16,14 @@ interface WeatherServiceApi {
 
     void getStates(WeatherServiceCallback<List<State>> callback);
 
-    void getStations(boolean favourite, WeatherServiceCallback<HashMap<String,List<Station>>> callback);
+    void getStations(WeatherServiceCallback<HashMap<String, List<Station>>> callback);
 
-    void getObservations(Station station, WeatherServiceCallback<List<Observation>> callback);
+    void getFavouriteStations(WeatherServiceCallback<List<Station>> callback);
 
     void saveFavouriteStation(Station favourite);
 
-    void getFavourites(WeatherServiceCallback<List<Station>> callback);
+    void removeFavouriteStation(Station favourite);
 
-	void removeFavouriteStation(Station favourite);
+    void getObservations(Station station, WeatherServiceCallback<List<Observation>> callback);
+
 }

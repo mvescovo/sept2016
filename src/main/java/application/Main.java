@@ -2,6 +2,7 @@ package application;
 
 import data.WeatherRepositories;
 import data.WeatherServiceApiImpl;
+import stations.StationsContract;
 import stations.StationsPresenter;
 import stations.StationsView;
 
@@ -62,9 +63,8 @@ public class Main {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				// Show the Weather stations
-				StationsView stationsView = new StationsView();
-				StationsPresenter stationsPresenter = new StationsPresenter(
-						WeatherRepositories.getInMemoryRepoInstance(new WeatherServiceApiImpl()), stationsView);
+				StationsContract.View stationsView = new StationsView();
+				StationsContract.UserActionsListener stationsPresenter = new StationsPresenter(WeatherRepositories.getInMemoryRepoInstance(new WeatherServiceApiImpl()), stationsView);
 				stationsView.setActionListener(stationsPresenter);
 				stationsView.onReady();
 			}

@@ -21,6 +21,7 @@ public class ObservationsPresenter implements ObservationsContract.UserActionsLi
         mView = view;
     }
 
+    @Override
     public void loadObservations(Station station, boolean forceUpdate) {
         mView.setProgressBar(true);
         if (forceUpdate) {
