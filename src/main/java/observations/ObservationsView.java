@@ -3,29 +3,28 @@ package observations;
 import application.Main;
 import data.Observation;
 import data.Station;
-
-import org.jfree.chart.*;
-import org.jfree.chart.axis.Axis;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
-import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.general.SeriesException;
-import org.jfree.data.time.*;
-import org.jfree.ui.*;
+import org.jfree.data.time.Minute;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.ui.HorizontalAlignment;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * Created by michael on 5/04/16.
@@ -33,14 +32,15 @@ import java.util.TimeZone;
  * User interface for the display of weather observation data for the selected
  * Station.
  */
-public class ObservationsView implements ObservationsContract.View {
+public class ObservationsView implements ObservationsContract.View, ActionListener {
 
 	private ObservationsContract.UserActionsListener mActionsListener;
 	private JProgressBar mJProgressBar;
 	private JPanel mTablePanel;
 	private JPanel mChartPanel;
 	private JPanel mHeadPanel;
-	private JScrollPane tableScrollPane;
+	private JScrollPane mTableScrollPane;
+    private Station mStation;
 
 	/**
 	 * Instantiates the view and adds, a progress bar, header panel (for the
@@ -48,7 +48,7 @@ public class ObservationsView implements ObservationsContract.View {
 	 * temperature data.
 	 */
 	public ObservationsView() {
-		// Add a progress bar
+        // Add a progress bar
 		mJProgressBar = new JProgressBar();
 		mJProgressBar.setIndeterminate(true);
 		mJProgressBar.setVisible(false);
@@ -61,15 +61,9 @@ public class ObservationsView implements ObservationsContract.View {
 		Main.MainWindow.getInstance().getObservationsPanel().add(mJProgressBar, cons);
 
 		// add header panel
-		mHeadPanel = new JPanel();
-		cons.gridx = 0;
-		cons.gridy = 0;
-		cons.fill = GridBagConstraints.BOTH;
-		cons.anchor = GridBagConstraints.NORTHWEST;
-		cons.insets = new Insets(10, 10, 10, 10);
-		Main.MainWindow.getInstance().getObservationsPanel().add(mHeadPanel, cons);
+		createHeaderPanel();
 
-		// Add table panel
+        // Add table panel
 		mTablePanel = new JPanel();
 		mTablePanel.setLayout(new GridBagLayout());
 		mTablePanel.setBackground(Main.MainWindow.getInstance().getObservationsPanel().getBackground());
@@ -88,12 +82,12 @@ public class ObservationsView implements ObservationsContract.View {
 		cons.anchor = GridBagConstraints.CENTER;
 		Main.MainWindow.getInstance().getObservationsPanel().add(mTablePanel, cons);
 
-		tableScrollPane = new JScrollPane();
+		mTableScrollPane = new JScrollPane();
 		tableCons.gridy = 1;
 		tableCons.weighty = 1;
 		tableCons.weightx = 1;
 		tableCons.fill = GridBagConstraints.BOTH;
-		mTablePanel.add(tableScrollPane, tableCons);
+		mTablePanel.add(mTableScrollPane, tableCons);
 
 		// Add chart panel
 		mChartPanel = new JPanel();
@@ -105,6 +99,8 @@ public class ObservationsView implements ObservationsContract.View {
 		cons.weighty = 0.5;
 		Main.MainWindow.getInstance().getObservationsPanel().add(mChartPanel, cons);
 
+		// Set refresh button listener
+		Main.MainWindow.getInstance().getBtnRefresh().addActionListener(this);
 	}
 
 	/**
@@ -132,7 +128,8 @@ public class ObservationsView implements ObservationsContract.View {
 	 *            the selected weather station
 	 */
 	public void onReady(Station station) {
-		mActionsListener.loadObservations(station, true);
+        mStation = station;
+		mActionsListener.loadObservations(mStation, false);
 	}
 
 	/**
@@ -240,7 +237,7 @@ public class ObservationsView implements ObservationsContract.View {
 		table.setFont(Main.getFontsmall());
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.getColumn("Date Time").setPreferredWidth(160);
-		tableScrollPane.setViewportView(table);
+		mTableScrollPane.setViewportView(table);
 
 		// set component visibilities
 		// Main.MainWindow.getInstance().getToolbar().get.setVisible(true);
@@ -390,11 +387,41 @@ public class ObservationsView implements ObservationsContract.View {
 	 * Getters and setters for the table scroll pane.
 	 */
 	public JScrollPane getTableScrollPane() {
-		return tableScrollPane;
+		return mTableScrollPane;
 	}
 
 	public void setTableScrollPane(JScrollPane tableScrollPane) {
-		this.tableScrollPane = tableScrollPane;
+		this.mTableScrollPane = tableScrollPane;
 	}
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() instanceof JButton) {
+            JButton btn = (JButton) e.getSource();
+            if (btn.getName().equals("refresh")) {
+                recreateHeadPanel();
+                mActionsListener.loadObservations(mStation, true);
+            }
+        }
+    }
+    
+    // Refresh needs to recreate this. Otherwise it overwrites.
+    private void recreateHeadPanel() {
+        if (mHeadPanel != null) {
+            Main.MainWindow.getInstance().getObservationsPanel().remove(mHeadPanel);
+            createHeaderPanel();
+        }
+    }
+
+    private void createHeaderPanel() {
+        // add header panel
+        mHeadPanel = new JPanel();
+        GridBagConstraints cons = new GridBagConstraints();
+        cons.gridx = 0;
+        cons.gridy = 0;
+        cons.fill = GridBagConstraints.BOTH;
+        cons.anchor = GridBagConstraints.NORTHWEST;
+        cons.insets = new Insets(10, 10, 10, 10);
+        Main.MainWindow.getInstance().getObservationsPanel().add(mHeadPanel, cons);
+    }
 }
