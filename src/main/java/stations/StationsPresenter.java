@@ -25,7 +25,7 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
     public void loadStates(final boolean forceUpdate) {
         mView.setProgressBar(true);
         if (forceUpdate) {
-            mWeatherRepository.refreshData();
+            mWeatherRepository.refreshStates();
         }
         mWeatherRepository.getStates(new WeatherRepository.LoadStatesCallback() {
             public void onStatesLoaded(List<State> states) {
@@ -38,7 +38,7 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
     public void loadStations(String stateName, boolean favourite, boolean forceUpdate) {
         mView.setProgressBar(true);
         if (forceUpdate) {
-            mWeatherRepository.refreshData();
+            mWeatherRepository.refreshStations();
         }
         mWeatherRepository.getStations(stateName, favourite, new WeatherRepository.LoadStationsCallback() {
             public void onStationsLoaded(List<Station> stations) {
@@ -51,7 +51,6 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
     
     public void addFavouriteStation(Station favourite) {
         mWeatherRepository.saveFavouriteStation(favourite);
-        
     }
 
     public void openObservations(Station station) {
@@ -61,23 +60,18 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
     
 	public void loadFavourites(boolean forceUpdate) {
         if (forceUpdate) {
-            mWeatherRepository.refreshData();
+            mWeatherRepository.refreshFavouriteStations();
         }
-		mWeatherRepository.getFavourites( new WeatherRepository.LoadFavouritesCallback() {
+		mWeatherRepository.getFavouriteStations(new WeatherRepository.LoadFavouritesCallback() {
 			@Override
 			public void onFavouritesLoaded(List<Station> favourites) {
 				mView.showFavourites(favourites);
-				
-				
 			}
 		});
 	}
 
 	public void removeFavouriteStation(Station favourite) {
 		mWeatherRepository.removeFavouriteStation(favourite);
-		
 	}
-
-
 
 }

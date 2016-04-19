@@ -24,7 +24,7 @@ public class ObservationsPresenter implements ObservationsContract.UserActionsLi
     public void loadObservations(Station station, boolean forceUpdate) {
         mView.setProgressBar(true);
         if (forceUpdate) {
-            mWeatherRepository.refreshData();
+            mWeatherRepository.refreshObservations();
         }
         mWeatherRepository.getObservations(station, new WeatherRepository.LoadObservationsCallback() {
             public void onObservationsLoaded(List<Observation> observations) {

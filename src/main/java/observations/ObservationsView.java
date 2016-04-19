@@ -409,7 +409,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
             }
         }
     }
-    
+
     // Refresh needs to recreate this. Otherwise it overwrites.
     private void recreateHeadPanel() {
         if (mHeadPanel != null) {

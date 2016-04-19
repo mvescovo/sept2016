@@ -17,8 +17,8 @@ class InMemoryWeatherRepository implements WeatherRepository {
     private final WeatherServiceApi mWeatherServiceApi;
     private List<State> mCachedStates;
     private HashMap<String,List<Station>> mCachedStations;
+    private List<Station> mCachedFavouriteStations;
     private HashMap<Station,List<Observation>> mCachedObservations = new HashMap<Station, List<Observation>>();
-    private List<Station> mCachedFavourites;
 
     InMemoryWeatherRepository(WeatherServiceApi weatherServiceApi) {
         mWeatherServiceApi = checkNotNull(weatherServiceApi);
@@ -75,33 +75,44 @@ class InMemoryWeatherRepository implements WeatherRepository {
         mWeatherServiceApi.saveFavouriteStation(favourite);
     }
 
-    public void refreshData() {
-        mCachedStates = null;
-        mCachedStations = null;
-        mCachedObservations.clear();
+    public void getFavouriteStations(final LoadFavouritesCallback callback) {
+        checkNotNull(callback);
+        if (mCachedFavouriteStations == null) {
+            mWeatherServiceApi.getFavourites(new WeatherServiceApi.WeatherServiceCallback<List<Station>>() {
+                public void onLoaded(List<Station> data) {
+                    mCachedFavouriteStations = ImmutableList.copyOf(data);
+                    callback.onFavouritesLoaded(mCachedFavouriteStations);
+                }
+            });
+        } else {
+            callback.onFavouritesLoaded(mCachedFavouriteStations);
+        }
+
     }
 
-	public void getFavourites(final LoadFavouritesCallback callback) {
-		 checkNotNull(callback);
-	        if (mCachedFavourites == null) {
-	            mWeatherServiceApi.getFavourites(new WeatherServiceApi.WeatherServiceCallback<List<Station>>() {
-	                public void onLoaded(List<Station> data) {
-	                	mCachedFavourites = ImmutableList.copyOf(data);
-	                    callback.onFavouritesLoaded(mCachedFavourites);
-	                }
-	            });
-	        } else {
-	            callback.onFavouritesLoaded(mCachedFavourites);
-	        }
+    public void removeFavouriteStation(Station favourite) {
+        mWeatherServiceApi.removeFavouriteStation(favourite);
 
-	}
+    }
 
+    @Override
+    public void refreshStates() {
+        mCachedStates = null;
+    }
 
-	public void removeFavouriteStation(Station favourite) {
-		mWeatherServiceApi.removeFavouriteStation(favourite);
-		
-	}
+    @Override
+    public void refreshStations() {
+        mCachedStations = null;
+    }
 
+    @Override
+    public void refreshFavouriteStations() {
+        mCachedFavouriteStations = null;
+    }
 
+    @Override
+    public void refreshObservations() {
+        mCachedObservations.clear();
+    }
 
 }

@@ -15,10 +15,8 @@ public class WeatherServiceApiImpl implements WeatherServiceApi {
 	 * Get data from WeatherServiceApiEndpoint
 	 */
 	private static final List<State> STATES_SERVICE_DATA = WeatherServiceApiEndpoint.loadPersistedStates();
-	private static final HashMap<String, List<Station>> STATIONS_SERVICE_DATA = WeatherServiceApiEndpoint
-			.loadPersistedStations(false);
-	private static final List<Station> FAVOURITE_STATIONS_SERVICE_DATA = WeatherServiceApiEndpoint
-			.loadPersistedFavourites();
+	private static final HashMap<String, List<Station>> STATIONS_SERVICE_DATA = WeatherServiceApiEndpoint.loadPersistedStations(false);
+//	private static final List<Station> FAVOURITE_STATIONS_SERVICE_DATA = WeatherServiceApiEndpoint.getFavouriteStations();
 
 	public void getStates(WeatherServiceCallback<List<State>> callback) {
 		List<State> states = new ArrayList<State>(STATES_SERVICE_DATA);
@@ -52,9 +50,8 @@ public class WeatherServiceApiImpl implements WeatherServiceApi {
 	}
 
 	public void getFavourites(WeatherServiceCallback<List<Station>> callback) {
-		List<Station> favourites = new ArrayList<Station>(FAVOURITE_STATIONS_SERVICE_DATA);
-		callback.onLoaded(favourites);
-
+//		List<Station> favourites = new ArrayList<Station>(FAVOURITE_STATIONS_SERVICE_DATA);
+		callback.onLoaded(WeatherServiceApiEndpoint.getFavourites());
 	}
 
 	public void removeFavouriteStation(Station favourite) {
