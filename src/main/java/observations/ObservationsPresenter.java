@@ -36,7 +36,6 @@ public class ObservationsPresenter implements ObservationsContract.UserActionsLi
                     mView.showObservationTable(observations);
                     mView.showChart(observations);
                 }
-
             }
         });
     }

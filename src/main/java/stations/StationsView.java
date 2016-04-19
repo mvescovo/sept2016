@@ -41,7 +41,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
 	private List<Station> mFavouritesList = new ArrayList<Station>();
 	private JList<Station> mFavouritesJList;
 
-	/**
+	/**,
 	 * Instantiates the stations view component.
 	 */
 	public StationsView() {
@@ -82,8 +82,8 @@ public class StationsView implements StationsContract.View, ActionListener, List
 	 * collections and force an update.
 	 */
 	public void onReady() {
-		mActionsListener.loadStates(true);
-		mActionsListener.loadFavourites(true);
+		mActionsListener.loadStates(false);
+		mActionsListener.loadFavourites(false);
 	}
 
 	/**
@@ -193,7 +193,6 @@ public class StationsView implements StationsContract.View, ActionListener, List
 		Main.MainWindow.getInstance().clearObservationsPanel();
 
 		Main.MainWindow.getInstance().getBtnFavourite().addActionListener(this);
-		Main.MainWindow.getInstance().getBtnRefresh().addActionListener(this);
 		Main.MainWindow.getInstance().getBtnRemove().addActionListener(this);
 
 		mObservationsView = new ObservationsView();
@@ -219,20 +218,15 @@ public class StationsView implements StationsContract.View, ActionListener, List
 
 		} else if (e.getSource() instanceof JButton) {
 			JButton btn = (JButton) e.getSource();
-			if (btn.getName().equals("refresh")) {
-				System.out.println("Refresh clicked");
-
-			} else if (btn.getName().equals("add")) {
+			if (btn.getName().equals("add")) {
 				mActionsListener.addFavouriteStation(getSelectedStation());
 				mActionsListener.loadFavourites(true);
 				Main.MainWindow.getInstance().getFavouritesScrollPane().revalidate();
 				Main.MainWindow.getInstance().getFavouritesScrollPane().repaint();
-
 			} else if (btn.getName().equals("remove")) {
 				mActionsListener.removeFavouriteStation(getSelectedStation());
 				// mActionsListener.loadFavourites(true);
 			}
-
 		}
 	}
 
