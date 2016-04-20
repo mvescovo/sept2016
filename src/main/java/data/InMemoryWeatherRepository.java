@@ -40,7 +40,7 @@ class InMemoryWeatherRepository implements WeatherRepository {
     }
 
     @Override
-    public void getStations(final String state, final boolean favourite, final LoadStationsCallback callback) {
+    public void getStations(final String state, final LoadStationsCallback callback) {
         checkNotNull(callback);
         if (mCachedStations == null) {
             mWeatherServiceApi.getStations(new WeatherServiceApi.WeatherServiceCallback<HashMap<String, List<Station>>>() {

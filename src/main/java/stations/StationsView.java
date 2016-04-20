@@ -35,8 +35,6 @@ public class StationsView implements StationsContract.View, ActionListener, List
     private JComboBox<State> mStatesComboList;
     private JList<Station> mStationsJList;
     private HashMap<String, Station> mStationHashMap = new HashMap<String, Station>();
-    private ObservationsView mObservationsView;
-    private ObservationsPresenter mObservationsPresenter;
     private Station mSelectedStation;
     private List<Station> mFavouritesList = new ArrayList<Station>();
     private JList<Station> mFavouritesJList;
@@ -86,7 +84,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
     @Override
     public void onReady() {
         mActionsListener.loadStates(false);
-        mActionsListener.loadFavourites(false);
+        mActionsListener.loadFavouriteStations(false);
     }
 
     /**
@@ -204,11 +202,10 @@ public class StationsView implements StationsContract.View, ActionListener, List
         Main.MainWindow.getInstance().getBtnFavourite().addActionListener(this);
         Main.MainWindow.getInstance().getBtnRemove().addActionListener(this);
 
-        mObservationsView = new ObservationsView();
-        mObservationsPresenter = new ObservationsPresenter(
-                WeatherRepositories.getInMemoryRepoInstance(new WeatherServiceApiImpl()), mObservationsView);
-        mObservationsView.setActionListener(mObservationsPresenter);
-        mObservationsView.onReady(station);
+        ObservationsView observationsView = new ObservationsView();
+        ObservationsPresenter observationsPresenter = new ObservationsPresenter(WeatherRepositories.getInMemoryRepoInstance(new WeatherServiceApiImpl()), observationsView);
+        observationsView.setActionListener(observationsPresenter);
+        observationsView.onReady(station);
     }
 
     /*
@@ -223,19 +220,18 @@ public class StationsView implements StationsContract.View, ActionListener, List
         if (e.getSource() == mStatesComboList) {
             JComboBox<State> cb = (JComboBox<State>) e.getSource();
             String stateName = cb.getSelectedItem().toString();
-            // second argument false means load non-favourite stations
-            mActionsListener.loadStations(stateName, false, true);
+            mActionsListener.loadStations(stateName, true);
 
         } else if (e.getSource() instanceof JButton) {
             JButton btn = (JButton) e.getSource();
             if (btn.getName().equals("add")) {
                 mActionsListener.addFavouriteStation(getSelectedStation());
-                mActionsListener.loadFavourites(true);
+                mActionsListener.loadFavouriteStations(true);
 //				Main.MainWindow.getInstance().getFavouritesScrollPane().revalidate();
 //				Main.MainWindow.getInstance().getFavouritesScrollPane().repaint();
             } else if (btn.getName().equals("remove")) {
                 mActionsListener.removeFavouriteStation(getSelectedStation());
-                mActionsListener.loadFavourites(true);
+                mActionsListener.loadFavouriteStations(true);
             }
         }
     }
