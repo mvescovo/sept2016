@@ -3,6 +3,8 @@ package data;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -12,6 +14,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Url;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,17 +33,17 @@ class WeatherServiceApiEndpoint {
         JsonParser jsonParser = new JsonParser();
         JsonArray jsonArray;
 
-        try {
-            jsonArray = (JsonArray) jsonParser.parse(new FileReader(System.getProperty("user.dir") + "/src/main/resources/stations.json"));
+    	Reader reader = new InputStreamReader(WeatherServiceApiEndpoint.class.getResourceAsStream("/data/stations.json"),
+    			Charset.defaultCharset());
+
+
+            jsonArray = (JsonArray) jsonParser.parse(reader).getAsJsonArray();
             for (int i = 0; i < jsonArray.size(); i++) {
                 String stateName = jsonArray.get(i).getAsJsonObject().get("state").getAsString();
                 State state = new State(stateName);
                 states.add(state);
             }
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
         return states;
     }
 
@@ -54,8 +57,12 @@ class WeatherServiceApiEndpoint {
         JsonParser jsonParser = new JsonParser();
         JsonArray jsonArray;
 
-        try {
-            jsonArray = (JsonArray) jsonParser.parse(new FileReader(System.getProperty("user.dir") + "/src/main/resources/stations.json"));
+        Reader reader = new InputStreamReader(WeatherServiceApiEndpoint.class.getResourceAsStream("/data/stations.json"),
+    			Charset.defaultCharset());
+
+
+            jsonArray = (JsonArray) jsonParser.parse(reader).getAsJsonArray();
+            
             for (int i = 0; i < jsonArray.size(); i++) {
                 String stateName = jsonArray.get(i).getAsJsonObject().get("state").getAsString();
                 List<Station> stations = new ArrayList<Station>();
@@ -68,9 +75,7 @@ class WeatherServiceApiEndpoint {
                 }
                 allStations.put(stateName, stations);
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+
         return allStations;
     }
 
@@ -83,7 +88,9 @@ class WeatherServiceApiEndpoint {
 			list.add(favourite);
 
 			// serialize the List
-			try (OutputStream file = new FileOutputStream(System.getProperty("user.dir") + "/src/main/resources/favourites.ser");
+		
+
+			try (OutputStream file = new FileOutputStream("favourites.ser");
 					OutputStream buffer = new BufferedOutputStream(file);
 					ObjectOutput output = new ObjectOutputStream(buffer);) {
 				output.writeObject(list);
@@ -319,7 +326,7 @@ class WeatherServiceApiEndpoint {
 	static List<Station> getFavourites() {
 		 List<Station> restoredFavs = new ArrayList<Station>();
 			// deserialize the favourites.ser file
-			try (InputStream file = new FileInputStream(System.getProperty("user.dir") + "/src/main/resources/favourites.ser");
+			try (InputStream file = new FileInputStream("favourites.ser");
 					InputStream buffer = new BufferedInputStream(file);
 					ObjectInput input = new ObjectInputStream(buffer);) {
 				// deserialize the List
@@ -348,7 +355,7 @@ class WeatherServiceApiEndpoint {
 			list.remove(favourite);
 
 			// serialize the List
-			try (OutputStream file = new FileOutputStream(System.getProperty("user.dir") + "/src/main/resources/favourites.ser");
+			try (OutputStream file = new FileOutputStream("favourites.ser");
 					OutputStream buffer = new BufferedOutputStream(file);
 					ObjectOutput output = new ObjectOutputStream(buffer);) {
 				output.writeObject(list);
