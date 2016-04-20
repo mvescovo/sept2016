@@ -37,12 +37,12 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
     }
 
     @Override
-    public void loadStations(String stateName, boolean favourite, boolean forceUpdate) {
+    public void loadStations(String stateName, boolean forceUpdate) {
         mView.setProgressBar(true);
         if (forceUpdate) {
             mWeatherRepository.refreshStations();
         }
-        mWeatherRepository.getStations(stateName, favourite, new WeatherRepository.LoadStationsCallback() {
+        mWeatherRepository.getStations(stateName, new WeatherRepository.LoadStationsCallback() {
             public void onStationsLoaded(List<Station> stations) {
                 mView.setProgressBar(false);
                 mView.showStations(stations);
@@ -61,7 +61,7 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
     }
 
     @Override
-	public void loadFavourites(boolean forceUpdate) {
+	public void loadFavouriteStations(boolean forceUpdate) {
         if (forceUpdate) {
             mWeatherRepository.refreshFavouriteStations();
         }

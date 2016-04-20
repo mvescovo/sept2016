@@ -27,7 +27,7 @@ public interface WeatherRepository {
 
     void getStates(LoadStatesCallback callback);
 
-    void getStations(String state, boolean favourite, LoadStationsCallback callback);
+    void getStations(String state, LoadStationsCallback callback);
 
     void getObservations(Station station, LoadObservationsCallback callback);
 

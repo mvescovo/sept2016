@@ -40,13 +40,13 @@ public interface StationsContract {
 
         void loadStates(boolean forceUpdate);
 
-        void loadStations(String stateName, boolean favourite, boolean forceUpdate);
+        void loadStations(String stateName, boolean forceUpdate);
 
         void addFavouriteStation(Station favourite);
 
         void openObservations(Station station);
         
-        void loadFavourites(boolean forceUpdate);
+        void loadFavouriteStations(boolean forceUpdate);
 
 		void removeFavouriteStation(Station selectedStation);
 

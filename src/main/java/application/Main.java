@@ -17,6 +17,8 @@ import java.util.prefs.Preferences;
 
 /**
  * Start up the application - contains the main method and application constants.
+ * Created by michael on 5/04/16.
+ * Modified by kendall on 18/04/16.
  * 
  * @author michael, kendall
  *
