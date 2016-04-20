@@ -7,10 +7,13 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.labels.StandardXYItemLabelGenerator;
+import org.jfree.chart.labels.XYItemLabelGenerator;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.general.SeriesException;
+import org.jfree.data.time.Hour;
 import org.jfree.data.time.Minute;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -21,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -109,6 +113,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 	 * @param active
 	 *            true displays the progress bar and false hides it.
 	 */
+    @Override
 	public void setProgressBar(boolean active) {
 		if (active) {
 			Main.MainWindow.getInstance().getStationName().setVisible(false);
@@ -127,6 +132,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 	 * @param station
 	 *            the selected weather station
 	 */
+    @Override
 	public void onReady(Station station) {
         mStation = station;
 		mActionsListener.loadObservations(mStation, false);
@@ -139,6 +145,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 	 * @param obs
 	 *            a collection of observations for a weather station.
 	 */
+    @Override
 	public void showLatestObservation(Observation obs) {
 		// Update Station name
 		String stationTitle = obs.getmName() + " - " + obs.getmStateName();
@@ -218,6 +225,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 	 * @param observations
 	 *            a collection of observations for a weather station.
 	 */
+    @Override
 	public void showObservationTable(List<Observation> observations) {
 
 		// Table settings
@@ -252,6 +260,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 	 * @param observations
 	 *            a collection of observations for a weather station.
 	 */
+    @Override
 	public void showChart(List<Observation> observations) {
 		System.out.println(observations.get(0).getmDateTime());
 		String chtTitle = observations.get(0).getmName() + " - Temperature observations";
@@ -262,13 +271,15 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 		TimeSeries seriesTemp = new TimeSeries("Temp", Minute.class);
 		TimeSeries seriesMin = new TimeSeries("Min", Minute.class);
 		TimeSeries seriesMax = new TimeSeries("Max", Minute.class);
-
+		TimeSeries series9am = new TimeSeries("9am", Hour.class);
+		TimeSeries series3pm = new TimeSeries("3pm", Hour.class);
+		
 		double temp = Double.NaN;
 		double minTemp = Double.NaN;
 		double maxTemp = Double.NaN;
 		List<String> dates = new ArrayList<String>();
 		SimpleDateFormat standardDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
-
+		
 		String previousDay = null;
 		Date minDate = null;
 		Date maxDate = null;
@@ -286,6 +297,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 
 			// format the date
 			Date myDate = null;
+			Date myHour = null;
 			String day = obs.getmDateTime().substring(0, 8);
 
 			try {
@@ -294,12 +306,20 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 				e.printStackTrace();
 			}
 
+			// Check for 9am observations
+			Calendar myCal = Calendar.getInstance();
+			myCal.setTime(myDate);
+			int hour = myCal.get(Calendar.HOUR_OF_DAY);
+			if(hour == 9 ) {
+				series9am.addOrUpdate(new Hour(myDate), temp);
+			} else if (hour == 15) {
+				series3pm.addOrUpdate(new Hour(myDate), temp);
+			}
 			try {
 			//System.out.println(myDate);
 			seriesTemp.addOrUpdate(new Minute(myDate), temp);
 			} catch (SeriesException e) {
 				e.printStackTrace();
-				System.out.println(myDate);
 			}
 			if (previousDay == null) {
 				previousDay = day;
@@ -313,7 +333,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 				maxTemp = temp;
 				maxDate = myDate;
 			}
-
+			
 			if (day.equals(previousDay)) {
 				if (temp < minTemp) {
 					minTemp = temp;
@@ -333,6 +353,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 				maxTemp = Double.NaN;
 			}
 			previousDay = day;
+			
 		}
 
 
@@ -340,6 +361,8 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 		dataset.addSeries(seriesTemp);
 		dataset.addSeries(seriesMin);
 		dataset.addSeries(seriesMax);
+		dataset.addSeries(series9am);
+		dataset.addSeries(series3pm);
 
 		JFreeChart chart = ChartFactory.createTimeSeriesChart(chtTitle, chtXAxisLabel, chtYAxisLabel, dataset, true,
 				true, false);
@@ -350,13 +373,23 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 		XYItemRenderer r = plot.getRenderer();
 		if (r instanceof XYLineAndShapeRenderer) {
 			XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
-			renderer.setSeriesShapesVisible(1, true);
-			renderer.setSeriesShapesFilled(1, true);
-			renderer.setSeriesLinesVisible(1, false);
-			renderer.setSeriesShapesVisible(2, true);
-			renderer.setSeriesShapesFilled(2, true);
-			renderer.setSeriesLinesVisible(2, false);
+			for(int i = 1; i < 5; i++) {
+				renderer.setSeriesShapesVisible(i, true);
+				renderer.setSeriesShapesFilled(i, true);
+				renderer.setSeriesLinesVisible(i, false);
+			}
 
+			NumberFormat format = NumberFormat.getNumberInstance();
+			format.setMaximumFractionDigits(2);
+			XYItemLabelGenerator generator =
+			    new StandardXYItemLabelGenerator("{0} {2}", format, format);
+			renderer.setBaseItemLabelGenerator(generator);
+			renderer.setBaseItemLabelsVisible(true);
+			renderer.setSeriesItemLabelsVisible(0, false);
+			renderer.setSeriesItemLabelsVisible(1, false);
+			renderer.setSeriesItemLabelsVisible(2, false);
+			
+			renderer.setSeriesPaint(3, Main.getColordark());
 		}
 
 		chart.getTitle().setHorizontalAlignment(HorizontalAlignment.LEFT);
@@ -379,19 +412,9 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 	/*
 	 * Setter for this view's action listener.
 	 */
+    @Override
 	public void setActionListener(ObservationsContract.UserActionsListener actionListener) {
 		mActionsListener = actionListener;
-	}
-
-	/*
-	 * Getters and setters for the table scroll pane.
-	 */
-	public JScrollPane getTableScrollPane() {
-		return mTableScrollPane;
-	}
-
-	public void setTableScrollPane(JScrollPane tableScrollPane) {
-		this.mTableScrollPane = tableScrollPane;
 	}
 
     @Override
@@ -404,7 +427,18 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
             }
         }
     }
-    
+
+	/*
+	 * Getters and setters for the table scroll pane.
+	 */
+	private JScrollPane getTableScrollPane() {
+		return mTableScrollPane;
+	}
+
+	private void setTableScrollPane(JScrollPane tableScrollPane) {
+		this.mTableScrollPane = tableScrollPane;
+	}
+
     // Refresh needs to recreate this. Otherwise it overwrites.
     private void recreateHeadPanel() {
         if (mHeadPanel != null) {
@@ -424,4 +458,5 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         cons.insets = new Insets(10, 10, 10, 10);
         Main.MainWindow.getInstance().getObservationsPanel().add(mHeadPanel, cons);
     }
+
 }

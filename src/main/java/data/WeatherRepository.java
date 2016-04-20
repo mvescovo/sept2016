@@ -33,9 +33,15 @@ public interface WeatherRepository {
 
     void saveFavouriteStation(Station favourite);
 
-    void refreshData();
+    void refreshStates();
 
-	void getFavourites(LoadFavouritesCallback callback);
+    void refreshStations();
+
+    void refreshFavouriteStations();
+
+    void refreshObservations();
+
+	void getFavouriteStations(LoadFavouritesCallback callback);
 
 	void removeFavouriteStation(Station favourite);
 }

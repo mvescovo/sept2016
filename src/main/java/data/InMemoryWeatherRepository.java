@@ -17,13 +17,14 @@ class InMemoryWeatherRepository implements WeatherRepository {
     private final WeatherServiceApi mWeatherServiceApi;
     private List<State> mCachedStates;
     private HashMap<String,List<Station>> mCachedStations;
+    private List<Station> mCachedFavouriteStations;
     private HashMap<Station,List<Observation>> mCachedObservations = new HashMap<Station, List<Observation>>();
-    private List<Station> mCachedFavourites;
 
     InMemoryWeatherRepository(WeatherServiceApi weatherServiceApi) {
         mWeatherServiceApi = checkNotNull(weatherServiceApi);
     }
 
+    @Override
     public void getStates(final LoadStatesCallback callback) {
         checkNotNull(callback);
         if (mCachedStates == null) {
@@ -38,10 +39,11 @@ class InMemoryWeatherRepository implements WeatherRepository {
         }
     }
 
+    @Override
     public void getStations(final String state, final boolean favourite, final LoadStationsCallback callback) {
         checkNotNull(callback);
         if (mCachedStations == null) {
-            mWeatherServiceApi.getStations(favourite,new WeatherServiceApi.WeatherServiceCallback<HashMap<String, List<Station>>>() {
+            mWeatherServiceApi.getStations(new WeatherServiceApi.WeatherServiceCallback<HashMap<String, List<Station>>>() {
                 public void onLoaded(HashMap<String, List<Station>> data) {
                     mCachedStations = data;
                     callback.onStationsLoaded(mCachedStations.get(state));
@@ -52,6 +54,7 @@ class InMemoryWeatherRepository implements WeatherRepository {
         }
     }
 
+    @Override
     public void getObservations(final Station station, final LoadObservationsCallback callback) {
         checkNotNull(callback);
         if ((mCachedObservations == null) || (mCachedObservations.get(station) == null)) {
@@ -71,37 +74,51 @@ class InMemoryWeatherRepository implements WeatherRepository {
         }
     }
 
+    @Override
     public void saveFavouriteStation(Station favourite) {
         mWeatherServiceApi.saveFavouriteStation(favourite);
     }
 
-    public void refreshData() {
-        mCachedStates = null;
-        mCachedStations = null;
-        mCachedObservations.clear();
+    @Override
+    public void getFavouriteStations(final LoadFavouritesCallback callback) {
+        checkNotNull(callback);
+        if (mCachedFavouriteStations == null) {
+            mWeatherServiceApi.getFavouriteStations(new WeatherServiceApi.WeatherServiceCallback<List<Station>>() {
+                public void onLoaded(List<Station> data) {
+                    mCachedFavouriteStations = ImmutableList.copyOf(data);
+                    callback.onFavouritesLoaded(mCachedFavouriteStations);
+                }
+            });
+        } else {
+            callback.onFavouritesLoaded(mCachedFavouriteStations);
+        }
+
     }
 
-	public void getFavourites(final LoadFavouritesCallback callback) {
-		 checkNotNull(callback);
-	        if (mCachedFavourites == null) {
-	            mWeatherServiceApi.getFavourites(new WeatherServiceApi.WeatherServiceCallback<List<Station>>() {
-	                public void onLoaded(List<Station> data) {
-	                	mCachedFavourites = ImmutableList.copyOf(data);
-	                    callback.onFavouritesLoaded(mCachedFavourites);
-	                }
-	            });
-	        } else {
-	            callback.onFavouritesLoaded(mCachedFavourites);
-	        }
+    @Override
+    public void removeFavouriteStation(Station favourite) {
+        mWeatherServiceApi.removeFavouriteStation(favourite);
 
-	}
+    }
 
+    @Override
+    public void refreshStates() {
+        mCachedStates = null;
+    }
 
-	public void removeFavouriteStation(Station favourite) {
-		mWeatherServiceApi.removeFavouriteStation(favourite);
-		
-	}
+    @Override
+    public void refreshStations() {
+        mCachedStations = null;
+    }
 
+    @Override
+    public void refreshFavouriteStations() {
+        mCachedFavouriteStations = null;
+    }
 
+    @Override
+    public void refreshObservations() {
+        mCachedObservations.clear();
+    }
 
 }

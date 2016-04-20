@@ -10,7 +10,7 @@ import java.util.List;
  *
  * The contract between the view and the presenter.
  */
-interface ObservationsContract {
+public interface ObservationsContract {
 
     interface View {
 
@@ -25,6 +25,12 @@ interface ObservationsContract {
 
         // Show chart
         void showChart(List<Observation> observations);
+
+        // Set the Presenter on initialisation
+        void setActionListener(ObservationsContract.UserActionsListener presenter);
+
+        // When the view is initialised
+        void onReady(Station station);
     }
 
     interface UserActionsListener {

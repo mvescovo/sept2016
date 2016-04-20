@@ -45,7 +45,7 @@ class WeatherServiceApiEndpoint {
     }
 
     // Get stations from file
-    static HashMap<String,List<Station>> loadPersistedStations(boolean favourite) {
+    static HashMap<String,List<Station>> loadPersistedStations() {
 
         // TODO Steve. Modify to also return favourite stations if favourite is true.
         // First implement saving of favourites in other method below.
@@ -77,17 +77,18 @@ class WeatherServiceApiEndpoint {
 
 	static void saveFavouriteStation(Station favourite) {
     	
-		List<Station> list = loadPersistedFavourites();
+		List<Station> list = getFavourites();
 
 		if (!list.contains(favourite)) {
 			list.add(favourite);
 
 			// serialize the List
-			try (OutputStream file = new FileOutputStream("favourites.ser");
+			try (OutputStream file = new FileOutputStream(System.getProperty("user.dir") + "/src/main/resources/favourites.ser");
 					OutputStream buffer = new BufferedOutputStream(file);
 					ObjectOutput output = new ObjectOutputStream(buffer);) {
 				output.writeObject(list);
-			} catch (IOException ex) {
+                System.out.println("written favourite to file");
+            } catch (IOException ex) {
 
 			}
 		}
@@ -315,10 +316,10 @@ class WeatherServiceApiEndpoint {
 
 
 	 @SuppressWarnings("unchecked")
-	static List<Station> loadPersistedFavourites() {
+	static List<Station> getFavourites() {
 		 List<Station> restoredFavs = new ArrayList<Station>();
 			// deserialize the favourites.ser file
-			try (InputStream file = new FileInputStream("favourites.ser");
+			try (InputStream file = new FileInputStream(System.getProperty("user.dir") + "/src/main/resources/favourites.ser");
 					InputStream buffer = new BufferedInputStream(file);
 					ObjectInput input = new ObjectInputStream(buffer);) {
 				// deserialize the List
@@ -340,14 +341,14 @@ class WeatherServiceApiEndpoint {
 			return restoredFavs;
 	    }
 
-	public static void removeFavouriteStation(Station favourite) {
-		List<Station> list = loadPersistedFavourites();
+	static void removeFavouriteStation(Station favourite) {
+		List<Station> list = getFavourites();
 
 		if (list.contains(favourite)) {
 			list.remove(favourite);
 
 			// serialize the List
-			try (OutputStream file = new FileOutputStream("favourites.ser");
+			try (OutputStream file = new FileOutputStream(System.getProperty("user.dir") + "/src/main/resources/favourites.ser");
 					OutputStream buffer = new BufferedOutputStream(file);
 					ObjectOutput output = new ObjectOutputStream(buffer);) {
 				output.writeObject(list);

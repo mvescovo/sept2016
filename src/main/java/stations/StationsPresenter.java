@@ -22,10 +22,11 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
         mView = view;
     }
 
+    @Override
     public void loadStates(final boolean forceUpdate) {
         mView.setProgressBar(true);
         if (forceUpdate) {
-            mWeatherRepository.refreshData();
+            mWeatherRepository.refreshStates();
         }
         mWeatherRepository.getStates(new WeatherRepository.LoadStatesCallback() {
             public void onStatesLoaded(List<State> states) {
@@ -35,10 +36,11 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
         });
     }
 
+    @Override
     public void loadStations(String stateName, boolean favourite, boolean forceUpdate) {
         mView.setProgressBar(true);
         if (forceUpdate) {
-            mWeatherRepository.refreshData();
+            mWeatherRepository.refreshStations();
         }
         mWeatherRepository.getStations(stateName, favourite, new WeatherRepository.LoadStationsCallback() {
             public void onStationsLoaded(List<Station> stations) {
@@ -48,36 +50,32 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
         });
     }
 
-    
+    @Override
     public void addFavouriteStation(Station favourite) {
         mWeatherRepository.saveFavouriteStation(favourite);
-        
     }
 
+    @Override
     public void openObservations(Station station) {
         mView.showObservationsUi(station);
     }
 
-    
+    @Override
 	public void loadFavourites(boolean forceUpdate) {
         if (forceUpdate) {
-            mWeatherRepository.refreshData();
+            mWeatherRepository.refreshFavouriteStations();
         }
-		mWeatherRepository.getFavourites( new WeatherRepository.LoadFavouritesCallback() {
+		mWeatherRepository.getFavouriteStations(new WeatherRepository.LoadFavouritesCallback() {
 			@Override
 			public void onFavouritesLoaded(List<Station> favourites) {
 				mView.showFavourites(favourites);
-				
-				
 			}
 		});
 	}
 
+    @Override
 	public void removeFavouriteStation(Station favourite) {
 		mWeatherRepository.removeFavouriteStation(favourite);
-		
 	}
-
-
 
 }

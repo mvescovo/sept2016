@@ -21,10 +21,11 @@ public class ObservationsPresenter implements ObservationsContract.UserActionsLi
         mView = view;
     }
 
+    @Override
     public void loadObservations(Station station, boolean forceUpdate) {
         mView.setProgressBar(true);
         if (forceUpdate) {
-            mWeatherRepository.refreshData();
+            mWeatherRepository.refreshObservations();
         }
         mWeatherRepository.getObservations(station, new WeatherRepository.LoadObservationsCallback() {
             public void onObservationsLoaded(List<Observation> observations) {
