@@ -247,7 +247,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
     @Override
     public void valueChanged(ListSelectionEvent e) {
 
-        if (e.getSource() == mStationsJList) {
+        if (e.getSource() == mStationsJList && !mStationsJList.isSelectionEmpty()) {
             // Ensure the user has finished selecting
             if (!e.getValueIsAdjusting()) {
                 JList<Station> list = (JList<Station>) e.getSource();
@@ -258,11 +258,17 @@ public class StationsView implements StationsContract.View, ActionListener, List
 
                 mActionsListener.openObservations(mStationHashMap.get(stationName));
             }
-        } else if (e.getSource() == mFavouritesJList) {
+            if (mFavouritesJList != null) {
+                mFavouritesJList.clearSelection();
+            }
+        } else if (e.getSource() == mFavouritesJList && !mFavouritesJList.isSelectionEmpty()) {
             JList<Station> list = (JList<Station>) e.getSource();
             Station thisStation = list.getSelectedValue();
             setSelectedStation(thisStation);
             mActionsListener.openObservations(thisStation);
+            if (mStationsJList != null) {
+                mStationsJList.clearSelection();
+            }
         }
 
     }
