@@ -6,6 +6,10 @@ import data.WeatherRepository;
 
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
+import application.Main;
+
 /**
  * Created by michael on 5/04/16.
  *
@@ -33,9 +37,15 @@ public class ObservationsPresenter implements ObservationsContract.UserActionsLi
                 if(observations == null) {
                 	System.out.println("Cannot get data!");
                 } else {
-                    mView.showLatestObservation(observations.get(0));
-                    mView.showObservationTable(observations);
-                    mView.showChart(observations);
+                	try {
+                        mView.showLatestObservation(observations.get(0));
+                        mView.showObservationTable(observations);
+                        mView.showChart(observations);
+                	} catch (IndexOutOfBoundsException e) {
+                		JOptionPane.showMessageDialog(Main.MainWindow.getInstance().getContainer(), "Cannot connect the the data source. Try again later...");
+
+                	}
+
                 }
             }
         });
