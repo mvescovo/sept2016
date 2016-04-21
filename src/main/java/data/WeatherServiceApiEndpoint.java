@@ -43,8 +43,7 @@ class WeatherServiceApiEndpoint {
     // Get stations from file
     static HashMap<String,List<Station>> loadPersistedStations() {
 
-        // TODO Steve. Modify to also return favourite stations if favourite is true.
-        // First implement saving of favourites in other method below.
+
         HashMap<String, List<Station>> allStations = new HashMap<String, List<Station>>();
         JsonParser jsonParser = new JsonParser();
         JsonArray jsonArray;
@@ -73,7 +72,7 @@ class WeatherServiceApiEndpoint {
             list.add(favourite);
 
             // serialize the List
-            try (OutputStream file = new FileOutputStream("src/main/resources/favourites.ser");
+            try (OutputStream file = new FileOutputStream("favourites.ser");
                  OutputStream buffer = new BufferedOutputStream(file);
                  ObjectOutput output = new ObjectOutputStream(buffer);) {
                 output.writeObject(list);
@@ -83,23 +82,11 @@ class WeatherServiceApiEndpoint {
             }
         }
 
-        // TODO Steve implement me. Save to file under resources.
-       /* try{
-            FileWriter fstream = new FileWriter(System.currentTimeMillis() + "stations.txt");
-                BufferedWriter out = new BufferedWriter(fstream);
-            out.write(station.getmCity());
-            out.write(station.getUrl());
-            out.close();
-            }catch (Exception e){
-              System.err.println("Error: " + e.getMessage());
-            }*/
     }
 
     // Get observations from files rather than from the BOM (historical data)
     static void getObservationsByDate(String date) {
 
-        // TODO Steve implement me. First implement the other TODO below to save the appropriate data.
-        // Change method paramaters as appropriate.
     }
 
     // Get observations from the BOM
@@ -122,12 +109,6 @@ class WeatherServiceApiEndpoint {
                     JsonArray dataArray = observationsObject.get("data").getAsJsonArray();
                     for (int i = 0; i < dataArray.size(); i++) {
 
-                        // TODO Steve implement me. Only two fields have been done. Need all relevant fields.
-                        // Follow the chain through and also update other relevant methods.
-
-                        // TODO Steve implement me. Data also needs to be saved to files (under resources directory).
-                        // Possibly name files by date or whatever makes sense. Then implement the
-                        // getObservationsByDate function.
 
                         String wmo = "";
                         String history_product = "";
@@ -303,7 +284,8 @@ class WeatherServiceApiEndpoint {
     static List<Station> getFavourites() {
         List<Station> restoredFavs = new ArrayList<Station>();
         // deserialize the favourites.ser file
-        try (InputStream file = new FileInputStream("src/main/resources/favourites.ser");
+  
+        try (InputStream file = new FileInputStream("favourites.ser");
              InputStream buffer = new BufferedInputStream(file);
              ObjectInput input = new ObjectInputStream(buffer);) {
             // deserialize the List
@@ -331,7 +313,7 @@ class WeatherServiceApiEndpoint {
             list.remove(favourite);
 
             // serialize the List
-            try (OutputStream file = new FileOutputStream("src/main/resources/favourites.ser");
+            try (OutputStream file = new FileOutputStream("favourites.ser");
                  OutputStream buffer = new BufferedOutputStream(file);
                  ObjectOutput output = new ObjectOutputStream(buffer);) {
                 output.writeObject(list);
