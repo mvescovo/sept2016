@@ -40,9 +40,14 @@ class WeatherServiceApiEndpoint {
         return states;
     }
 
-    // Get stations from file
+    /**
+     * Created by michael  on 6/04/16.
+     *		
+     *
+     * Get observations from files rather than from the BOM (historical data)
+     */
     static HashMap<String,List<Station>> loadPersistedStations() {
-
+    	
 
         HashMap<String, List<Station>> allStations = new HashMap<String, List<Station>>();
         JsonParser jsonParser = new JsonParser();
@@ -64,14 +69,19 @@ class WeatherServiceApiEndpoint {
         }
         return allStations;
     }
-
+    /**
+     * Created by  steve on 10/04/16.
+     *		
+     *
+     * Get observations from files rather than from the BOM (historical data)
+     */
     static void saveFavouriteStation(Station favourite) {
         List<Station> list = getFavourites();
 
         if (!list.contains(favourite)) {
             list.add(favourite);
 
-            // serialize the List
+ 
             try (OutputStream file = new FileOutputStream("favourites.ser");
                  OutputStream buffer = new BufferedOutputStream(file);
                  ObjectOutput output = new ObjectOutputStream(buffer);) {
@@ -84,12 +94,13 @@ class WeatherServiceApiEndpoint {
 
     }
 
-    // Get observations from files rather than from the BOM (historical data)
-    static void getObservationsByDate(String date) {
 
-    }
-
-    // Get observations from the BOM
+    /**
+     * Created by michael and steve on 5/04/16.
+     *		
+     *
+     * Get observations from files rather than from the BOM (historical data)
+     */
     @SuppressWarnings("rawtypes")
     static void getObservations(final Station station, final WeatherServiceApi.WeatherServiceCallback callback) {
         final List<Observation> observations = new ArrayList<Observation>();
@@ -279,7 +290,12 @@ class WeatherServiceApiEndpoint {
         @GET
         Call<JsonObject> loadObservations(@Url String url);
     }
-
+    /**
+     * Created by  steve on 12/04/16.
+     *		
+     *
+     * get current favourites
+     */
     @SuppressWarnings("unchecked")
     static List<Station> getFavourites() {
         List<Station> restoredFavs = new ArrayList<Station>();
@@ -305,14 +321,19 @@ class WeatherServiceApiEndpoint {
         }
         return restoredFavs;
     }
-
+    /**
+     * Created by  steve on 8/04/16.
+     *		
+     *
+     * remove a favourite station from the favourites list
+     */
     static void removeFavouriteStation(Station favourite) {
         List<Station> list = getFavourites();
 
         if (list.contains(favourite)) {
             list.remove(favourite);
 
-            // serialize the List
+       
             try (OutputStream file = new FileOutputStream("favourites.ser");
                  OutputStream buffer = new BufferedOutputStream(file);
                  ObjectOutput output = new ObjectOutputStream(buffer);) {
