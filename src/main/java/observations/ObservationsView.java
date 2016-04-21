@@ -77,11 +77,12 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 		tableCons.weighty = 0;
 		tableCons.fill = GridBagConstraints.HORIZONTAL;
 		tableCons.anchor = GridBagConstraints.NORTHWEST;
-		JLabel tableLabel = new JLabel("Table Panel");
+		JLabel tableLabel = new JLabel("Weather observations for the past 3 days.");
 		mTablePanel.add(tableLabel, tableCons);
 		cons.gridy = 1;
 		cons.weightx = 1;
 		cons.weighty = 0.5;
+		cons.insets = new Insets(10,10,10,10);
 		cons.fill = GridBagConstraints.BOTH;
 		cons.anchor = GridBagConstraints.CENTER;
 		Main.MainWindow.getInstance().getObservationsPanel().add(mTablePanel, cons);
@@ -101,6 +102,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 		cons.gridy = 2;
 		cons.weightx = 1;
 		cons.weighty = 0.5;
+		cons.insets = new Insets(10,10,10,10);
 		Main.MainWindow.getInstance().getObservationsPanel().add(mChartPanel, cons);
 
 		// Set refresh button listener
@@ -172,6 +174,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 		headCons.gridy = 1;
 		headCons.weightx = 1;
 		headCons.gridwidth = 1;
+		headCons.insets = new Insets(10,0,0,0);
 		mHeadPanel.add(lblLatest, headCons);
 
 		JLabel lblLatestDate = new JLabel();
@@ -192,6 +195,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 		lblLatestDate.setFont(Main.getFontnormal());
 		headCons.gridy = 2;
 		headCons.weightx = 0;
+		headCons.insets = new Insets(0,0,0,0);
 		mHeadPanel.add(lblLatestDate, headCons);
 
 		JLabel lblTemp = new JLabel();
@@ -247,9 +251,8 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 		table.getColumn("Date Time").setPreferredWidth(160);
 		mTableScrollPane.setViewportView(table);
 
-		// set component visibilities
-		// Main.MainWindow.getInstance().getToolbar().get.setVisible(true);
-		Main.MainWindow.getInstance().getMenubar().getMenu(1).getItem(0).setEnabled(true);
+
+
 
 	}
 
@@ -306,7 +309,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 				e.printStackTrace();
 			}
 
-			// Check for 9am observations
+			// Check for 9am and 3pm observations
 			Calendar myCal = Calendar.getInstance();
 			myCal.setTime(myDate);
 			int hour = myCal.get(Calendar.HOUR_OF_DAY);
@@ -316,7 +319,6 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
 				series3pm.addOrUpdate(new Hour(myDate), temp);
 			}
 			try {
-			//System.out.println(myDate);
 			seriesTemp.addOrUpdate(new Minute(myDate), temp);
 			} catch (SeriesException e) {
 				e.printStackTrace();
@@ -428,16 +430,8 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         }
     }
 
-	/*
-	 * Getters and setters for the table scroll pane.
-	 */
-	private JScrollPane getTableScrollPane() {
-		return mTableScrollPane;
-	}
 
-	private void setTableScrollPane(JScrollPane tableScrollPane) {
-		this.mTableScrollPane = tableScrollPane;
-	}
+
 
     // Refresh needs to recreate this. Otherwise it overwrites.
     private void recreateHeadPanel() {
@@ -455,7 +449,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         cons.gridy = 0;
         cons.fill = GridBagConstraints.BOTH;
         cons.anchor = GridBagConstraints.NORTHWEST;
-        cons.insets = new Insets(10, 10, 10, 10);
+        cons.insets = new Insets(10, 10, 20, 10);
         Main.MainWindow.getInstance().getObservationsPanel().add(mHeadPanel, cons);
     }
 

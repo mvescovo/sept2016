@@ -9,6 +9,8 @@ import stations.StationsView;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -16,9 +18,8 @@ import java.util.StringTokenizer;
 import java.util.prefs.Preferences;
 
 /**
- * Start up the application - contains the main method and application constants.
- * Created by michael on 5/04/16.
- * Modified by kendall on 18/04/16.
+ * Start up the application - contains the main method and application
+ * constants. Created by michael on 5/04/16. Modified by kendall on 18/04/16.
  * 
  * @author michael, kendall
  *
@@ -37,9 +38,11 @@ public class Main {
 	private static final Font fontNormalBold = new Font(fontFamily, Font.BOLD, 14);
 
 	// colors
-	private static final Color colorDark = new Color(112, 112, 114);
+
+	private static final Color colorDark = new Color(64, 89, 114);
 	private static final Color colorLight = new Color(241, 239, 226);
 	private static final Color colorWhite = new Color(255, 255, 255);
+	private static final Color colorBlack = new Color(0, 0, 0);
 	private static final Color colorContrast1 = new Color(32, 107, 164);
 	private static final Color colorContrast2 = new Color(119, 98, 31);
 
@@ -48,25 +51,19 @@ public class Main {
 
 	/**
 	 * Creates and updates the Stations view on the event dispatch thread.
-	 * @param args Standard  command arguments for main()
+	 * 
+	 * @param args
+	 *            Standard command arguments for main()
 	 */
 	public static void main(String[] args) {
-/*		try {
-			UIManager.setLookAndFeel(
-			        UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
 
-		
 		// Start the app on the event dispatch thread
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				// Show the Weather stations
 				StationsContract.View stationsView = new StationsView();
-				StationsContract.UserActionsListener stationsPresenter = new StationsPresenter(WeatherRepositories.getInMemoryRepoInstance(new WeatherServiceApiImpl()), stationsView);
+				StationsContract.UserActionsListener stationsPresenter = new StationsPresenter(
+						WeatherRepositories.getInMemoryRepoInstance(new WeatherServiceApiImpl()), stationsView);
 				stationsView.setActionListener(stationsPresenter);
 				stationsView.onReady();
 			}
@@ -97,6 +94,7 @@ public class Main {
 		private static JMenuBar menubar;
 		private JToolBar toolbar;
 		private JLabel stationName;
+		private JTextArea introText;
 
 		private JButton btnFavourite;
 		private JButton btnRefresh;
@@ -110,7 +108,7 @@ public class Main {
 		private MainWindow() {
 			// Container frame for the main window
 
-			jFrame = new JFrame("SEPT Weather App");
+			jFrame = new JFrame("Australian weather");
 			applyPreferences();
 
 			jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -171,6 +169,16 @@ public class Main {
 			toolbar.setFloatable(false);
 			toolbar.setBackground(colorDark);
 			toolbar.setBorder(null);
+			toolbar.addSeparator(new Dimension(10, 50));
+			
+			JLabel title = new JLabel("Weather stations");
+			title.setFont(fontNormalBold);
+			title.setForeground(colorWhite);
+			
+
+			toolbar.add(title);
+			toolbar.addSeparator(new Dimension(35, 10));
+			
 			btnRefresh = new JButton("Refresh");
 			btnRefresh.setName("refresh");
 			btnRefresh.setMargin(new Insets(10, 10, 10, 10));
@@ -184,7 +192,7 @@ public class Main {
 			btnRemove.setMargin(new Insets(10, 10, 10, 10));
 			btnRemove.setName("remove");
 			toolbar.add(btnRemove);
-			toolbar.addSeparator();
+			
 
 		}
 
@@ -222,7 +230,6 @@ public class Main {
 			stationCons.anchor = GridBagConstraints.NORTH;
 			stationCons.fill = GridBagConstraints.BOTH;
 
-			stationsPanel.setBorder(new LineBorder(colorWhite));
 			stationsPanel.setBackground(colorDark);
 
 			// favourites
@@ -267,19 +274,30 @@ public class Main {
 		public void createObservationsPanel() {
 			observationsPanel = new JPanel();
 			observationsPanel.setLayout(new GridBagLayout());
+			observationsPanel.setBackground(colorLight);
+
 			GridBagConstraints cons = new GridBagConstraints();
 			cons.anchor = GridBagConstraints.NORTHWEST;
 			cons.gridx = 0;
 			cons.gridy = 0;
+			cons.weighty = 1;
+			cons.weightx = 1;
 			cons.insets = new Insets(10, 10, 10, 10);
 			cons.fill = GridBagConstraints.BOTH;
-			observationsPanel.setBorder(new LineBorder(Color.black));
 
-			stationName = new JLabel("Observations Panel");
+			introText = new JTextArea(
+					"To view weather observations, select a State from the drop-down box and then a Stations from the displayed list.");
+			introText.setLineWrap(true);
+			introText.setMargin(new Insets(50,50,50,50));
+			introText.setWrapStyleWord(true);
+			introText.setFont(Main.getFonttitle());
+			introText.setBackground(observationsPanel.getBackground());
+			stationName = new JLabel("");
 			stationName.setFont(Main.getFonttitle());
 			observationsPanel.add(stationName, cons);
-
-			observationsPanel.setBackground(colorLight);
+			
+			cons.insets = new Insets(100, 10, 10, 10);
+			observationsPanel.add(introText, cons);
 
 			container.add(observationsPanel, BorderLayout.CENTER);
 		}
@@ -309,19 +327,20 @@ public class Main {
 			menu = new JMenu("File");
 			menu.setMnemonic(KeyEvent.VK_F);
 			menuItem = new JMenuItem("Exit");
+			menuItem.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					savePreferences();
+					System.exit(0);
+					
+				}
+				
+			});
 			menu.add(menuItem);
 			menubar.add(menu);
 
-			// Build favourites menu
-			menuFav = new JMenu("Favourites");
-			menuFav.setMnemonic(KeyEvent.VK_V);
-			menuItemFav1 = new JMenuItem("Add current station");
-			menuItemFav1.setEnabled(false);
-			menuFav.add(menuItemFav1);
-			menuItemFav2 = new JMenuItem("Remove current station");
-			menuItemFav2.setEnabled(false);
-			menuFav.add(menuItemFav2);
-			menubar.add(menuFav);
+
 		}
 
 		/**
@@ -482,6 +501,14 @@ public class Main {
 			this.btnRemove = btnRemove;
 		}
 
+		public JTextArea getIntroText() {
+			return introText;
+		}
+
+		public void setIntroText(JTextArea introText) {
+			this.introText = introText;
+		}
+
 	}
 
 	/*
@@ -526,6 +553,10 @@ public class Main {
 
 	public static Color getColorcontrast2() {
 		return colorContrast2;
+	}
+
+	public static Color getColorblack() {
+		return colorBlack;
 	}
 
 }

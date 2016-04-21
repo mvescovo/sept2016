@@ -201,6 +201,7 @@ public class StationsView implements StationsContract.View, ActionListener, List
 
         Main.MainWindow.getInstance().getBtnFavourite().addActionListener(this);
         Main.MainWindow.getInstance().getBtnRemove().addActionListener(this);
+    	Main.MainWindow.getInstance().getIntroText().setVisible(false);
 
         ObservationsView observationsView = new ObservationsView();
         ObservationsPresenter observationsPresenter = new ObservationsPresenter(WeatherRepositories.getInMemoryRepoInstance(new WeatherServiceApiImpl()), observationsView);
