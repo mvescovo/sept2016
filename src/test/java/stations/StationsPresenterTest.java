@@ -13,6 +13,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -65,7 +66,7 @@ public class StationsPresenterTest {
     public void loadStationsFromRepositoryAndLoadIntoView() {
         mStationsPresenter.loadStations(STATES.get(0).getName(), true);
 
-        verify(mWetherRepository).getStations(STATES.get(0).getName(), mLoadStationsCallbackCaptor.capture());
+        verify(mWetherRepository).getStations(anyString(), mLoadStationsCallbackCaptor.capture());
         mLoadStationsCallbackCaptor.getValue().onStationsLoaded(STATIONS);
 
         verify(mStationsView).setProgressBar(false);
