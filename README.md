@@ -30,3 +30,8 @@ Software Engineering Process and Tools.
   - The architecture is designed with the MVP pattern. A version of MVC, this pattern helps make it easy to test each component. Each "feature" has it's own presenter and view class and only the presenter can talk to the repository.
 - Repository pattern
   - We have used the repository pattern so that each "feature" can grab it's own data, thereby reducing coupling between components.
+
+####Other
+I was not able to add the tutor to github or leantesting. Github requries the email address to already have an account; it cannot sent invites. Leantesting uses github to login.
+
+If this is you Aditya (reading this now) I tried with this email: aditya.jagtap@rmit.edu.au. Let me know if you have some other account you want me to add you with. You can reach me at s3459317@student.rmit.edu.au. Thanks, Michael.
