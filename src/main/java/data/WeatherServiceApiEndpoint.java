@@ -88,7 +88,7 @@ class WeatherServiceApiEndpoint {
                 output.writeObject(list);
                 System.out.println("written favourite to file");
             } catch (IOException ex) {
-
+                ex.printStackTrace();
             }
         }
     }
