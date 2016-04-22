@@ -22,7 +22,7 @@ ext {
 }
 
 dependencies {
-    compile "com.squareup.retrofit2:retrofit2:$rootProject.ext.retrofit2Version"
+    compile "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofit2Version"
     compile "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofit2Version"
     compile "com.google.guava:guava:$rootProject.ext.guavaVersion"
     compile "com.google.code.gson:gson:1.7.2"
