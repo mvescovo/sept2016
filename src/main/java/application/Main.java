@@ -142,6 +142,8 @@ public class Main {
         private MainWindow() {
             // Container frame for the main window
             jFrame = new JFrame("Australian weather");
+            jFrame.setSize(frameWidth, frameHeight);
+            jFrame.setLocationRelativeTo(null);
             applyPreferences();
             jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             jFrame.addWindowListener(new WindowAdapter() {
@@ -408,10 +410,7 @@ public class Main {
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
                     }
-                } else {
-                    jFrame.setSize(frameWidth, frameHeight);
-                    jFrame.setLocationRelativeTo(null);
-                }
+                } 
             } catch (Exception e) {
                 e.printStackTrace();
             }
