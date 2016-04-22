@@ -3,9 +3,9 @@ package data;
 import java.util.List;
 
 /**
- * Created by michael on 5/04/16.
- *
  * Weather repository interface.
+ *
+ * @author michael
  */
 public interface WeatherRepository {
 

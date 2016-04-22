@@ -21,12 +21,9 @@ import java.util.List;
 
 /**
  * The user interface view for presenting favourites, states and weather stations.
- * Created by michael on 5/04/16.
- * Modified by kendall on 18/04/16.
  *
- * @author michael, kendall
- *
- *
+ * @author michael
+ * @author kendall
  */
 public class StationsView implements StationsContract.View, ActionListener, ListSelectionListener {
 
@@ -39,7 +36,9 @@ public class StationsView implements StationsContract.View, ActionListener, List
     private List<Station> mFavouritesList = new ArrayList<Station>();
     private JList<Station> mFavouritesJList;
 
-    /**,
+    /**
+     * Constructor.
+     *
      * Instantiates the stations view component.
      */
     public StationsView() {
@@ -48,7 +47,6 @@ public class StationsView implements StationsContract.View, ActionListener, List
         mJProgressBar.setIndeterminate(true);
         mJProgressBar.setVisible(false);
         Main.MainWindow.getInstance().getStationsPanel().add(mJProgressBar);
-
     }
 
     /**
@@ -95,7 +93,6 @@ public class StationsView implements StationsContract.View, ActionListener, List
      */
     @Override
     public void showStates(List<State> states) {
-
         mStatesComboList = new JComboBox<State>();
         DefaultComboBoxModel<State> comboModel = new DefaultComboBoxModel<State>();
         for (State s : states) {
@@ -144,7 +141,6 @@ public class StationsView implements StationsContract.View, ActionListener, List
 
         Main.MainWindow.getInstance().getStationsScrollPane().setViewportView(mStationsJList);
         Main.MainWindow.getInstance().getStationsScrollPane().repaint();
-
     }
 
     /**
@@ -156,12 +152,8 @@ public class StationsView implements StationsContract.View, ActionListener, List
     @Override
     public void showFavourites(List<Station> favourites) {
         mFavouritesList = favourites;
-//        mFavouritesList.clear();
-//		for (Station s : favourites) {
-//			mFavouritesList.add(s);
-//		}
+
         if (mFavouritesJList != null) {
-//			Main.MainWindow.getInstance().getFavouritesScrollPane().remove(mFavouritesJList);
             Main.MainWindow.getInstance().getFavouritesScrollPane().setViewportView(null);
         }
         mFavouritesJList = new JList<Station>();
@@ -198,11 +190,9 @@ public class StationsView implements StationsContract.View, ActionListener, List
             Main.MainWindow.getInstance().getBtnRemove().removeActionListener(this);
         }
         Main.MainWindow.getInstance().clearObservationsPanel();
-
         Main.MainWindow.getInstance().getBtnFavourite().addActionListener(this);
         Main.MainWindow.getInstance().getBtnRemove().addActionListener(this);
     	Main.MainWindow.getInstance().getIntroText().setVisible(false);
-
         ObservationsView observationsView = new ObservationsView();
         ObservationsPresenter observationsPresenter = new ObservationsPresenter(WeatherRepositories.getInMemoryRepoInstance(new WeatherServiceApiImpl()), observationsView);
         observationsView.setActionListener(observationsPresenter);
@@ -228,8 +218,6 @@ public class StationsView implements StationsContract.View, ActionListener, List
             if (btn.getName().equals("add")) {
                 mActionsListener.addFavouriteStation(getSelectedStation());
                 mActionsListener.loadFavouriteStations(true);
-//				Main.MainWindow.getInstance().getFavouritesScrollPane().revalidate();
-//				Main.MainWindow.getInstance().getFavouritesScrollPane().repaint();
             } else if (btn.getName().equals("remove")) {
                 mActionsListener.removeFavouriteStation(getSelectedStation());
                 mActionsListener.loadFavouriteStations(true);
@@ -247,7 +235,6 @@ public class StationsView implements StationsContract.View, ActionListener, List
     @SuppressWarnings("unchecked")
     @Override
     public void valueChanged(ListSelectionEvent e) {
-
         if (e.getSource() == mStationsJList && !mStationsJList.isSelectionEmpty()) {
             // Ensure the user has finished selecting
             if (!e.getValueIsAdjusting()) {
@@ -271,7 +258,6 @@ public class StationsView implements StationsContract.View, ActionListener, List
                 mStationsJList.clearSelection();
             }
         }
-
     }
 
     /*

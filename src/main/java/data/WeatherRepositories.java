@@ -1,9 +1,9 @@
 package data;
 
 /**
- * Created by michael on 5/04/16.
- *
  * Holds weather repositories. Currently just have one (memory version).
+ *
+ * @author michael
  */
 public class WeatherRepositories {
 

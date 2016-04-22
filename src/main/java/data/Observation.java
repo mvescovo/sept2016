@@ -7,12 +7,13 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.Vector;
 
-
 /**
- * Created by michael on 5/04/16.
- *
  * Observation entity containing all available properties populated with a call
  * to the Australian Bureau of Meteorology JSON web service.
+ *
+ * @author michael
+ * @author kendall
+ * @author steve
  */
 public class Observation {
 
@@ -191,7 +192,7 @@ public class Observation {
 		this.mDateTime = mDateTime;
 	}
 
-	public String getmApparentTemp() {
+	private String getmApparentTemp() {
 		return mApparentTemp;
 	}
 
@@ -215,7 +216,7 @@ public class Observation {
 		this.mAirtemp = mAirtemp;
 	}
 
-	public String getmRain() {
+	private String getmRain() {
 		return mRain;
 	}
 
@@ -231,7 +232,7 @@ public class Observation {
 		this.mHumidity = mHumidity;
 	}
 
-	public String getmDewpt() {
+	private String getmDewpt() {
 		return mDewpt;
 	}
 
@@ -239,7 +240,7 @@ public class Observation {
 		this.mDewpt = mDewpt;
 	}
 
-	public String getmDelta_t() {
+	private String getmDelta_t() {
 		return mDelta_t;
 	}
 
@@ -263,7 +264,7 @@ public class Observation {
 		this.mWindSpdKmh = mWindSpdKmh;
 	}
 
-	public String getmGustKmh() {
+	private String getmGustKmh() {
 		return mGustKmh;
 	}
 
@@ -271,7 +272,7 @@ public class Observation {
 		this.mGustKmh = mGustKmh;
 	}
 
-	public String getmWindSpdKt() {
+	private String getmWindSpdKt() {
 		return mWindSpdKt;
 	}
 
@@ -279,7 +280,7 @@ public class Observation {
 		this.mWindSpdKt = mWindSpdKt;
 	}
 
-	public String getmGustKt() {
+	private String getmGustKt() {
 		return mGustKt;
 	}
 
@@ -287,7 +288,7 @@ public class Observation {
 		this.mGustKt = mGustKt;
 	}
 
-	public String getmPressQnh() {
+	private String getmPressQnh() {
 		return mPressQnh;
 	}
 
@@ -295,7 +296,7 @@ public class Observation {
 		this.mPressQnh = mPressQnh;
 	}
 
-	public String getmPressMsl() {
+	private String getmPressMsl() {
 		return mPressMsl;
 	}
 
@@ -307,7 +308,7 @@ public class Observation {
 		return mStateName;
 	}
 
-	public void setmStateName(String mStateName) {
+	void setmStateName(String mStateName) {
 		this.mStateName = mStateName;
 	}
 

@@ -11,27 +11,24 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.verify;
 
 /**
- * Created by michael on 5/04/16.
+ * Test for the Stations presenter.
  *
+ * @author michael
  */
 public class StationsPresenterTest {
 
     private static List<State> STATES = Lists.newArrayList(
             new State("IDV60801", "Victoria"),
             new State("IDQ60801", "Queensland"));
-    private static List<Station> EMPTY_STATES = new ArrayList(0);
 
     private static List<Station> STATIONS = Lists.newArrayList(
             new Station("94866", "Melbourne Airport", "Victoria"),
             new Station("95936", "Melbourne Olympic Park", "Victoria"));
-    private static List<Station> EMPTY_STATIONS = new ArrayList(0);
 
     @Mock
     private WeatherRepository mWetherRepository;
@@ -41,6 +38,9 @@ public class StationsPresenterTest {
 
     @Captor
     private ArgumentCaptor<WeatherRepository.LoadStatesCallback> mLoadStatesCallbackCaptor;
+
+    @Captor
+    private ArgumentCaptor<WeatherRepository.LoadStationsCallback> mLoadStationsCallbackCaptor;
 
     private StationsPresenter mStationsPresenter;
 
@@ -63,16 +63,20 @@ public class StationsPresenterTest {
 
     @Test
     public void loadStationsFromRepositoryAndLoadIntoView() {
-        fail("Not implemented");
+        mStationsPresenter.loadStations(STATES.get(0).getName(), true);
 
-        // TODO Daniel implement me
+        verify(mWetherRepository).getStations(STATES.get(0).getName(), mLoadStationsCallbackCaptor.capture());
+        mLoadStationsCallbackCaptor.getValue().onStationsLoaded(STATIONS);
+
+        verify(mStationsView).setProgressBar(false);
+        verify(mStationsView).showStations(STATIONS);
     }
 
     @Test
     public void addFavouriteStationToRepository() {
-        fail("Not implemented");
+        mStationsPresenter.addFavouriteStation(STATIONS.get(0));
 
-        // TODO Daniel implement me
+        verify(mWetherRepository).saveFavouriteStation(STATIONS.get(0));
     }
 
     @Test

@@ -17,14 +17,18 @@ import java.util.List;
 
 
 /**
- * Created by michael on 5/04/16.
- * Modified by steve.
- *
  * Get data from storage and the BOM
+ *
+ * @author steve - implementation
+ * @author michael - shell methods
  */
 class WeatherServiceApiEndpoint {
 
-    // Get states from file
+    /**
+     * Get states from file
+     *
+     * @return the list of states
+     */
     static List<State> loadPersistedStates() {
         List<State> states = new ArrayList<State>();
         JsonParser jsonParser = new JsonParser();
@@ -41,14 +45,11 @@ class WeatherServiceApiEndpoint {
     }
 
     /**
-     * Created by michael  on 6/04/16.
-     *		
-     *
      * Get observations from files rather than from the BOM (historical data)
+     *
+     * @return a map of the list of stations.
      */
     static HashMap<String,List<Station>> loadPersistedStations() {
-    	
-
         HashMap<String, List<Station>> allStations = new HashMap<String, List<Station>>();
         JsonParser jsonParser = new JsonParser();
         JsonArray jsonArray;
@@ -69,11 +70,11 @@ class WeatherServiceApiEndpoint {
         }
         return allStations;
     }
+
     /**
-     * Created by  steve on 10/04/16.
-     *		
+     * Save a favourite station to a file.
      *
-     * Get observations from files rather than from the BOM (historical data)
+     * @param favourite the station to save.
      */
     static void saveFavouriteStation(Station favourite) {
         List<Station> list = getFavourites();
@@ -81,7 +82,6 @@ class WeatherServiceApiEndpoint {
         if (!list.contains(favourite)) {
             list.add(favourite);
 
- 
             try (OutputStream file = new FileOutputStream("favourites.ser");
                  OutputStream buffer = new BufferedOutputStream(file);
                  ObjectOutput output = new ObjectOutputStream(buffer);) {
@@ -91,15 +91,13 @@ class WeatherServiceApiEndpoint {
 
             }
         }
-
     }
 
-
     /**
-     * Created by michael and steve on 5/04/16.
-     *		
+     * Get observations from the BOM. Uses Retrofit library which does work on a background thread.
      *
-     * Get observations from files rather than from the BOM (historical data)
+     * @param station to determine what observations to get.
+     * @param callback to return data when it's ready.
      */
     @SuppressWarnings("rawtypes")
     static void getObservations(final Station station, final WeatherServiceApi.WeatherServiceCallback callback) {
@@ -119,7 +117,6 @@ class WeatherServiceApiEndpoint {
                     JsonObject observationsObject = response.body().getAsJsonObject("observations");
                     JsonArray dataArray = observationsObject.get("data").getAsJsonArray();
                     for (int i = 0; i < dataArray.size(); i++) {
-
 
                         String wmo = "";
                         String history_product = "";
@@ -143,22 +140,20 @@ class WeatherServiceApiEndpoint {
                         String press_qnh = "";
                         String press_tend = "";
                         String rain_trace = "";
-
                         String rel_hum = "";
                         String sea_state = "";
                         String swell_dir_worded = "";
                         String swell_height = "";
                         String swell_period = "";
                         String vis_km = "";
-
                         String weather = "";
                         String wind_dir = "";
-
                         String wind_spd_kmh = "";
                         String wind_spd_kt = "";
                         String name = "";
                         String air_temp = "";
                         String date = "";
+
                         if (!dataArray.get(i).getAsJsonObject().get("name").isJsonNull()) {
                             name = dataArray.get(i).getAsJsonObject().get("name").getAsString();
                         }
@@ -286,21 +281,23 @@ class WeatherServiceApiEndpoint {
         });
     }
 
+    /**
+     * Interface for use with Retrofit to get data from the BOM.
+     */
     private interface BomWeatherService {
         @GET
         Call<JsonObject> loadObservations(@Url String url);
     }
+
     /**
-     * Created by  steve on 12/04/16.
-     *		
+     * Get current favourites.
      *
-     * get current favourites
+     * @return list of favourite stations.
      */
     @SuppressWarnings("unchecked")
     static List<Station> getFavourites() {
         List<Station> restoredFavs = new ArrayList<Station>();
         // deserialize the favourites.ser file
-  
         try (InputStream file = new FileInputStream("favourites.ser");
              InputStream buffer = new BufferedInputStream(file);
              ObjectInput input = new ObjectInputStream(buffer);) {
@@ -313,19 +310,18 @@ class WeatherServiceApiEndpoint {
         } catch (FileNotFoundException e) {
             return new ArrayList<Station>();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
+            e.printStackTrace();
             e.printStackTrace();
         }
         return restoredFavs;
     }
+
     /**
-     * Created by  steve on 8/04/16.
-     *		
+     * Remove a favourite station.
      *
-     * remove a favourite station from the favourites list
+     * @param favourite the station to remove.
      */
     static void removeFavouriteStation(Station favourite) {
         List<Station> list = getFavourites();
@@ -333,13 +329,12 @@ class WeatherServiceApiEndpoint {
         if (list.contains(favourite)) {
             list.remove(favourite);
 
-       
             try (OutputStream file = new FileOutputStream("favourites.ser");
                  OutputStream buffer = new BufferedOutputStream(file);
                  ObjectOutput output = new ObjectOutputStream(buffer);) {
                 output.writeObject(list);
             } catch (IOException ex) {
-
+                ex.printStackTrace();
             }
         }
     }

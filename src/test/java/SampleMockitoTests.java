@@ -9,10 +9,9 @@ import static org.mockito.Mockito.when;
 
 
 /**
- * Created by michael on 5/04/16.
- *
  * Sample Mockito tests.
  *
+ * @author michael
  */
 public class SampleMockitoTests {
 

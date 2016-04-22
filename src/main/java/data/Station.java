@@ -4,20 +4,20 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 /**
- * Created by michael on 5/04/16.
- *
  * Weather station entity containing attributes for the stations name (City),
  * state name it is located in, and the url string of weather observations for
  * this station.
+ *
+ * @author michael
+ * @author kendall
+ * @author steve
  */
 public class Station implements Serializable {
 
 	private static final long serialVersionUID = -1970346110178787000L;
-
 	private String mUrl;
 	private String mCity;
 	private String mStateName;
-
 	private HashMap<String, Observation> mObservations;
 
 	/**

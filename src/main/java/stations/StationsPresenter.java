@@ -7,21 +7,31 @@ import data.WeatherRepository;
 import java.util.List;
 
 /**
- * Created by michael on 5/04/16.
- *
  * Listen to user actions from the UI. Retrieve data and update the UI.
  *
+ * @author michael
  */
 public class StationsPresenter implements StationsContract.UserActionsListener {
 
     private final WeatherRepository mWeatherRepository;
     private final StationsContract.View mView;
 
+    /**
+     * Constructor.
+     *
+     * @param weatherRepository the repository to get and save data.
+     * @param view the view to update the UI.
+     */
     public StationsPresenter(WeatherRepository weatherRepository, StationsContract.View view) {
         mWeatherRepository = weatherRepository;
         mView = view;
     }
 
+    /**
+     * Load states.
+     *
+     * @param forceUpdate force latest data. Not currently used as there's no cloud model for states.
+     */
     @Override
     public void loadStates(final boolean forceUpdate) {
         mView.setProgressBar(true);
@@ -36,6 +46,12 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
         });
     }
 
+    /**
+     * Load stations.
+     *
+     * @param stateName   the state to determine the stations.
+     * @param forceUpdate force latest data. Not currently used as there's no cloud model for stations.
+     */
     @Override
     public void loadStations(String stateName, boolean forceUpdate) {
         mView.setProgressBar(true);
@@ -50,16 +66,31 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
         });
     }
 
+    /**
+     * Add a favourite station.
+     *
+     * @param favourite the station to add.
+     */
     @Override
     public void addFavouriteStation(Station favourite) {
         mWeatherRepository.saveFavouriteStation(favourite);
     }
 
+    /**
+     * Open an observations view.
+     *
+     * @param station the station to base the observations view.
+     */
     @Override
     public void openObservations(Station station) {
         mView.showObservationsUi(station);
     }
 
+    /**
+     * Load the list of favourite stations form the repository.
+     *
+     * @param forceUpdate force latest data. Not currently used as there's no cloud model for stations.
+     */
     @Override
 	public void loadFavouriteStations(boolean forceUpdate) {
         if (forceUpdate) {
@@ -73,6 +104,11 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
 		});
 	}
 
+    /**
+     * Remove a favourite station from the repository.
+     *
+     * @param favourite the station to remove.
+     */
     @Override
 	public void removeFavouriteStation(Station favourite) {
 		mWeatherRepository.removeFavouriteStation(favourite);

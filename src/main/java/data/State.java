@@ -3,11 +3,11 @@ package data;
 import java.util.HashMap;
 
 /**
- * Created by michael on 7/04/16.
- * 
  * An object representing a 'State or Territory' of Australia. Contains and id,
  * name and a collection of weather stations located within the 'State'
  *
+ * @author michael
+ * @author kendall
  */
 public class State {
 

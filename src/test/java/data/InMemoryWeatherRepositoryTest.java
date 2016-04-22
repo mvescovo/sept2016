@@ -1,11 +1,11 @@
 package data;
 
 /**
- * Created by michael on 5/04/16.
+ * Test for the in memory weather repository.
  *
+ * @author michael
  */
 public class InMemoryWeatherRepositoryTest {
 
-    // TODO Michael to look at.
-
+    // TODO leave for assignment 2.
 }

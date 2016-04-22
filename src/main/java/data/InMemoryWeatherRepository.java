@@ -8,9 +8,9 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by michael on 5/04/16.
- *
  * Memory model. Gets and saves data from and to the weather service API.
+ *
+ * @author michael
  */
 class InMemoryWeatherRepository implements WeatherRepository {
 
@@ -20,10 +20,20 @@ class InMemoryWeatherRepository implements WeatherRepository {
     private List<Station> mCachedFavouriteStations;
     private HashMap<Station,List<Observation>> mCachedObservations = new HashMap<Station, List<Observation>>();
 
+    /**
+     * Constructor.
+     *
+     * @param weatherServiceApi the service api to get and save data.
+     */
     InMemoryWeatherRepository(WeatherServiceApi weatherServiceApi) {
         mWeatherServiceApi = checkNotNull(weatherServiceApi);
     }
 
+    /**
+     * Get a list of states via callback.
+     *
+     * @param callback to pass data back when it's ready.
+     */
     @Override
     public void getStates(final LoadStatesCallback callback) {
         checkNotNull(callback);
@@ -39,6 +49,12 @@ class InMemoryWeatherRepository implements WeatherRepository {
         }
     }
 
+    /**
+     * Get a list of stations via callback.
+     *
+     * @param state to determine the stations
+     * @param callback to pass data back when it's ready.
+     */
     @Override
     public void getStations(final String state, final LoadStationsCallback callback) {
         checkNotNull(callback);
@@ -54,6 +70,12 @@ class InMemoryWeatherRepository implements WeatherRepository {
         }
     }
 
+    /**
+     * Get a list of observations via callback.
+     *
+     * @param station to determine the observations.
+     * @param callback to pass data back when it's ready.
+     */
     @Override
     public void getObservations(final Station station, final LoadObservationsCallback callback) {
         checkNotNull(callback);
@@ -74,11 +96,22 @@ class InMemoryWeatherRepository implements WeatherRepository {
         }
     }
 
+    /**
+     * Save a favourite station so that it's available the next time the user opens the app,
+     * and for convenience when selecting favourite stations.
+     *
+     * @param favourite the station to save.
+     */
     @Override
     public void saveFavouriteStation(Station favourite) {
         mWeatherServiceApi.saveFavouriteStation(favourite);
     }
 
+    /**
+     * Get a list of the favourite stations via callback.
+     *
+     * @param callback to pass data back when it's ready.
+     */
     @Override
     public void getFavouriteStations(final LoadFavouritesCallback callback) {
         checkNotNull(callback);
@@ -92,30 +125,45 @@ class InMemoryWeatherRepository implements WeatherRepository {
         } else {
             callback.onFavouritesLoaded(mCachedFavouriteStations);
         }
-
     }
 
+    /**
+     * Remove a station from the favourites so only the currently desired favourites exist.
+     *
+     * @param favourite the station to remove.
+     */
     @Override
     public void removeFavouriteStation(Station favourite) {
         mWeatherServiceApi.removeFavouriteStation(favourite);
-
     }
 
+    /**
+     * Delete the memory model of states, forcing any future request to call the service api.
+     */
     @Override
     public void refreshStates() {
         mCachedStates = null;
     }
 
+    /**
+     * Delete the memory model of stations, forcing any future request to call the service api.
+     */
     @Override
     public void refreshStations() {
         mCachedStations = null;
     }
 
+    /**
+     * Delete the memory model of favourite stations, forcing any future request to call the service api.
+     */
     @Override
     public void refreshFavouriteStations() {
         mCachedFavouriteStations = null;
     }
 
+    /**
+     * Delete the memory model of observations, forcing any future request to call the service api.
+     */
     @Override
     public void refreshObservations() {
         mCachedObservations.clear();
