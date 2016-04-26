@@ -37,6 +37,6 @@ dependencies {
     testCompile "org.powermock:powermock-api-mockito:$rootProject.ext.powerMockito"
 
     // Logging
-    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: $rootProject.ext.log4j
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: $rootProject.ext.log4j
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.5'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.5'
 }
