@@ -2,6 +2,8 @@ package application;
 
 import data.WeatherRepositories;
 import data.WeatherServiceApiImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import stations.StationsContract;
 import stations.StationsPresenter;
 import stations.StationsView;
@@ -23,6 +25,7 @@ import java.util.prefs.Preferences;
  */
 public class Main {
 
+    private static final Logger logger = LogManager.getLogger(application.Main.class);
     // Default window size
     private static final int frameWidth = 1024;
     private static final int frameHeight = 768;
@@ -49,6 +52,7 @@ public class Main {
      * Standard command arguments for main()
      */
     public static void main(String[] args) {
+        logger.trace("Entering main method.");
         // Start the app on the event dispatch thread
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -60,6 +64,7 @@ public class Main {
                 stationsView.onReady();
             }
         });
+        logger.trace("Exiting main method.");
     }
 
     /**

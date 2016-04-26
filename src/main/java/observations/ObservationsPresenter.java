@@ -4,6 +4,8 @@ import application.Main;
 import data.Observation;
 import data.Station;
 import data.WeatherRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.List;
  */
 public class ObservationsPresenter implements ObservationsContract.UserActionsListener {
 
+    private static final Logger logger = LogManager.getLogger(observations.ObservationsPresenter.class);
     private final WeatherRepository mWeatherRepository;
     private final ObservationsContract.View mView;
 
@@ -45,7 +48,7 @@ public class ObservationsPresenter implements ObservationsContract.UserActionsLi
             public void onObservationsLoaded(List<Observation> observations) {
                 mView.setProgressBar(false);
                 if(observations == null) {
-                	System.out.println("Cannot get data!");
+                    logger.debug("Cannot get observations data from repository.");
                 } else {
                 	try {
                         mView.showLatestObservation(observations.get(0));

@@ -3,6 +3,8 @@ package observations;
 import application.Main;
 import data.Observation;
 import data.Station;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -38,6 +40,7 @@ import java.util.List;
  */
 public class ObservationsView implements ObservationsContract.View, ActionListener {
 
+    private static final Logger logger = LogManager.getLogger(observations.ObservationsView.class);
     private ObservationsContract.UserActionsListener mActionsListener;
     private JProgressBar mJProgressBar;
     private JPanel mTablePanel;
@@ -251,7 +254,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
      */
     @Override
     public void showChart(List<Observation> observations) {
-        System.out.println(observations.get(0).getmDateTime());
+        logger.debug("observations dateTime: " + observations.get(0).getmDateTime());
         String chtTitle = observations.get(0).getmName() + " - Temperature observations";
         String chtXAxisLabel = "Date and time";
         String chtYAxisLabel = "Temperature " + Main.getSymboldegree() + "C";

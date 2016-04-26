@@ -1,6 +1,8 @@
 package data;
 
 import com.google.common.collect.ImmutableList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +16,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 class InMemoryWeatherRepository implements WeatherRepository {
 
+    private static final Logger logger = LogManager.getLogger(data.InMemoryWeatherRepository.class);
     private final WeatherServiceApi mWeatherServiceApi;
     private List<State> mCachedStates;
     private HashMap<String,List<Station>> mCachedStations;
@@ -83,9 +86,9 @@ class InMemoryWeatherRepository implements WeatherRepository {
             mWeatherServiceApi.getObservations(station, new WeatherServiceApi.WeatherServiceCallback<List<Observation>>() {
                 public void onLoaded(List<Observation> data) {
                     if (data == null) {
-                        System.out.println("data is NULL");
+                        logger.debug("date is NULL");
                     } else if (data.size() == 0) {
-                        System.out.println("data size is 0");
+                        logger.debug("data size is 0");
                     }
                     mCachedObservations.put(station, data);
                     callback.onObservationsLoaded(mCachedObservations.get(station));

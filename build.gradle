@@ -19,6 +19,7 @@ ext {
     mockitoVersion = '1.10.19'
     hamcrestVersion = '1.3'
     powerMockito = '1.6.2'
+    log4j = '2.5'
 }
 
 dependencies {
@@ -34,4 +35,8 @@ dependencies {
     testCompile "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
     testCompile "org.powermock:powermock-module-junit4:$rootProject.ext.powerMockito"
     testCompile "org.powermock:powermock-api-mockito:$rootProject.ext.powerMockito"
+
+    // Logging
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: $rootProject.ext.log4j
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: $rootProject.ext.log4j
 }

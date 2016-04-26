@@ -3,6 +3,8 @@ package data;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,6 +25,8 @@ import java.util.List;
  * @author michael - shell methods
  */
 class WeatherServiceApiEndpoint {
+
+    private static final Logger logger = LogManager.getLogger(data.WeatherServiceApiEndpoint.class);
 
     /**
      * Get states from file
@@ -86,7 +90,7 @@ class WeatherServiceApiEndpoint {
                  OutputStream buffer = new BufferedOutputStream(file);
                  ObjectOutput output = new ObjectOutputStream(buffer);) {
                 output.writeObject(list);
-                System.out.println("written favourite to file");
+                logger.info("Written favourite to file");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -269,7 +273,7 @@ class WeatherServiceApiEndpoint {
                         observations.add(observation);
                     }
                 } else {
-                    System.out.println("Response body is null");
+                    logger.info("BOM Observation response body is null");
                 }
                 callback.onLoaded(observations);
             }
@@ -305,7 +309,7 @@ class WeatherServiceApiEndpoint {
             restoredFavs = (List<Station>) input.readObject();
             // display its data
             for (Station s : restoredFavs) {
-                System.out.println("Recovered Favourite: " + s);
+                logger.info("Recovered Favourite: " + s);
             }
         } catch (FileNotFoundException e) {
             return new ArrayList<Station>();
