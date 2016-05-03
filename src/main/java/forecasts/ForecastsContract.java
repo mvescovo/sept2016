@@ -6,5 +6,5 @@ package forecasts;
  * @author michael
  */
 public interface ForecastsContract {
-
+    // Testing branches and pull requests.
 }
