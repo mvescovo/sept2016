@@ -25,6 +25,7 @@ import java.util.prefs.Preferences;
  */
 public class Main {
 
+	// TODO comment here
     private static final Logger logger = LogManager.getLogger(application.Main.class);
     // Default window size
     private static final int frameWidth = 1024;
