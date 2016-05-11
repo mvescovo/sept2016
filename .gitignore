@@ -20,6 +20,7 @@ gradle-app.setting
 bin/
 gen/
 out/
+doc/
 
 # Libraries used by the app
 # Can explicity add if we want, but shouldn't do so blindly. Licences, bloat, etc.
