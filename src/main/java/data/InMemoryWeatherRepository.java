@@ -21,7 +21,8 @@ class InMemoryWeatherRepository implements WeatherRepository {
     private List<State> mCachedStates;
     private HashMap<String,List<Station>> mCachedStations;
     private List<Station> mCachedFavouriteStations;
-    private HashMap<Station,List<Observation>> mCachedObservations = new HashMap<Station, List<Observation>>();
+    private HashMap<Station,List<Observation>> mCachedObservations = new HashMap<>();
+    private HashMap<Station,List<Forecast>> mCachedForecasts = new HashMap<>();
 
     /**
      * Constructor.
@@ -86,7 +87,7 @@ class InMemoryWeatherRepository implements WeatherRepository {
             mWeatherServiceApi.getObservations(station, new WeatherServiceApi.WeatherServiceCallback<List<Observation>>() {
                 public void onLoaded(List<Observation> data) {
                     if (data == null) {
-                        logger.debug("date is NULL");
+                        logger.debug("data is NULL");
                     } else if (data.size() == 0) {
                         logger.debug("data size is 0");
                     }
@@ -96,6 +97,32 @@ class InMemoryWeatherRepository implements WeatherRepository {
             });
         } else {
             callback.onObservationsLoaded(mCachedObservations.get(station));
+        }
+    }
+
+    /**
+     * Get a list of forecasts via callback.
+     *
+     * @param station to determine the forecasts.
+     * @param callback to pass data back when it's ready.
+     */
+    @Override
+    public void getForecasts(Station station, LoadForecastsCallback callback) {
+        checkNotNull(callback);
+        if ((mCachedForecasts == null) || (mCachedForecasts.get(station) == null)) {
+            mWeatherServiceApi.getForecasts(station, new WeatherServiceApi.WeatherServiceCallback<List<Forecast>>() {
+                public void onLoaded(List<Forecast> data) {
+                    if (data == null) {
+                        logger.debug("data is NULL");
+                    } else if (data.size() == 0) {
+                        logger.debug("data size is 0");
+                    }
+                    mCachedForecasts.put(station, data);
+                    callback.onForecastsLoaded(mCachedForecasts.get(station));
+                }
+            });
+        } else {
+            callback.onForecastsLoaded(mCachedForecasts.get(station));
         }
     }
 
@@ -169,6 +196,14 @@ class InMemoryWeatherRepository implements WeatherRepository {
      */
     @Override
     public void refreshObservations() {
+        mCachedObservations.clear();
+    }
+
+    /**
+     * Delete the memory model of forecasts, forcing any future request to call the service api.
+     */
+    @Override
+    public void refreshForecasts() {
         mCachedObservations.clear();
     }
 

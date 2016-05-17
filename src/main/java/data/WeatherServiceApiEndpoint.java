@@ -11,15 +11,16 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
+
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
 /**
- * Get data from storage and the BOM
+ * Get data from storage and online weather sources
  *
  * @author steve - implementation
  * @author michael - shell methods
@@ -34,11 +35,11 @@ class WeatherServiceApiEndpoint {
      * @return the list of states
      */
     static List<State> loadPersistedStates() {
-        List<State> states = new ArrayList<State>();
+        List<State> states = new ArrayList<>();
         JsonParser jsonParser = new JsonParser();
         JsonArray jsonArray;
-        Reader reader = new InputStreamReader(WeatherServiceApiEndpoint.class.getResourceAsStream("/stations.json"));
-        jsonArray = (JsonArray) jsonParser.parse(reader).getAsJsonArray();
+        Reader reader = new InputStreamReader(WeatherServiceApiEndpoint.class.getResourceAsStream("/stationsTemp.json"));
+        jsonArray = jsonParser.parse(reader).getAsJsonArray();
 
         for (int i = 0; i < jsonArray.size(); i++) {
             String stateName = jsonArray.get(i).getAsJsonObject().get("state").getAsString();
@@ -49,25 +50,27 @@ class WeatherServiceApiEndpoint {
     }
 
     /**
-     * Get observations from files rather than from the BOM (historical data)
+     * Get stations from file
      *
      * @return a map of the list of stations.
      */
     static HashMap<String,List<Station>> loadPersistedStations() {
-        HashMap<String, List<Station>> allStations = new HashMap<String, List<Station>>();
+        HashMap<String, List<Station>> allStations = new HashMap<>();
         JsonParser jsonParser = new JsonParser();
         JsonArray jsonArray;
-        Reader reader = new InputStreamReader(WeatherServiceApiEndpoint.class.getResourceAsStream("/stations.json"));
-        jsonArray = (JsonArray) jsonParser.parse(reader).getAsJsonArray();
+        Reader reader = new InputStreamReader(WeatherServiceApiEndpoint.class.getResourceAsStream("/stationsTemp.json"));
+        jsonArray = jsonParser.parse(reader).getAsJsonArray();
 
         for (int i = 0; i < jsonArray.size(); i++) {
             String stateName = jsonArray.get(i).getAsJsonObject().get("state").getAsString();
-            List<Station> stations = new ArrayList<Station>();
+            List<Station> stations = new ArrayList<>();
             JsonArray stationArray = jsonArray.get(i).getAsJsonObject().get("stations").getAsJsonArray();
             for (int j = 0; j < stationArray.size(); j++) {
                 String url = stationArray.get(j).getAsJsonObject().get("url").getAsString();
                 String city = stationArray.get(j).getAsJsonObject().get("city").getAsString();
-                Station station = new Station(url, city, stateName);
+                String latitude = stationArray.get(j).getAsJsonObject().get("lat").getAsString();
+                String longitude = stationArray.get(j).getAsJsonObject().get("long").getAsString();
+                Station station = new Station(url, city, stateName, latitude, longitude);
                 stations.add(station);
             }
             allStations.put(stateName, stations);
@@ -104,15 +107,15 @@ class WeatherServiceApiEndpoint {
      * @param callback to return data when it's ready.
      */
     @SuppressWarnings("rawtypes")
-    static void getObservations(final Station station, final WeatherServiceApi.WeatherServiceCallback callback) {
-        final List<Observation> observations = new ArrayList<Observation>();
+    static void getObservations(final Station station, final WeatherServiceApi.WeatherServiceCallback<List<Observation>> callback) {
+        final List<Observation> observations = new ArrayList<>();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl("http://www.bom.gov.au/fwo/")
                 .build();
 
-        BomWeatherService service = retrofit.create(BomWeatherService.class);
+        WeatherService service = retrofit.create(WeatherService.class);
         Call<JsonObject> call = service.loadObservations(station.getUrl());
         call.enqueue(new Callback<JsonObject>() {
             @SuppressWarnings("unchecked")
@@ -121,7 +124,6 @@ class WeatherServiceApiEndpoint {
                     JsonObject observationsObject = response.body().getAsJsonObject("observations");
                     JsonArray dataArray = observationsObject.get("data").getAsJsonArray();
                     for (int i = 0; i < dataArray.size(); i++) {
-
                         String wmo = "";
                         String history_product = "";
                         String local_date_time = "";
@@ -179,11 +181,9 @@ class WeatherServiceApiEndpoint {
                         if (!dataArray.get(i).getAsJsonObject().get("weather").isJsonNull()) {
                             weather = dataArray.get(i).getAsJsonObject().get("weather").getAsString();
                         }
-
                         if (!dataArray.get(i).getAsJsonObject().get("vis_km").isJsonNull()) {
                             vis_km = dataArray.get(i).getAsJsonObject().get("vis_km").getAsString();
                         }
-
                         if (!dataArray.get(i).getAsJsonObject().get("swell_period").isJsonNull()) {
                             swell_period = dataArray.get(i).getAsJsonObject().get("swell_period").getAsString();
                         }
@@ -199,7 +199,6 @@ class WeatherServiceApiEndpoint {
                         if (!dataArray.get(i).getAsJsonObject().get("rel_hum").isJsonNull()) {
                             rel_hum = dataArray.get(i).getAsJsonObject().get("rel_hum").getAsString();
                         }
-
                         if (!dataArray.get(i).getAsJsonObject().get("rain_trace").isJsonNull()) {
                             rain_trace = dataArray.get(i).getAsJsonObject().get("rain_trace").getAsString();
                         }
@@ -245,7 +244,6 @@ class WeatherServiceApiEndpoint {
                         if (!dataArray.get(i).getAsJsonObject().get("lon").isJsonNull()) {
                             lon = dataArray.get(i).getAsJsonObject().get("lon").getAsString();
                         }
-
                         if (!dataArray.get(i).getAsJsonObject().get("lat").isJsonNull()) {
                             lat = dataArray.get(i).getAsJsonObject().get("lat").getAsString();
                         }
@@ -269,7 +267,7 @@ class WeatherServiceApiEndpoint {
                                 aifstime_utc, lat, lon, apparent_t, cloud, cloud_base_m, cloud_oktas, cloud_type, cloud_type_id, delta_t, gust_kmh,
                                 dewpt, press, press_msl, press_qnh, press_tend, rain_trace, rel_hum, sea_state, swell_dir_worded, swell_height, swell_period,
                                 vis_km, weather, wind_dir, wind_spd_kmh, wind_spd_kt);
-                        observation.setmStateName(station.getmStateName());
+                        observation.setmStateName(station.getState());
                         observations.add(observation);
                     }
                 } else {
@@ -286,11 +284,147 @@ class WeatherServiceApiEndpoint {
     }
 
     /**
-     * Interface for use with Retrofit to get data from the BOM.
+     * Get forecasts from online sites. Uses Retrofit library which does work on a background thread.
+     *
+     * @param station to determine what forecasts to get.
+     * @param callback to return data when it's ready.
      */
-    private interface BomWeatherService {
+    static void getForecasts(final Station station, final WeatherServiceApi.WeatherServiceCallback<List<Forecast>> callback) {
+        final List<Forecast> forecasts = new ArrayList<>();
+        String forecastSite = "";
+        String forecastSiteBaseUrl = "";
+        String forecastApiKey = "";
+        Properties properties = new Properties();
+        InputStream input = null;
+
+        try {
+            input = new FileInputStream("config.properties");
+            properties.load(input);
+            forecastSite = properties.getProperty("forecastsite");
+            if (forecastSite.equals("forecastio")) {
+                forecastApiKey = properties.getProperty("forecastioapikey");
+                forecastSiteBaseUrl = properties.getProperty("forecastiobaseurl");
+            } else {
+                forecastApiKey = properties.getProperty("openweathermapapikey");
+                forecastSiteBaseUrl = properties.getProperty("openweathermapbaseurl");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // If any of this failed then return with empty forecasts list
+            callback.onLoaded(forecasts);
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(forecastSiteBaseUrl)
+                .build();
+
+        WeatherService service = retrofit.create(WeatherService.class);
+
+        if (forecastSite.equals("forecastio")) {
+            // using forecastio
+            Call<JsonObject> call = service.loadForecastsFromForecastIo(forecastApiKey,
+                    station.getLatitude(),
+                    station.getLongitude());
+
+            call.enqueue(new Callback<JsonObject>() {
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    if (response.body() != null) {
+                        JsonObject forecastsObject = response.body().getAsJsonObject("hourly");
+                        JsonArray dataArray = forecastsObject.get("data").getAsJsonArray();
+                        for (int i = 0; i < dataArray.size(); i++) {
+                            // TODO: 18/05/16 Steve to analyse API and update with all necessary data
+                            String time = "";
+                            String temperature = "";
+
+                            if (!dataArray.get(i).getAsJsonObject().get("time").isJsonNull()) {
+                                time = dataArray.get(i).getAsJsonObject().get("time").getAsString();
+                            }
+                            if (!dataArray.get(i).getAsJsonObject().get("temperature").isJsonNull()) {
+                                temperature = dataArray.get(i).getAsJsonObject().get("temperature").getAsString();
+                            }
+
+                            Forecast forecast = new Forecast(time, temperature);
+                            forecasts.add(forecast);
+                        }
+                    } else {
+                        logger.info("Forecast response body is null");
+                    }
+                    callback.onLoaded(forecasts);
+                }
+
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    callback.onLoaded(forecasts);
+                }
+            });
+        } else {
+            // Using openweathermap
+            Map<String, String> queryMap = new HashMap<>();
+            queryMap.put("appid", forecastApiKey);
+            queryMap.put("lat", station.getLatitude());
+            queryMap.put("lon", station.getLongitude());
+            Call<JsonObject> call = service.loadForecastsFromOpenWeatherMap("", queryMap);
+
+            call.enqueue(new Callback<JsonObject>() {
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    if (response.body() != null) {
+                        JsonArray dataArray = response.body().getAsJsonArray("list");
+                        for (int i = 0; i < dataArray.size(); i++) {
+                            JsonObject dataObject = dataArray.get(i).getAsJsonObject();
+                            // TODO: 18/05/16 Steve to analyse API and update with all necessary data
+                            String time = "";
+                            String temp = "";
+
+                            if (!dataObject.get("dt").isJsonNull()) {
+                                time = dataObject.get("dt").getAsString();
+                            }
+
+                            dataObject = dataObject.get("main").getAsJsonObject();
+
+                            if (!dataObject.get("temp").isJsonNull()) {
+                                temp = dataObject.get("temp").getAsString();
+                            }
+
+                            Forecast forecast = new Forecast(time, temp);
+                            forecasts.add(forecast);
+                        }
+                    } else {
+                        logger.info("Forecast response body is null");
+                    }
+                    callback.onLoaded(forecasts);
+                }
+
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    callback.onLoaded(forecasts);
+                }
+            });
+        }
+    }
+
+    /**
+     * Interface for use with Retrofit to get weather data.
+     */
+    private interface WeatherService {
         @GET
         Call<JsonObject> loadObservations(@Url String url);
+
+        // The type is for optionally entering "daily" or some other extension to the path
+        @GET("{type}")
+        Call<JsonObject> loadForecastsFromOpenWeatherMap(@Path("type") String type,
+                                                         @QueryMap Map<String, String> options);
+
+        @GET("{apikey}/{lat},{lon}")
+        Call<JsonObject> loadForecastsFromForecastIo(@Path("apikey") String apikey,
+                                                     @Path("lat") String lat,
+                                                     @Path("lon") String lon);
     }
 
     /**

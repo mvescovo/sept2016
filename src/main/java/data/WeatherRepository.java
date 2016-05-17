@@ -20,6 +20,10 @@ public interface WeatherRepository {
     interface LoadObservationsCallback {
         void onObservationsLoaded(List<Observation> observations);
     }
+
+    interface LoadForecastsCallback {
+        void onForecastsLoaded(List<Forecast> forecasts);
+    }
     
     interface LoadFavouritesCallback {
         void onFavouritesLoaded(List<Station> favourites);
@@ -31,6 +35,8 @@ public interface WeatherRepository {
 
     void getObservations(Station station, LoadObservationsCallback callback);
 
+    void getForecasts(Station station, LoadForecastsCallback callback);
+
     void saveFavouriteStation(Station favourite);
 
     void refreshStates();
@@ -40,6 +46,8 @@ public interface WeatherRepository {
     void refreshFavouriteStations();
 
     void refreshObservations();
+
+    void refreshForecasts();
 
 	void getFavouriteStations(LoadFavouritesCallback callback);
 

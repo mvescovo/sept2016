@@ -114,8 +114,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
     /**
      * Displays and hides the progress bar used while waiting for data
      *
-     * @param active
-     *            true displays the progress bar and false hides it.
+     * @param active true displays the progress bar and false hides it.
      */
     @Override
     public void setProgressBar(boolean active) {
@@ -133,8 +132,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
      * When the view has finished initalising load the observations from the
      * presenter.
      *
-     * @param station
-     *            the selected weather station
+     * @param station the selected weather station
      */
     @Override
     public void onReady(Station station) {
@@ -146,8 +144,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
      * Creates a header panel containing the selection station details and a
      * summary of the latest weather observation for that station.
      *
-     * @param obs
-     *            a collection of observations for a weather station.
+     * @param obs a collection of observations for a weather station.
      */
     @Override
     public void showLatestObservation(Observation obs) {
@@ -220,8 +217,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
      * Create a table to display all observations and attributes and add it to
      * the table scroll pane.
      *
-     * @param observations
-     *            a collection of observations for a weather station.
+     * @param observations a collection of observations for a weather station.
      */
     @Override
     public void showObservationTable(List<Observation> observations) {
@@ -249,8 +245,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
      * Creates and displays a graph of temperatures for the selected weather
      * station. Uses JFreeChart to build the image.
      *
-     * @param observations
-     *            a collection of observations for a weather station.
+     * @param observations a collection of observations for a weather station.
      */
     @Override
     public void showChart(List<Observation> observations) {

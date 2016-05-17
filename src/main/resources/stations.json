@@ -4,7 +4,9 @@
         "stations": [
             {
                 "city": "Casey Cape Poinsett",
-                "url": "http://www.bom.gov.au/fwo/IDT60803/IDT60803.89610.json"
+                "url": "http://www.bom.gov.au/fwo/IDT60803/IDT60803.89610.json",
+                "lat": "-65.8",
+                "long": "113.1"
             },
             {
                 "city": "Casey Haupt Nunatak",
@@ -2435,7 +2437,9 @@
             },
             {
                 "city": "Melbourne Olympic Park",
-                "url": "http://www.bom.gov.au/fwo/IDV60801/IDV60801.95936.json"
+                "url": "http://www.bom.gov.au/fwo/IDV60801/IDV60801.95936.json",
+                "lat": "-37.8",
+                "long": "145.0"
             },
             {
                 "city": "Mildura",

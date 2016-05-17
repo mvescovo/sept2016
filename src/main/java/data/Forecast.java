@@ -7,10 +7,9 @@ package data;
  */
 public class Forecast {
 
-    private String mDate;
-    private String mLatitude;
-    private String mLongitude;
+    private String mTime;
     private String mDescription;
+    private String mTemp;
     private String mMinTemp;
     private String mMaxTemp;
     private String mHumidity;
@@ -18,22 +17,16 @@ public class Forecast {
     private String mWindSpeed;
 
     /**
-     * @param date the date of the particular forecast.
-     * @param latitude latitude of the forecast.
-     * @param longitude longitude of the forecast.
-     * @param maxTemp maximum temperature of the forecast.
+     * @param time the time of the particular forecast.
+     * @param temp temperature of the forecast.
      */
-    public Forecast(String date, String latitude, String longitude, String maxTemp) {
-        mDate = date;
-        mLatitude = latitude;
-        mLongitude = longitude;
-        mMaxTemp = maxTemp;
+    public Forecast(String time, String temp) {
+        mTime = time;
+        mTemp = temp;
     }
 
     /**
-     * @param date the date of the particular forecast.
-     * @param latitude latitude of the forecast.
-     * @param longitude longitude of the forecast.
+     * @param time the time of the particular forecast.
      * @param description text description of forecast. e.g. cloudy.
      * @param minTemp minimum temperature of the forecast.
      * @param maxTemp maximum temperature of the forecast.
@@ -41,10 +34,8 @@ public class Forecast {
      * @param pressure pressure of the forecast.
      * @param windSpeed wind speed of the forecast.
      */
-    public Forecast(String date, String latitude, String longitude, String description, String minTemp, String maxTemp, String humidity, String pressure, String windSpeed) {
-        mDate = date;
-        mLatitude = latitude;
-        mLongitude = longitude;
+    public Forecast(String time, String description, String minTemp, String maxTemp, String humidity, String pressure, String windSpeed) {
+        mTime = time;
         mDescription = description;
         mMinTemp = minTemp;
         mMaxTemp = maxTemp;
@@ -57,28 +48,12 @@ public class Forecast {
     * Getters and setters
     *
     * */
-    public String getDate() {
-        return mDate;
+    public String getTime() {
+        return mTime;
     }
 
-    public void setDate(String date) {
-        mDate = date;
-    }
-
-    public String getLatitude() {
-        return mLatitude;
-    }
-
-    public void setLatitude(String latitude) {
-        mLatitude = latitude;
-    }
-
-    public String getLongitude() {
-        return mLongitude;
-    }
-
-    public void setLongitude(String longitude) {
-        mLongitude = longitude;
+    public void setTime(String time) {
+        mTime = time;
     }
 
     public String getDescription() {
@@ -87,6 +62,14 @@ public class Forecast {
 
     public void setDescription(String description) {
         mDescription = description;
+    }
+
+    public String getTemp() {
+        return mTemp;
+    }
+
+    public void setTemp(String temp) {
+        mTemp = temp;
     }
 
     public String getMinTemp() {

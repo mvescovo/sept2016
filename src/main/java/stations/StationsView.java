@@ -5,13 +5,14 @@ import data.State;
 import data.Station;
 import data.WeatherRepositories;
 import data.WeatherServiceApiImpl;
+import forecasts.ForecastsPresenter;
+import forecasts.ForecastsView;
 import observations.ObservationsPresenter;
 import observations.ObservationsView;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -193,10 +194,16 @@ public class StationsView implements StationsContract.View, ActionListener, List
         Main.MainWindow.getInstance().getBtnFavourite().addActionListener(this);
         Main.MainWindow.getInstance().getBtnRemove().addActionListener(this);
     	Main.MainWindow.getInstance().getIntroText().setVisible(false);
+
         ObservationsView observationsView = new ObservationsView();
         ObservationsPresenter observationsPresenter = new ObservationsPresenter(WeatherRepositories.getInMemoryRepoInstance(new WeatherServiceApiImpl()), observationsView);
         observationsView.setActionListener(observationsPresenter);
         observationsView.onReady(station);
+
+        ForecastsView forecastsView = new ForecastsView();
+        ForecastsPresenter forecastsPresenter = new ForecastsPresenter(WeatherRepositories.getInMemoryRepoInstance(new WeatherServiceApiImpl()), forecastsView);
+        forecastsView.setActionListener(forecastsPresenter);
+        forecastsView.onReady(station);
     }
 
     /*
