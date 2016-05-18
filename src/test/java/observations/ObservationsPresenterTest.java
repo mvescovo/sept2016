@@ -1,12 +1,11 @@
 package observations;
 
 /**
- * Test for the observations presenter.
+ * Tests for the observations presenter.
  *
  * @author michael
  */
 public class ObservationsPresenterTest {
 
-    // TODO Leave for assignment 2.
-
+    // TODO Michael to update...
 }

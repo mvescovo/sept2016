@@ -17,7 +17,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 
 /**
- * Test for the Stations presenter.
+ * Tests for the Stations presenter.
  *
  * @author michael
  */
