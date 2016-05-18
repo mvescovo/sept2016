@@ -66,6 +66,12 @@ public class ForecastsPresenter implements ForecastsContract.UserActionsListener
         try {
             output = new FileOutputStream("config.properties");
             prop.setProperty("forecastsite", forecastSite);
+            prop.setProperty("openweathermapbaseurl", "http://api.openweathermap.org/data/2.5/forecast/");
+            prop.setProperty("openweathermapapikey", "1c5030359eaa0273a6025f61e0b9a6b3");
+            prop.setProperty("openweathermapunits", "metric");
+            prop.setProperty("forecastiobaseurl", "https://api.forecast.io/forecast/");
+            prop.setProperty("forecastioapikey", "3efdaa790f027904b294fb350b74c28e");
+            prop.setProperty("forecastiounits", "si");
             prop.store(output, null);
         } catch (IOException e) {
             e.printStackTrace();

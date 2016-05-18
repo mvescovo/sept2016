@@ -96,6 +96,8 @@ public class ForecastsView implements ForecastsContract.View {
     @Override
     public void onReady(Station station) {
         mStation = station;
+        // Test to change the forecast weather source
+        mActionsListener.setForecastSite("openweathermap");
         mActionsListener.loadForecasts(mStation, false);
     }
 
