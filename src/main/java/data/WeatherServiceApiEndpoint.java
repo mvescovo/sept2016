@@ -10,10 +10,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
-import retrofit2.http.Path;
-import retrofit2.http.QueryMap;
-import retrofit2.http.Url;
+import retrofit2.http.*;
 
 import java.io.*;
 import java.util.*;
@@ -292,8 +289,9 @@ class WeatherServiceApiEndpoint {
     static void getForecasts(final Station station, final WeatherServiceApi.WeatherServiceCallback<List<Forecast>> callback) {
         final List<Forecast> forecasts = new ArrayList<>();
         String forecastSite = "";
-        String forecastSiteBaseUrl = "";
-        String forecastApiKey = "";
+        String siteBaseUrl = "";
+        String apiKey = "";
+        String units = "";
         Properties properties = new Properties();
         InputStream input = null;
 
@@ -302,11 +300,13 @@ class WeatherServiceApiEndpoint {
             properties.load(input);
             forecastSite = properties.getProperty("forecastsite");
             if (forecastSite.equals("forecastio")) {
-                forecastApiKey = properties.getProperty("forecastioapikey");
-                forecastSiteBaseUrl = properties.getProperty("forecastiobaseurl");
+                apiKey = properties.getProperty("forecastioapikey");
+                siteBaseUrl = properties.getProperty("forecastiobaseurl");
+                units = properties.getProperty("forecastiounits");
             } else {
-                forecastApiKey = properties.getProperty("openweathermapapikey");
-                forecastSiteBaseUrl = properties.getProperty("openweathermapbaseurl");
+                apiKey = properties.getProperty("openweathermapapikey");
+                siteBaseUrl = properties.getProperty("openweathermapbaseurl");
+                units = properties.getProperty("openweathermapunits");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -324,16 +324,17 @@ class WeatherServiceApiEndpoint {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(forecastSiteBaseUrl)
+                .baseUrl(siteBaseUrl)
                 .build();
 
         WeatherService service = retrofit.create(WeatherService.class);
 
         if (forecastSite.equals("forecastio")) {
             // using forecastio
-            Call<JsonObject> call = service.loadForecastsFromForecastIo(forecastApiKey,
+            Call<JsonObject> call = service.loadForecastsFromForecastIo(apiKey,
                     station.getLatitude(),
-                    station.getLongitude());
+                    station.getLongitude(),
+                    units);
 
             call.enqueue(new Callback<JsonObject>() {
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -368,9 +369,10 @@ class WeatherServiceApiEndpoint {
         } else {
             // Using openweathermap
             Map<String, String> queryMap = new HashMap<>();
-            queryMap.put("appid", forecastApiKey);
+            queryMap.put("appid", apiKey);
             queryMap.put("lat", station.getLatitude());
             queryMap.put("lon", station.getLongitude());
+            queryMap.put("units", units);
             Call<JsonObject> call = service.loadForecastsFromOpenWeatherMap("", queryMap);
 
             call.enqueue(new Callback<JsonObject>() {
@@ -424,7 +426,8 @@ class WeatherServiceApiEndpoint {
         @GET("{apikey}/{lat},{lon}")
         Call<JsonObject> loadForecastsFromForecastIo(@Path("apikey") String apikey,
                                                      @Path("lat") String lat,
-                                                     @Path("lon") String lon);
+                                                     @Path("lon") String lon,
+                                                     @Query("units") String units);
     }
 
     /**
