@@ -58,7 +58,7 @@ public class WeatherServiceApiImpl implements WeatherServiceApi {
      * @param callback to return the data when it's been retrieved.
      */
     @Override
-    public void getForecasts(Station station, WeatherServiceCallback<List<Forecast>> callback) {
+    public void getForecasts(Station station, final WeatherServiceCallback<List<Forecast>> callback) {
         WeatherServiceApiEndpoint.getForecasts(station, new WeatherServiceApi.WeatherServiceCallback<List<Forecast>>() {
             @Override
             public void onLoaded(List<Forecast> data) {

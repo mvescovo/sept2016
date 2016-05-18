@@ -107,7 +107,7 @@ class InMemoryWeatherRepository implements WeatherRepository {
      * @param callback to pass data back when it's ready.
      */
     @Override
-    public void getForecasts(Station station, LoadForecastsCallback callback) {
+    public void getForecasts(final Station station, final LoadForecastsCallback callback) {
         checkNotNull(callback);
         if ((mCachedForecasts == null) || (mCachedForecasts.get(station) == null)) {
             mWeatherServiceApi.getForecasts(station, new WeatherServiceApi.WeatherServiceCallback<List<Forecast>>() {
