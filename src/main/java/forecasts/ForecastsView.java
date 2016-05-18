@@ -101,6 +101,10 @@ public class ForecastsView implements ForecastsContract.View {
 
     @Override
     public void setForecastSite(String forecastSite) {
-        // Not currently ready. Interface may change. Haven't started this yet.
+        // TODO: 18/05/16 Kendall to update...
+        // Use this to set to either "openweathermap" or "forecastio"
+        // I haven't created static variables to hold these values properly. For now I just wanted to get it working.
+        // As long as you use those exact values it should be ok. We may need to come up with a better system though.
+        // Haven't had time to think about it.
     }
 }

@@ -6,7 +6,11 @@ import data.WeatherRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Listen to user actions from the UI. Retrieve data and update the UI.
@@ -56,6 +60,23 @@ public class ForecastsPresenter implements ForecastsContract.UserActionsListener
 
     @Override
     public void setForecastSite(String forecastSite) {
-        // TODO: 18/05/16 Michael to update
+        Properties prop = new Properties();
+        OutputStream output = null;
+
+        try {
+            output = new FileOutputStream("config.properties");
+            prop.setProperty("forecastsite", forecastSite);
+            prop.store(output, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (output != null) {
+                try {
+                    output.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
