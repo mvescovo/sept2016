@@ -73,8 +73,8 @@ public class ForecastsView implements ForecastsContract.View {
     public void showForecasts(List<Forecast> forecasts) {
         for (Forecast forecast :
                 forecasts) {
-            System.out.println("Forecast time: " + forecast.getTime());
-            System.out.println("Forecast temp: " + forecast.getTemp());
+            logger.info("Forecast time: " + forecast.getTime());
+            logger.info("Forecast temp: " + forecast.getTemp());
         }
     }
 

@@ -3,6 +3,8 @@ package stations;
 import data.State;
 import data.Station;
 import data.WeatherRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
@@ -13,6 +15,7 @@ import java.util.List;
  */
 public class StationsPresenter implements StationsContract.UserActionsListener {
 
+    private static final Logger logger = LogManager.getLogger(stations.StationsPresenter.class);
     private final WeatherRepository mWeatherRepository;
     private final StationsContract.View mView;
 

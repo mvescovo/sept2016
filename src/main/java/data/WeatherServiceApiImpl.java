@@ -1,5 +1,8 @@
 package data;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +14,7 @@ import java.util.List;
  */
 public class WeatherServiceApiImpl implements WeatherServiceApi {
 
+    private static final Logger logger = LogManager.getLogger(data.WeatherServiceApiImpl.class);
     private static final List<State> STATES_SERVICE_DATA = WeatherServiceApiEndpoint.loadPersistedStates();
     private static final HashMap<String, List<Station>> STATIONS_SERVICE_DATA = WeatherServiceApiEndpoint.loadPersistedStations();
 

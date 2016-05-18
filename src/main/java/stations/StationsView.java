@@ -9,6 +9,8 @@ import forecasts.ForecastsPresenter;
 import forecasts.ForecastsView;
 import observations.ObservationsPresenter;
 import observations.ObservationsView;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -28,6 +30,7 @@ import java.util.List;
  */
 public class StationsView implements StationsContract.View, ActionListener, ListSelectionListener {
 
+    private static final Logger logger = LogManager.getLogger(stations.StationsView.class);
     private StationsContract.UserActionsListener mActionsListener;
     private JProgressBar mJProgressBar;
     private JComboBox<State> mStatesComboList;
