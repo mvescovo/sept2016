@@ -55,6 +55,7 @@ public class ForecastsPresenter implements ForecastsContract.UserActionsListener
                     mView.showForecasts(forecasts);
                     mView.showLatestForecast(forecasts.get(0));
                     mView.showForecastTable(forecasts);
+                    mView.showForecastChart(forecasts);
                 }
             }
         });

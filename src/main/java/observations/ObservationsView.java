@@ -258,9 +258,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
     @Override
     public void showChart(List<Observation> observations) {
         logger.debug("observations dateTime: " + observations.get(0).getmDateTime());
-        String chtTitle = observations.get(0).getmName() + " - Temperature observations";
-        String chtXAxisLabel = "Date and time";
-        String chtYAxisLabel = "Temperature " + Main.getSymboldegree() + "C";
+
         TimeSeries seriesTemp = new TimeSeries("Temp", Minute.class);
         TimeSeries seriesMin = new TimeSeries("Min", Minute.class);
         TimeSeries seriesMax = new TimeSeries("Max", Minute.class);
@@ -354,8 +352,9 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         dataset.addSeries(series3pm);
         
         JFreeChart chart = Main.MainWindow.getInstance().getChart();
-        chart = ChartFactory.createTimeSeriesChart(chtTitle, chtXAxisLabel, chtYAxisLabel, dataset, true,
-                true, false);
+        chart.getXYPlot().setDataset(dataset);
+        
+        
         XYPlot plot = (XYPlot) chart.getPlot();
         XYItemRenderer r = plot.getRenderer();
         if (r instanceof XYLineAndShapeRenderer) {
@@ -376,6 +375,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
             renderer.setSeriesItemLabelsVisible(1, false);
             renderer.setSeriesItemLabelsVisible(2, false);
             renderer.setSeriesPaint(3, Main.getColordark());
+            
         }
 
         chart.getTitle().setHorizontalAlignment(HorizontalAlignment.LEFT);

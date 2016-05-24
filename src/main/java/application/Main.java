@@ -4,6 +4,7 @@ import data.WeatherRepositories;
 import data.WeatherServiceApiImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 
 import stations.StationsContract;
@@ -206,6 +207,11 @@ public class Main {
             weatherPanel.add(stationName, BorderLayout.NORTH);
             
             
+            String chtTitle = stationName.getText() + " - Temperature observations and forecasts";
+            String chtXAxisLabel = "Date and time";
+            String chtYAxisLabel = "Temperature " + Main.getSymboldegree() + "C";
+            chart = ChartFactory.createTimeSeriesChart(chtTitle, chtXAxisLabel, chtYAxisLabel, null, true,
+                    true, false);
             
             // Observations panel - callable directly from observations view
             createObservationsPanel();
@@ -338,9 +344,7 @@ public class Main {
             introText.setWrapStyleWord(true);
             introText.setFont(Main.getFonttitle());
             introText.setBackground(observationsPanel.getBackground());
-/*            stationName = new JLabel("");
-            stationName.setFont(Main.getFonttitle());
-            observationsPanel.add(stationName, cons);*/
+
             cons.insets = new Insets(100, 10, 10, 10);
             observationsPanel.add(introText, cons);
             weatherPanel.add(observationsPanel, BorderLayout.CENTER);

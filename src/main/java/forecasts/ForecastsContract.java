@@ -62,6 +62,13 @@ public interface ForecastsContract {
          * @param forecasts the forecasts to show.
          */
         void showForecastTable(List<Forecast> forecasts);
+        
+        /**
+         * Show chart.
+         *
+         * @param forecasts the forecasts on which to base to chart.
+         */
+        void showForecastChart(List<Forecast> forecasts);
     
     
     }

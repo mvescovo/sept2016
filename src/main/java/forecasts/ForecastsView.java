@@ -7,6 +7,16 @@ import data.Station;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.StandardXYItemLabelGenerator;
+import org.jfree.chart.labels.XYItemLabelGenerator;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.general.SeriesException;
+import org.jfree.data.time.Hour;
+import org.jfree.data.time.Minute;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -14,6 +24,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -95,8 +107,8 @@ public class ForecastsView implements ForecastsContract.View {
         tableCons.fill = GridBagConstraints.BOTH;
         mTablePanel.add(mFTableScrollPane, tableCons);
         
-        
-        
+
+
         
     }
 
@@ -255,6 +267,48 @@ public class ForecastsView implements ForecastsContract.View {
         mFTableScrollPane.setViewportView(table);
 		
 	}
+	
+	@Override
+	public void showForecastChart(List<Forecast> forecasts) {
+        JFreeChart chart = Main.MainWindow.getInstance().getChart();
+        XYPlot plot = (XYPlot) chart.getPlot();
+        TimeSeriesCollection dataset = (TimeSeriesCollection) plot.getDataset();
+        TimeSeries series = new TimeSeries("Forecast temp", Minute.class);
+        double temp = 0;
+        for (Forecast frc : forecasts) {
+            
+            try {
+                temp = Double.parseDouble(frc.getTemp());
+            } catch (NumberFormatException e) {
+                temp = 0.0;
+            }
+
+            Date thisDate = new Date(Long.parseLong(frc.getTime()) * 1000);
+
+
+	        Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+	        c.setTime(thisDate);
+
+	        
+            try {
+                series.addOrUpdate(new Minute(thisDate), temp);
+            } catch (SeriesException e) {
+                e.printStackTrace();
+            }
+
+        }
+        
+        
+        dataset.addSeries(series);
+        
+        XYItemRenderer r = plot.getRenderer();
+        if (r instanceof XYLineAndShapeRenderer) {
+            XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
+            renderer.setSeriesItemLabelsVisible(plot.getSeriesCount() - 1, false);            
+        }
+		
+	}
+	
 
 	public JPanel getmTablePanel() {
 		return mTablePanel;
@@ -271,6 +325,8 @@ public class ForecastsView implements ForecastsContract.View {
 	public void setmFTableScrollPane(JScrollPane mFTableScrollPane) {
 		this.mFTableScrollPane = mFTableScrollPane;
 	}
+
+
 
 
 }
