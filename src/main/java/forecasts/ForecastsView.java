@@ -7,8 +7,11 @@ import data.Station;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.labels.StandardXYItemLabelGenerator;
 import org.jfree.chart.labels.XYItemLabelGenerator;
+import org.jfree.chart.plot.IntervalMarker;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -17,13 +20,17 @@ import org.jfree.data.time.Hour;
 import org.jfree.data.time.Minute;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.ui.Layer;
+import org.jfree.ui.RectangleInsets;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Paint;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -300,6 +307,19 @@ public class ForecastsView implements ForecastsContract.View {
         
         
         dataset.addSeries(series);
+        
+        long intervalStart = Long.parseLong(forecasts.get(0).getTime()) * 1000;
+        long intervalEnd = Long.parseLong(forecasts.get(forecasts.size() - 1).getTime()) * 1000;
+        IntervalMarker mark = new IntervalMarker(intervalStart, intervalEnd );
+        mark.setPaint(Main.getColorcontrast1());
+
+        plot.setAxisOffset(new RectangleInsets(0, 0, 0, 0));
+        
+        plot.addDomainMarker(mark, Layer.BACKGROUND);
+        ValueAxis axis = plot.getDomainAxis();
+        
+        axis.setLowerMargin(0);
+        axis.setUpperMargin(0);
         
         XYItemRenderer r = plot.getRenderer();
         if (r instanceof XYLineAndShapeRenderer) {

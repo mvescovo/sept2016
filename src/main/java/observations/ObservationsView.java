@@ -63,9 +63,8 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         mJProgressBar.setIndeterminate(true);
         mJProgressBar.setVisible(false);
         GridBagConstraints cons = new GridBagConstraints();
-        cons.gridx = 0;
+        cons.gridx = 1;
         cons.gridy = 0;
-        cons.gridwidth = 2;
         cons.fill = GridBagConstraints.BOTH;
         cons.anchor = GridBagConstraints.CENTER;
         Main.MainWindow.getInstance().getObservationsPanel().add(mJProgressBar, cons);
@@ -356,6 +355,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         
         
         XYPlot plot = (XYPlot) chart.getPlot();
+        plot.setBackgroundPaint(Main.getColorlight());
         XYItemRenderer r = plot.getRenderer();
         if (r instanceof XYLineAndShapeRenderer) {
             XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
