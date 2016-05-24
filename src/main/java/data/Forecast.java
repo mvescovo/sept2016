@@ -1,5 +1,12 @@
 package data;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
+import java.util.Vector;
+
 /**
  * Forecast entity class.
  *
@@ -44,6 +51,36 @@ public class Forecast {
         mWindSpeed = windSpeed;
     }
 
+    
+    /**
+	 * Creates a vector for the forecast's data including processing the date
+	 * string into a more human readable format.
+	 * 
+	 * @return a vector of forecast properties
+	 */
+	public Vector<String> getForecastVector() {
+		Vector<String> data = new Vector<String>();
+		SimpleDateFormat standardDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
+		Date thisDate = new Date(Long.parseLong(getTime()) * 1000);
+
+		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+		c.setTime(thisDate);
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a EE dd/MM/yy");
+		String dayOfWeek = dateFormat.format(c.getTime());
+
+		data.addElement(dayOfWeek);
+		data.addElement(getTemp());
+		data.addElement(getDescription());
+		data.addElement(getMinTemp());
+		data.addElement(getMaxTemp());
+		data.addElement(getPressure());
+		data.addElement(getWindSpeed());
+
+		return data;
+	}
+    
+    
     /*
     * Getters and setters
     *

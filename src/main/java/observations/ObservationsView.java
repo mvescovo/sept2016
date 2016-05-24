@@ -49,6 +49,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
     private JScrollPane mTableScrollPane;
     private Station mStation;
 
+
     /**
      * Constructor.
      *
@@ -64,6 +65,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         GridBagConstraints cons = new GridBagConstraints();
         cons.gridx = 0;
         cons.gridy = 0;
+        cons.gridwidth = 2;
         cons.fill = GridBagConstraints.BOTH;
         cons.anchor = GridBagConstraints.CENTER;
         Main.MainWindow.getInstance().getObservationsPanel().add(mJProgressBar, cons);
@@ -83,8 +85,10 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         tableCons.anchor = GridBagConstraints.NORTHWEST;
         JLabel tableLabel = new JLabel("Weather observations for the past 3 days.");
         mTablePanel.add(tableLabel, tableCons);
+        cons.gridx = 0;
+        cons.gridwidth = 1;
         cons.gridy = 1;
-        cons.weightx = 1;
+        cons.weightx = 0.5;
         cons.weighty = 0.5;
         cons.insets = new Insets(10,10,10,10);
         cons.fill = GridBagConstraints.BOTH;
@@ -94,6 +98,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         tableCons.gridy = 1;
         tableCons.weighty = 1;
         tableCons.weightx = 1;
+        
         tableCons.fill = GridBagConstraints.BOTH;
         mTablePanel.add(mTableScrollPane, tableCons);
 
@@ -102,6 +107,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         mChartPanel.setLayout(new BorderLayout());
         mChartPanel.setBackground(Main.MainWindow.getInstance().getObservationsPanel().getBackground());
         cons.gridy = 2;
+        cons.gridwidth = 2;
         cons.weightx = 1;
         cons.weighty = 0.5;
         cons.insets = new Insets(10,10,10,10);
@@ -119,11 +125,11 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
     @Override
     public void setProgressBar(boolean active) {
         if (active) {
-            Main.MainWindow.getInstance().getStationName().setVisible(false);
+            /*Main.MainWindow.getInstance().getStationName().setVisible(false);*/
             mJProgressBar.setVisible(true);
         } else {
             mJProgressBar.setVisible(false);
-            Main.MainWindow.getInstance().getStationName().setVisible(false);
+            /*Main.MainWindow.getInstance().getStationName().setVisible(false);*/
         }
         Main.MainWindow.getInstance().getObservationsPanel().repaint();
     }
@@ -149,7 +155,9 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
     @Override
     public void showLatestObservation(Observation obs) {
         // Update Station name
-        String stationTitle = obs.getmName() + " - " + obs.getmStateName();
+    	String stationTitle = obs.getmName() + " - " + obs.getmStateName();
+    	Main.MainWindow.getInstance().getStationName().setText(stationTitle);
+        
         mHeadPanel.setLayout(new GridBagLayout());
         mHeadPanel.setBackground(Main.MainWindow.getInstance().getObservationsPanel().getBackground());
         GridBagConstraints headCons = new GridBagConstraints();
@@ -160,10 +168,10 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         headCons.gridwidth = 2;
         headCons.fill = GridBagConstraints.HORIZONTAL;
         headCons.anchor = GridBagConstraints.WEST;
-        JLabel title = new JLabel();
+/*        JLabel title = new JLabel();
         title.setText(stationTitle);
         title.setFont(Main.getFonttitle());
-        mHeadPanel.add(title, headCons);
+        mHeadPanel.add(title, headCons);*/
         JLabel lblLatest = new JLabel();
         lblLatest.setText("Latest weather observation:");
         lblLatest.setFont(Main.getFontnormalbold());
@@ -344,7 +352,9 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         dataset.addSeries(seriesMax);
         dataset.addSeries(series9am);
         dataset.addSeries(series3pm);
-        JFreeChart chart = ChartFactory.createTimeSeriesChart(chtTitle, chtXAxisLabel, chtYAxisLabel, dataset, true,
+        
+        JFreeChart chart = Main.MainWindow.getInstance().getChart();
+        chart = ChartFactory.createTimeSeriesChart(chtTitle, chtXAxisLabel, chtYAxisLabel, dataset, true,
                 true, false);
         XYPlot plot = (XYPlot) chart.getPlot();
         XYItemRenderer r = plot.getRenderer();
@@ -427,10 +437,14 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         GridBagConstraints cons = new GridBagConstraints();
         cons.gridx = 0;
         cons.gridy = 0;
+        cons.weightx = 0.5;
         cons.fill = GridBagConstraints.BOTH;
         cons.anchor = GridBagConstraints.NORTHWEST;
         cons.insets = new Insets(10, 10, 20, 10);
         Main.MainWindow.getInstance().getObservationsPanel().add(mHeadPanel, cons);
     }
 
+
+    
+    
 }
