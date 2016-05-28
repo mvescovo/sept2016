@@ -21,7 +21,9 @@ import org.jfree.data.time.Minute;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.ui.Layer;
+import org.jfree.ui.RectangleAnchor;
 import org.jfree.ui.RectangleInsets;
+import org.jfree.ui.TextAnchor;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -34,6 +36,7 @@ import java.awt.Paint;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -79,7 +82,8 @@ public class ForecastsView implements ForecastsContract.View {
         cons.gridx = 1;
         cons.gridy = 0;
         cons.weightx = 0.5;
-        cons.fill = GridBagConstraints.BOTH;
+        cons.weighty = 0;
+        cons.fill = GridBagConstraints.HORIZONTAL;
         cons.anchor = GridBagConstraints.CENTER;
         Main.MainWindow.getInstance().getObservationsPanel().add(mJProgressBar, cons);
         
@@ -92,6 +96,7 @@ public class ForecastsView implements ForecastsContract.View {
         tableCons.gridx = 0;
         tableCons.gridy = 0;
         tableCons.weighty = 0;
+        tableCons.weightx = 0;
         tableCons.insets = new Insets(10,10,0,10);
         tableCons.fill = GridBagConstraints.HORIZONTAL;
         tableCons.anchor = GridBagConstraints.NORTHWEST;
@@ -151,6 +156,7 @@ public class ForecastsView implements ForecastsContract.View {
         GridBagConstraints cons = new GridBagConstraints();
         cons.gridx = 1;
         cons.gridy = 0;
+        cons.weightx = 0;
         cons.fill = GridBagConstraints.BOTH;
         cons.anchor = GridBagConstraints.NORTHWEST;
         cons.insets = new Insets(10, 10, 0, 10);
@@ -240,8 +246,8 @@ public class ForecastsView implements ForecastsContract.View {
 	        headCons.anchor = GridBagConstraints.EAST;
 	        mFheadPanel.add(lblTemp, headCons);
 	        JLabel lblSummary = new JLabel();
-	        lblSummary.setText(forecast.getDescription() + ", " + forecast.getHumidity() + "% humidity. Pressure - " + forecast.getPressure() + " "
-	                + "Wind - " + forecast.getWindSpeed() + "kph.");
+	        lblSummary.setText("<html><body>" + forecast.getDescription() + ", " + forecast.getHumidity() + "% humidity. Pressure - " + forecast.getPressure() + " "
+	                + "Wind - " + forecast.getWindSpeed() + "kph.<body><html>");
 	        lblSummary.setFont(Main.getFontnormal());
 	        headCons.gridy = 3;
 	        headCons.weightx = 1;
@@ -257,7 +263,7 @@ public class ForecastsView implements ForecastsContract.View {
 	public void showForecastTable(List<Forecast> forecasts) {
 		  // Table settings
 		
-        String[] columnNames = { "Date Time", "Temp C" + Main.getSymboldegree(), "Description",
+        String[] columnNames = { "Date Time", "Temp C" + Main.getSymboldegree(), 
                 "Min temp C"  + Main.getSymboldegree(), "Max temp C"  + Main.getSymboldegree(), "Humidity %", "Pressure", "Wind spd kmh", };
 
         JTable table = new JTable();
@@ -280,33 +286,93 @@ public class ForecastsView implements ForecastsContract.View {
         JFreeChart chart = Main.MainWindow.getInstance().getChart();
         XYPlot plot = (XYPlot) chart.getPlot();
         TimeSeriesCollection dataset = (TimeSeriesCollection) plot.getDataset();
-        TimeSeries series = new TimeSeries("Forecast temp", Minute.class);
-        double temp = 0;
-        for (Forecast frc : forecasts) {
-            
+        TimeSeries seriesTemp = dataset.getSeries(dataset.indexOf("Temp"));
+        TimeSeries seriesMin = dataset.getSeries(dataset.indexOf("Min"));
+        TimeSeries seriesMax = dataset.getSeries(dataset.indexOf("Max"));
+        TimeSeries series9am = dataset.getSeries(dataset.indexOf("9am"));
+        TimeSeries series3pm = dataset.getSeries(dataset.indexOf("3pm"));
+        double temp = Double.NaN;
+        double minTemp = Double.NaN;
+        double maxTemp = Double.NaN;
+        List<String> dates = new ArrayList<String>();
+        SimpleDateFormat standardDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
+        SimpleDateFormat day_format = new SimpleDateFormat("dd/M/yyyy");
+        String previousDay = null;
+        Date minDate = null;
+        Date maxDate = null;
+        for (Forecast forecast : forecasts) {
+            if(dates.contains(forecast.getTime())) {
+                continue;
+            }
+            dates.add(forecast.getTime());
+            // format the temperature
             try {
-                temp = Double.parseDouble(frc.getTemp());
+                temp = Double.parseDouble(forecast.getTemp());
             } catch (NumberFormatException e) {
                 temp = 0.0;
             }
 
-            Date thisDate = new Date(Long.parseLong(frc.getTime()) * 1000);
+            // format the date
+            Date myDate = null;
+            Date myHour = null;
+            
 
+            myDate = new Date(Long.parseLong(forecast.getTime()) * 1000);
+        	String day = day_format.format(myDate); 
 
-	        Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-	        c.setTime(thisDate);
+            // Check for 9am and 3pm observations
+            Calendar myCal = Calendar.getInstance();
+            myCal.setTime(myDate);
 
-	        
+            
+            int hour = myCal.get(Calendar.HOUR_OF_DAY);
+            if(hour == 9 ) {
+                series9am.addOrUpdate(new Hour(myDate), temp);
+            } else if (hour == 15) {
+                series3pm.addOrUpdate(new Hour(myDate), temp);
+            }
             try {
-                series.addOrUpdate(new Minute(thisDate), temp);
+                seriesTemp.addOrUpdate(new Minute(myDate), temp);
             } catch (SeriesException e) {
                 e.printStackTrace();
             }
+            if (previousDay == null) {
+                previousDay = day;
+            }
+
+            if (Double.isNaN(minTemp)) {
+                minTemp = temp;
+                minDate = myDate;
+            }
+            if (Double.isNaN(maxTemp)) {
+                maxTemp = temp;
+                maxDate = myDate;
+            }
+
+            if (day.equals(previousDay)) {
+                if (temp < minTemp) {
+                    minTemp = temp;
+                    minDate = myDate;
+                }
+                if (temp > maxTemp) {
+                    maxTemp = temp;
+                    maxDate = myDate;
+                }
+
+            } else {
+                seriesMin.addOrUpdate(new Minute(minDate), minTemp);
+                seriesMax.addOrUpdate(new Minute(maxDate), maxTemp);
+                minDate = null;
+                maxDate = null;
+                minTemp = Double.NaN;
+                maxTemp = Double.NaN;
+            }
+            previousDay = day;
 
         }
         
         
-        dataset.addSeries(series);
+        //dataset.addSeries(series);
         
         long intervalStart = Long.parseLong(forecasts.get(0).getTime()) * 1000;
         long intervalEnd = Long.parseLong(forecasts.get(forecasts.size() - 1).getTime()) * 1000;
@@ -316,6 +382,10 @@ public class ForecastsView implements ForecastsContract.View {
         plot.setAxisOffset(new RectangleInsets(0, 0, 0, 0));
         
         plot.addDomainMarker(mark, Layer.BACKGROUND);
+        mark.setLabel("Forecasts");
+        mark.setLabelFont(Main.getFontnormal());
+        mark.setLabelAnchor(RectangleAnchor.TOP);
+        mark.setLabelOffset(new RectangleInsets(20,0,0,0));
         ValueAxis axis = plot.getDomainAxis();
         
         axis.setLowerMargin(0);

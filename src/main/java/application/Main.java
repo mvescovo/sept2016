@@ -12,6 +12,8 @@ import stations.StationsPresenter;
 import stations.StationsView;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.StringTokenizer;
@@ -204,10 +206,11 @@ public class Main {
             weatherPanel.setBackground(colorLight);
             stationName = new JLabel("");
             stationName.setFont(Main.getFonttitle());
+            stationName.setBorder(new EmptyBorder(10,10,10,10));
             weatherPanel.add(stationName, BorderLayout.NORTH);
             
             
-            String chtTitle = stationName.getText() + " - Temperature observations and forecasts";
+            String chtTitle = "Temperature observations and forecasts";
             String chtXAxisLabel = "Date and time";
             String chtYAxisLabel = "Temperature " + Main.getSymboldegree() + "C";
             chart = ChartFactory.createTimeSeriesChart(chtTitle, chtXAxisLabel, chtYAxisLabel, null, true,

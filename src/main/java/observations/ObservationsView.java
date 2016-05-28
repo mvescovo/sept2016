@@ -62,11 +62,13 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         mJProgressBar = new JProgressBar();
         mJProgressBar.setIndeterminate(true);
         mJProgressBar.setVisible(false);
+        
         GridBagConstraints cons = new GridBagConstraints();
         cons.gridx = 1;
         cons.gridy = 0;
-        cons.fill = GridBagConstraints.BOTH;
+        cons.fill = GridBagConstraints.HORIZONTAL;
         cons.anchor = GridBagConstraints.CENTER;
+        cons.weighty = 0;
         Main.MainWindow.getInstance().getObservationsPanel().add(mJProgressBar, cons);
 
         // add header panel
@@ -95,7 +97,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         Main.MainWindow.getInstance().getObservationsPanel().add(mTablePanel, cons);
         mTableScrollPane = new JScrollPane();
         tableCons.gridy = 1;
-        tableCons.weighty = 1;
+        tableCons.weighty = 0.5;
         tableCons.weightx = 1;
         
         tableCons.fill = GridBagConstraints.BOTH;
@@ -108,7 +110,7 @@ public class ObservationsView implements ObservationsContract.View, ActionListen
         cons.gridy = 2;
         cons.gridwidth = 2;
         cons.weightx = 1;
-        cons.weighty = 0.5;
+        cons.weighty = 1;
         cons.insets = new Insets(10,10,10,10);
         Main.MainWindow.getInstance().getObservationsPanel().add(mChartPanel, cons);
 

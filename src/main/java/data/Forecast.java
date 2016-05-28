@@ -71,7 +71,6 @@ public class Forecast {
 
 		data.addElement(dayOfWeek);
 		data.addElement(getTemp());
-		data.addElement(getDescription());
 		data.addElement(getMinTemp());
 		data.addElement(getMaxTemp());
 		data.addElement(getPressure());
