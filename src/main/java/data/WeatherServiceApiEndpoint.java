@@ -344,16 +344,56 @@ class WeatherServiceApiEndpoint {
                         for (int i = 0; i < dataArray.size(); i++) {
                             // TODO: 18/05/16 Steve to analyse API and update with all necessary data
                             String time = "";
-                            String temperature = "";
-
+                            String temp = "";
+                            String temp_min = "";
+                            String temp_max = "";
+                            String pressure = "";
+                            String humidity = "";
+                            String name = "";
+                            String description = "";
+                            String rain = "";
+                            String lon = "";
+                            String lat = "";
+                            String speed = "";
                             if (!dataArray.get(i).getAsJsonObject().get("time").isJsonNull()) {
-                                time = dataArray.get(i).getAsJsonObject().get("time").getAsString();
+                            	time = dataArray.get(i).getAsJsonObject().get("time").getAsString();
                             }
-                            if (!dataArray.get(i).getAsJsonObject().get("temperature").isJsonNull()) {
-                                temperature = dataArray.get(i).getAsJsonObject().get("temperature").getAsString();
+                            if (!dataArray.get(i).getAsJsonObject().get("temp").isJsonNull()) {
+                            	temp = dataArray.get(i).getAsJsonObject().get("temp").getAsString();
                             }
+                            if (!dataArray.get(i).getAsJsonObject().get("temp_min").isJsonNull()) {
+                            	temp_min = dataArray.get(i).getAsJsonObject().get("temp_min").getAsString();
+                            }
+                            if (!dataArray.get(i).getAsJsonObject().get("temp_max").isJsonNull()) {
+                            	temp_max = dataArray.get(i).getAsJsonObject().get("temp_max").getAsString();
+                            }
+                            if (!dataArray.get(i).getAsJsonObject().get("pressure").isJsonNull()) {
+                            	pressure = dataArray.get(i).getAsJsonObject().get("pressure").getAsString();
+                            }
+                            if (!dataArray.get(i).getAsJsonObject().get("humidity").isJsonNull()) {
+                            	humidity = dataArray.get(i).getAsJsonObject().get("humidity").getAsString();
+                            }
+                            if (!dataArray.get(i).getAsJsonObject().get("name").isJsonNull()) {
+                            	name = dataArray.get(i).getAsJsonObject().get("name").getAsString();
+                            }
+                            if (!dataArray.get(i).getAsJsonObject().get("description").isJsonNull()) {
+                            	description = dataArray.get(i).getAsJsonObject().get("description").getAsString();
+                            }
+                            if (!dataArray.get(i).getAsJsonObject().get("rain").isJsonNull()) {
+                            	rain = dataArray.get(i).getAsJsonObject().get("rain").getAsString();
+                            }
+                            if (!dataArray.get(i).getAsJsonObject().get("lon").isJsonNull()) {
+                            	lon = dataArray.get(i).getAsJsonObject().get("lon").getAsString();
+                            }
+                            if (!dataArray.get(i).getAsJsonObject().get("lat").isJsonNull()) {
+                            	lat = dataArray.get(i).getAsJsonObject().get("lat").getAsString();
+                            }
+                            if (!dataArray.get(i).getAsJsonObject().get("speed").isJsonNull()) {
+                            	speed = dataArray.get(i).getAsJsonObject().get("speed").getAsString();
+                            }
+                            
 
-                            Forecast forecast = new Forecast(time, temperature);
+                            Forecast forecast = new Forecast(time, temp, temp_min, temp_max, pressure, humidity, name, description, rain, lon, lat, speed);
                             forecasts.add(forecast);
                         }
                     } else {
@@ -384,7 +424,18 @@ class WeatherServiceApiEndpoint {
                             // TODO: 18/05/16 Steve to analyse API and update with all necessary data
                             String time = "";
                             String temp = "";
-
+                            String temp_min = "";
+                            String temp_max = "";
+                            String pressure = "";
+                            String humidity = "";
+                            String name = "";
+                            String description = "";
+                            String rain = "";
+                            String lon = "";
+                            String lat = "";
+                            String speed = "";
+                            
+                           
                             if (!dataObject.get("dt").isJsonNull()) {
                                 time = dataObject.get("dt").getAsString();
                             }
@@ -394,8 +445,47 @@ class WeatherServiceApiEndpoint {
                             if (!dataObject.get("temp").isJsonNull()) {
                                 temp = dataObject.get("temp").getAsString();
                             }
+                            
+                            if (!dataObject.get("temp_max").isJsonNull()) {
+                            	temp_max = dataObject.get("temp_max").getAsString();
+                            }
+                            
+                            if (!dataObject.get("temp_min").isJsonNull()) {
+                            	temp_min = dataObject.get("temp_min").getAsString();
+                            }
+                            
+                            if (!dataObject.get("pressure").isJsonNull()) {
+                            	pressure = dataObject.get("pressure").getAsString();
+                            }
+                            
+                            if (!dataObject.get("humidity").isJsonNull()) {
+                            	humidity = dataObject.get("humidity").getAsString();
+                            }
+                            
+                            if (!dataObject.get("name").isJsonNull()) {
+                            	name = dataObject.get("name").getAsString();
+                            }
+                            if (!dataObject.get("description").isJsonNull()) {
+                            	description = dataObject.get("description").getAsString();
+                            }
+                            if (!dataObject.get("rain").isJsonNull()) {
+                            	description = dataObject.get("rain").getAsString();
+                            }
+                            if (!dataObject.get("lon").isJsonNull()) {
+                            	lon = dataObject.get("lon").getAsString();
+                            }
+                            if (!dataObject.get("lat").isJsonNull()) {
+                            	lat = dataObject.get("lat").getAsString();
+                            }
+                            if (!dataObject.get("speed").isJsonNull()) {
+                            	speed = dataObject.get("speed").getAsString();
+                            }
+                            
+                            
+                            
+                            Forecast forecast = new Forecast(time, temp, temp_min, temp_max, pressure, humidity, name, description, rain, lon, lat, speed);
 
-                            Forecast forecast = new Forecast(time, temp);
+                            //Forecast forecast = new Forecast(time, temp);
                             forecasts.add(forecast);
                         }
                     } else {
