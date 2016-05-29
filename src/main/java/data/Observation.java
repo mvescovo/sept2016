@@ -192,7 +192,7 @@ public class Observation {
 		this.mDateTime = mDateTime;
 	}
 
-	private String getmApparentTemp() {
+	public String getmApparentTemp() {
 		return mApparentTemp;
 	}
 
@@ -216,7 +216,7 @@ public class Observation {
 		this.mAirtemp = mAirtemp;
 	}
 
-	private String getmRain() {
+	public String getmRain() {
 		return mRain;
 	}
 

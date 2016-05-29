@@ -96,13 +96,15 @@ public class StationsPresenter implements StationsContract.UserActionsListener {
      */
     @Override
 	public void loadFavouriteStations(boolean forceUpdate) {
+        mView.setProgressBar(true);
         if (forceUpdate) {
             mWeatherRepository.refreshFavouriteStations();
         }
 		mWeatherRepository.getFavouriteStations(new WeatherRepository.LoadFavouritesCallback() {
 			@Override
 			public void onFavouritesLoaded(List<Station> favourites) {
-				mView.showFavourites(favourites);
+                mView.setProgressBar(false);
+                mView.showFavourites(favourites);
 			}
 		});
 	}

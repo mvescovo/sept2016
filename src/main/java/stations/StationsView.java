@@ -281,4 +281,30 @@ public class StationsView implements StationsContract.View, ActionListener, List
         mSelectedStation = selectedStation;
     }
 
+	public JComboBox<State> getmStatesComboList() {
+		return mStatesComboList;
+	}
+
+	public void setmStatesComboList(JComboBox<State> mStatesComboList) {
+		this.mStatesComboList = mStatesComboList;
+	}
+
+	public JList<Station> getmStationsJList() {
+		return mStationsJList;
+	}
+
+	public void setmStationsJList(JList<Station> mStationsJList) {
+		this.mStationsJList = mStationsJList;
+	}
+
+	public List<Station> getmFavouritesList() {
+		return mFavouritesList;
+	}
+
+	public void setmFavouritesList(List<Station> mFavouritesList) {
+		this.mFavouritesList = mFavouritesList;
+	}
+
+    
+    
 }

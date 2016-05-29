@@ -35,3 +35,6 @@ project.properties
 
 # Log Files
 *.log
+
+# Config files
+config.properties

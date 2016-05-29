@@ -7,5 +7,6 @@ package application;
  */
 public class MainTest {
 
-    // TODO Michael to investigate...
+    // No useful tests for this class in the current implementation.
+    // Mostly just getters and setters.
 }
