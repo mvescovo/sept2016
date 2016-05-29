@@ -1,6 +1,7 @@
 package forecasts;
 
 import data.Forecast;
+import data.Observation;
 import data.Station;
 
 import java.util.List;
@@ -47,6 +48,29 @@ public interface ForecastsContract {
         // ***Not currently ready. Ignore for now.***
         // FYI: Interface may change.
         void setForecastSite(String forecastSite);
+    
+        /**
+         * Show latest forecasts
+         *
+         * @param forecast the forecast to show.
+         */
+        void showLatestForecast(Forecast forecast);
+        
+        /**
+         * Show forecasts in the current view.
+         *
+         * @param forecasts the forecasts to show.
+         */
+        void showForecastTable(List<Forecast> forecasts);
+        
+        /**
+         * Show chart.
+         *
+         * @param forecasts the forecasts on which to base to chart.
+         */
+        void showForecastChart(List<Forecast> forecasts);
+    
+    
     }
 
     /**
