@@ -7,5 +7,6 @@ package data;
  */
 public class WeatherRepositoriesTest {
 
-    // TODO Michael to update...
+    // There are no useful tests to be made with the current implementation.
+    // This class simply returns the one repository.
 }

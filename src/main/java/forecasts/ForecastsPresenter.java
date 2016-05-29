@@ -61,6 +61,11 @@ public class ForecastsPresenter implements ForecastsContract.UserActionsListener
         });
     }
 
+    /**
+     * Sets the particular forecast website the user wants to get the data from
+     *
+     * @param forecastSite the site to set
+     */
     @Override
     public void setForecastSite(String forecastSite) {
         Properties prop = new Properties();
