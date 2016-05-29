@@ -22,6 +22,13 @@ public class Forecast {
     private String mHumidity;
     private String mPressure;
     private String mWindSpeed;
+    
+    //created by steve suggested variables
+    private String mLat;
+    private String mLon;
+    private String mRain;
+    private String mName;
+    
 
     /**
      * @param time the time of the particular forecast.
@@ -31,6 +38,7 @@ public class Forecast {
         mTime = time;
         mTemp = temp;
     }
+
 
     /**
      * @param time the time of the particular forecast.
@@ -49,10 +57,33 @@ public class Forecast {
         mHumidity = humidity;
         mPressure = pressure;
         mWindSpeed = windSpeed;
+        
     }
 
     
-    /**
+
+
+	public Forecast(String time, String temp, String temp_min, String temp_max, String pressure, String humidity,
+			String name, String description, String rain, String lon, String lat, String windSpeed) {
+		mTime = time;
+		mDescription = description;
+		mMinTemp = temp_min;
+		mMaxTemp = temp_max;
+		mPressure = pressure;
+		mWindSpeed = windSpeed;
+		mHumidity = humidity;
+		mName = name;
+		mRain = rain;
+		mLat = lat;
+		mLon = lon;
+		
+		
+		
+		
+		
+	}
+
+	/**
 	 * Creates a vector for the forecast's data including processing the date
 	 * string into a more human readable format.
 	 * 
