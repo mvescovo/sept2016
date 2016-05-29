@@ -1,7 +1,6 @@
 package forecasts;
 
 import data.Forecast;
-import data.Observation;
 import data.Station;
 
 import java.util.List;
@@ -86,7 +85,6 @@ public interface ForecastsContract {
          */
         void loadForecasts(Station station, boolean forceUpdate);
 
-        // TODO: 18/05/16 Michael to add this functionality
         void setForecastSite(String forecastSite);
     }
 }
