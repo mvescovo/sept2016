@@ -42,16 +42,15 @@ public class Forecast {
 
     /**
      * @param time the time of the particular forecast.
-     * @param description text description of forecast. e.g. cloudy.
      * @param minTemp minimum temperature of the forecast.
      * @param maxTemp maximum temperature of the forecast.
      * @param humidity humidity of the forecast.
      * @param pressure pressure of the forecast.
      * @param windSpeed wind speed of the forecast.
      */
-    public Forecast(String time, String description, String minTemp, String maxTemp, String humidity, String pressure, String windSpeed) {
+    public Forecast(String time, String temp, String minTemp, String maxTemp, String humidity, String pressure, String windSpeed) {
         mTime = time;
-        mDescription = description;
+        mTemp = temp;
         mMinTemp = minTemp;
         mMaxTemp = maxTemp;
         mHumidity = humidity;

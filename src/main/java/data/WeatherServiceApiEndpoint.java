@@ -462,28 +462,23 @@ class WeatherServiceApiEndpoint {
                             	humidity = dataObject.get("humidity").getAsString();
                             }
                             
-                            if (!dataObject.get("name").isJsonNull()) {
-                            	name = dataObject.get("name").getAsString();
-                            }
-                            if (!dataObject.get("description").isJsonNull()) {
-                            	description = dataObject.get("description").getAsString();
-                            }
-                            if (!dataObject.get("rain").isJsonNull()) {
-                            	description = dataObject.get("rain").getAsString();
-                            }
-                            if (!dataObject.get("lon").isJsonNull()) {
-                            	lon = dataObject.get("lon").getAsString();
-                            }
-                            if (!dataObject.get("lat").isJsonNull()) {
-                            	lat = dataObject.get("lat").getAsString();
-                            }
-                            if (!dataObject.get("speed").isJsonNull()) {
-                            	speed = dataObject.get("speed").getAsString();
-                            }
+//                            if (!dataObject.get("name").isJsonNull()) {
+//                            	name = dataObject.get("name").getAsString();
+//                            }
+//                            if (!dataObject.get("description").isJsonNull()) {
+//                            	description = dataObject.get("description").getAsString();
+//                            }
+//                            if (!dataObject.get("rain").isJsonNull()) {
+//                            	description = dataObject.get("rain").getAsString();
+//                            }
+
+//                            if (!dataObject.get("speed").isJsonNull()) {
+//                            	speed = dataObject.get("speed").getAsString();
+//                            }
                             
                             
                             
-                            Forecast forecast = new Forecast(time, temp, temp_min, temp_max, pressure, humidity, name, description, rain, lon, lat, speed);
+                            Forecast forecast = new Forecast(time, temp, temp_min, temp_max, humidity, pressure, speed);
 
                             //Forecast forecast = new Forecast(time, temp);
                             forecasts.add(forecast);
