@@ -17,7 +17,9 @@ public class Station implements Serializable {
 	private static final long serialVersionUID = -1970346110178787000L;
 	private String mUrl;
 	private String mCity;
-	private String mStateName;
+	private String mState;
+	private String mLatitude;
+	private String mLongitude;
 	private HashMap<String, Observation> mObservations;
 
 	/**
@@ -28,14 +30,22 @@ public class Station implements Serializable {
 	 *            the URL of the stations's JSON weather observations
 	 * @param city
 	 *            the name of the weather station
-	 * @param stateName
+	 * @param state
 	 *            the name of the state the station is located in.
 	 */
-	public Station(String url, String city, String stateName) {
-		mUrl = url;
-		setmCity(city);
-		this.setmStateName(stateName);
+	public Station(String url, String city, String state) {
+		setUrl(url);
+		setCity(city);
+		setState(state);
 	}
+
+    public Station(String url, String city, String state, String latitude, String longitude) {
+        setUrl(url);
+        setCity(city);
+        setState(state);
+        setLatitude(latitude);
+        setLongitude(longitude);
+    }
 
 	/**
 	 * Constructor for a station with a populated list of observation entities.
@@ -44,16 +54,16 @@ public class Station implements Serializable {
 	 *            the URL of the stations's JSON weather observations
 	 * @param city
 	 *            the name of the weather station
-	 * @param stateName
+	 * @param state
 	 *            the name of the state the station is located in.
 	 * @param observations
 	 *            HashMap of observation objects
 	 */
-	public Station(String url, String city, HashMap<String, Observation> observations, String stateName) {
-		mUrl = url;
-		setmCity(city);
-		mObservations = observations;
-		this.setmStateName(stateName);
+	public Station(String url, String city, String state, HashMap<String, Observation> observations) {
+		setUrl(url);
+		setCity(city);
+        setState(state);
+		setObservations(observations);
 	}
 
 	/*
@@ -63,9 +73,7 @@ public class Station implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder result = new StringBuilder();
-		result.append(getmCity());
-		return result.toString();
+        return getCity();
 	}
 
 	/*
@@ -76,7 +84,7 @@ public class Station implements Serializable {
 	@Override
 	public boolean equals(Object obj) {
 		Station s = (Station) obj;
-		if (s.getmCity().equals(mCity))
+		if (s.getCity().equals(mCity))
 			return true;
 		return false;
 	}
@@ -93,14 +101,22 @@ public class Station implements Serializable {
 	}
 
 	public String getCity() {
-		return getmCity();
+		return mCity;
 	}
 
 	public void setCity(String city) {
-		setmCity(city);
+        mCity = city;
 	}
 
-	public HashMap<String, Observation> getObservations() {
+    public String getState() {
+        return mState;
+    }
+
+    public void setState(String state) {
+        mState = state;
+    }
+
+    public HashMap<String, Observation> getObservations() {
 		return mObservations;
 	}
 
@@ -108,19 +124,19 @@ public class Station implements Serializable {
 		mObservations = observations;
 	}
 
-	public String getmCity() {
-		return mCity;
-	}
+    public String getLatitude() {
+        return mLatitude;
+    }
 
-	public void setmCity(String mCity) {
-		this.mCity = mCity;
-	}
+    public void setLatitude(String latitude) {
+        mLatitude = latitude;
+    }
 
-	public String getmStateName() {
-		return mStateName;
-	}
+    public String getLongitude() {
+        return mLongitude;
+    }
 
-	public void setmStateName(String mStateName) {
-		this.mStateName = mStateName;
-	}
+    public void setLongitude(String longitude) {
+        mLongitude = longitude;
+    }
 }

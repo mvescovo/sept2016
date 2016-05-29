@@ -48,17 +48,13 @@ public class ObservationsPresenter implements ObservationsContract.UserActionsLi
             public void onObservationsLoaded(List<Observation> observations) {
                 mView.setProgressBar(false);
                 if(observations == null) {
-                    logger.debug("Cannot get observations data from repository.");
+                    logger.debug("Cannot get observation data from repository.");
+                    JOptionPane.showMessageDialog(Main.MainWindow.getInstance().getContainer(),
+                            "Cannot connect the the data source. Try again later...");
                 } else {
-                	try {
-                        mView.showLatestObservation(observations.get(0));
-                        mView.showObservationTable(observations);
-                        mView.showChart(observations);
-                	} catch (IndexOutOfBoundsException e) {
-                		JOptionPane.showMessageDialog(Main.MainWindow.getInstance().getContainer(), "Cannot connect the the data source. Try again later...");
-
-                	}
-
+                    mView.showLatestObservation(observations.get(0));
+                    mView.showObservationTable(observations);
+                    mView.showChart(observations);
                 }
             }
         });

@@ -4,11 +4,16 @@ import data.WeatherRepositories;
 import data.WeatherServiceApiImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+
 import stations.StationsContract;
 import stations.StationsPresenter;
 import stations.StationsView;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.StringTokenizer;
@@ -25,7 +30,6 @@ import java.util.prefs.Preferences;
  */
 public class Main {
 
-	// TODO comment here
     private static final Logger logger = LogManager.getLogger(application.Main.class);
     // Default window size
     private static final int frameWidth = 1024;
@@ -37,14 +41,16 @@ public class Main {
     private static final Font fontNormal = new Font(fontFamily, Font.PLAIN, 14);
     private static final Font fontNormalBold = new Font(fontFamily, Font.BOLD, 14);
     // Colors
-    private static final Color colorDark = new Color(64, 89, 114);
-    private static final Color colorLight = new Color(241, 239, 226);
+    private static final Color colorDark = new Color(34,34,59);
+    private static final Color colorLight = new Color(250,250,250);
     private static final Color colorWhite = new Color(255, 255, 255);
     private static final Color colorBlack = new Color(0, 0, 0);
-    private static final Color colorContrast1 = new Color(32, 107, 164);
-    private static final Color colorContrast2 = new Color(119, 98, 31);
+    private static final Color colorContrast1 = new Color(242,233,228);
+    private static final Color colorContrast2 = new Color(154,140,152);
     // Symbols
     private static final String symbolDegree = "\u00b0";
+    
+    
 
     /**
      * Creates and updates the Stations view on the event dispatch thread.
@@ -115,7 +121,9 @@ public class Main {
         return colorBlack;
     }
 
-    /**
+
+
+	/**
      * Singleton class to create and show the main window for the app.
      *
      * This window is then used by other parts of the app to add and update
@@ -129,7 +137,9 @@ public class Main {
         private static Container container;
         private static JPanel stationsPanel;
         private static JPanel observationsPanel;
-        private static JScrollPane stationsScrollPane;
+        private static JPanel forecastsPanel;
+        private static JPanel weatherPanel;
+		private static JScrollPane stationsScrollPane;
         private static JScrollPane favouritesScrollPane;
         private static JFrame jFrame;
         private static JMenuBar menubar;
@@ -140,6 +150,9 @@ public class Main {
         private JButton btnRefresh;
         private JButton btnRemove;
 
+        private JFreeChart chart;
+        
+        
         /**
          * Creates the application's user interface window. Restores previous
          * settings and constructs the window's layout, containers and
@@ -188,9 +201,28 @@ public class Main {
             createStationsPanel();
             container.add(stationsPanel, BorderLayout.WEST);
 
+            weatherPanel = new JPanel();
+            weatherPanel.setLayout(new BorderLayout());
+            weatherPanel.setBackground(colorLight);
+            stationName = new JLabel("");
+            stationName.setFont(Main.getFonttitle());
+            stationName.setBorder(new EmptyBorder(10,10,10,10));
+            weatherPanel.add(stationName, BorderLayout.NORTH);
+            
+            
+            String chtTitle = "Temperature observations and forecasts";
+            String chtXAxisLabel = "Date and time";
+            String chtYAxisLabel = "Temperature " + Main.getSymboldegree() + "C";
+            chart = ChartFactory.createTimeSeriesChart(chtTitle, chtXAxisLabel, chtYAxisLabel, null, true,
+                    true, false);
+            
             // Observations panel - callable directly from observations view
             createObservationsPanel();
-
+            
+            
+            container.add(weatherPanel, BorderLayout.CENTER);
+            
+            
             // Display the main window.
             jFrame.setVisible(true);
         }
@@ -315,12 +347,10 @@ public class Main {
             introText.setWrapStyleWord(true);
             introText.setFont(Main.getFonttitle());
             introText.setBackground(observationsPanel.getBackground());
-            stationName = new JLabel("");
-            stationName.setFont(Main.getFonttitle());
-            observationsPanel.add(stationName, cons);
+
             cons.insets = new Insets(100, 10, 10, 10);
             observationsPanel.add(introText, cons);
-            container.add(observationsPanel, BorderLayout.CENTER);
+            weatherPanel.add(observationsPanel, BorderLayout.CENTER);
         }
 
         /**
@@ -330,19 +360,43 @@ public class Main {
          */
         public void clearObservationsPanel() {
             if (observationsPanel != null) {
-                container.remove(observationsPanel);
+                weatherPanel.remove(observationsPanel);
                 createObservationsPanel();
             }
         }
 
+        
+        public void createForecastsPanel() {
+            forecastsPanel = new JPanel();
+            forecastsPanel.setLayout(new GridBagLayout());
+            forecastsPanel.setBackground(colorLight);
+            GridBagConstraints cons = new GridBagConstraints();
+            cons.anchor = GridBagConstraints.NORTHWEST;
+            cons.gridx = 0;
+            cons.gridy = 0;
+            cons.weighty = 1;
+            cons.weightx = 1;
+            cons.insets = new Insets(10, 10, 10, 10);
+            cons.fill = GridBagConstraints.BOTH;
+            
+            stationName = new JLabel("");
+            stationName.setFont(Main.getFonttitle());
+            forecastsPanel.add(stationName, cons);
+            cons.insets = new Insets(100, 10, 10, 10);
+
+            
+        }
+        
+        
+        
         /**
          * Creates a JMenubar object and adds default menu items and actions.
          * Updates the class's menubar object. Called during UI build.
          */
         public void createMenuBar() {
             menubar = new JMenuBar();
-            JMenu menu, menuFav;
-            JMenuItem menuItem, menuItemFav1, menuItemFav2;
+            JMenu menu;
+            JMenuItem menuItem;
 
             // Build the file menu.
             menu = new JMenu("File");
@@ -522,6 +576,32 @@ public class Main {
         public void setIntroText(JTextArea introText) {
             this.introText = introText;
         }
+        
+        public JFreeChart getChart() {
+    		return chart;
+    	}
+
+    	public void setChart(JFreeChart chart) {
+    		this.chart = chart;
+    	}
+        
+        public static JPanel getForecastsPanel() {
+			return forecastsPanel;
+		}
+
+		public static void setForecastsPanel(JPanel forecastsPanel) {
+			MainWindow.forecastsPanel = forecastsPanel;
+		}
+
+		public static JPanel getWeatherPanel() {
+			return weatherPanel;
+		}
+
+		public static void setWeatherPanel(JPanel weatherPanel) {
+			MainWindow.weatherPanel = weatherPanel;
+		}
+		
+		
     }
 
 }

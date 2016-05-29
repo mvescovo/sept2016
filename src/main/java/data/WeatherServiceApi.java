@@ -26,4 +26,6 @@ interface WeatherServiceApi {
 
     void getObservations(Station station, WeatherServiceCallback<List<Observation>> callback);
 
+    void getForecasts(Station station, WeatherServiceCallback<List<Forecast>> callback);
+
 }

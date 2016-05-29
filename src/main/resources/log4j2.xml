@@ -9,6 +9,9 @@
         <Logger name="application.Main" level="trace" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
+        <Logger name="forecasts.ForecastsView" level="trace" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
         <Root level="error">
             <AppenderRef ref="Console"/>
         </Root>

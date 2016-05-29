@@ -3,9 +3,7 @@ import org.junit.Test;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 /**
@@ -15,9 +13,11 @@ import static org.mockito.Mockito.when;
  */
 public class SampleMockitoTests {
 
+    @SuppressWarnings( "unchecked" )
     @Test
     public void testTest() {
         // mock creation
+
         List mockedList = mock(List.class);
 
         // using mock object - it does not throw any "unexpected interaction" exception

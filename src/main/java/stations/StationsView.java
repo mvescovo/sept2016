@@ -5,13 +5,16 @@ import data.State;
 import data.Station;
 import data.WeatherRepositories;
 import data.WeatherServiceApiImpl;
+import forecasts.ForecastsPresenter;
+import forecasts.ForecastsView;
 import observations.ObservationsPresenter;
 import observations.ObservationsView;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,6 +30,7 @@ import java.util.List;
  */
 public class StationsView implements StationsContract.View, ActionListener, ListSelectionListener {
 
+    private static final Logger logger = LogManager.getLogger(stations.StationsView.class);
     private StationsContract.UserActionsListener mActionsListener;
     private JProgressBar mJProgressBar;
     private JComboBox<State> mStatesComboList;
@@ -193,10 +197,16 @@ public class StationsView implements StationsContract.View, ActionListener, List
         Main.MainWindow.getInstance().getBtnFavourite().addActionListener(this);
         Main.MainWindow.getInstance().getBtnRemove().addActionListener(this);
     	Main.MainWindow.getInstance().getIntroText().setVisible(false);
+
         ObservationsView observationsView = new ObservationsView();
         ObservationsPresenter observationsPresenter = new ObservationsPresenter(WeatherRepositories.getInMemoryRepoInstance(new WeatherServiceApiImpl()), observationsView);
         observationsView.setActionListener(observationsPresenter);
         observationsView.onReady(station);
+
+        ForecastsView forecastsView = new ForecastsView();
+        ForecastsPresenter forecastsPresenter = new ForecastsPresenter(WeatherRepositories.getInMemoryRepoInstance(new WeatherServiceApiImpl()), forecastsView);
+        forecastsView.setActionListener(forecastsPresenter);
+        forecastsView.onReady(station);
     }
 
     /*
@@ -271,4 +281,30 @@ public class StationsView implements StationsContract.View, ActionListener, List
         mSelectedStation = selectedStation;
     }
 
+	public JComboBox<State> getmStatesComboList() {
+		return mStatesComboList;
+	}
+
+	public void setmStatesComboList(JComboBox<State> mStatesComboList) {
+		this.mStatesComboList = mStatesComboList;
+	}
+
+	public JList<Station> getmStationsJList() {
+		return mStationsJList;
+	}
+
+	public void setmStationsJList(JList<Station> mStationsJList) {
+		this.mStationsJList = mStationsJList;
+	}
+
+	public List<Station> getmFavouritesList() {
+		return mFavouritesList;
+	}
+
+	public void setmFavouritesList(List<Station> mFavouritesList) {
+		this.mFavouritesList = mFavouritesList;
+	}
+
+    
+    
 }

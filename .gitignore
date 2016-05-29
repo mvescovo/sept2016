@@ -1,18 +1,20 @@
-# Gradle files
-.gradle
-build/
+# For IntelliJ users
+.idea/
+*.ipr
+*.iws
 
 # For Eclipse users
 *.project
 .classpath
 .settings
 
+# Gradle files
+.gradle
+build/
 # Ignore Gradle GUI config
 gradle-app.setting
-
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
-
 # Cache of project
 .gradletasknamecache
 
@@ -31,11 +33,8 @@ ant.properties
 local.properties
 project.properties
 
-# idea project files
-.idea/
-*.ipr
-*.iws
-
 # Log Files
 *.log
 
+# Config files
+config.properties

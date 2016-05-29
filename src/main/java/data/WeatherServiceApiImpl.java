@@ -1,5 +1,8 @@
 package data;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +14,7 @@ import java.util.List;
  */
 public class WeatherServiceApiImpl implements WeatherServiceApi {
 
+    private static final Logger logger = LogManager.getLogger(data.WeatherServiceApiImpl.class);
     private static final List<State> STATES_SERVICE_DATA = WeatherServiceApiEndpoint.loadPersistedStates();
     private static final HashMap<String, List<Station>> STATIONS_SERVICE_DATA = WeatherServiceApiEndpoint.loadPersistedStations();
 
@@ -31,7 +35,7 @@ public class WeatherServiceApiImpl implements WeatherServiceApi {
      */
     @Override
     public void getStations(WeatherServiceCallback<HashMap<String, List<Station>>> callback) {
-        HashMap<String, List<Station>> stations = new HashMap<String, List<Station>>(STATIONS_SERVICE_DATA);
+        HashMap<String, List<Station>> stations = new HashMap<>(STATIONS_SERVICE_DATA);
         callback.onLoaded(stations);
     }
 
@@ -44,7 +48,24 @@ public class WeatherServiceApiImpl implements WeatherServiceApi {
     @Override
     public void getObservations(Station station, final WeatherServiceCallback<List<Observation>> callback) {
         WeatherServiceApiEndpoint.getObservations(station, new WeatherServiceApi.WeatherServiceCallback<List<Observation>>() {
+            @Override
             public void onLoaded(List<Observation> data) {
+                callback.onLoaded(data);
+            }
+        });
+    }
+
+    /**
+     * Get a list of forecasts.
+     *
+     * @param station to determine what forecasts to get.
+     * @param callback to return the data when it's been retrieved.
+     */
+    @Override
+    public void getForecasts(Station station, final WeatherServiceCallback<List<Forecast>> callback) {
+        WeatherServiceApiEndpoint.getForecasts(station, new WeatherServiceApi.WeatherServiceCallback<List<Forecast>>() {
+            @Override
+            public void onLoaded(List<Forecast> data) {
                 callback.onLoaded(data);
             }
         });
