@@ -17,7 +17,6 @@ import java.util.Vector;
  */
 public class Observation {
 
-	private String mId;
 	private String mName;
 	private String mStateName;
 	private String mDateTime;
@@ -81,7 +80,6 @@ public class Observation {
 			String swell_period, String vis_km, String weather, String wind_dir, String wind_spd_kmh,
 			String wind_spd_kt) {
 
-		mId = 
 		mAirtemp = airTemp;
 		mName = name;
 		mDateTime = local_date_time_full;
@@ -113,9 +111,8 @@ public class Observation {
 	 * @param rain
 	 * @param humidity
 	 */
-	public Observation(String id, String name, String dateTime, String apparentTemp, String cloud, String airtemp,
+	public Observation(String name, String dateTime, String apparentTemp, String cloud, String airtemp,
 			String rain, String humidity) {
-		mId = id;
 		mName = name;
 		mDateTime = dateTime;
 		mApparentTemp = apparentTemp;
@@ -168,14 +165,6 @@ public class Observation {
 	/*
 	 * Getters and setters for the class.
 	 */
-	public String getmId() {
-		return mId;
-	}
-
-	public void setmId(String mId) {
-		this.mId = mId;
-	}
-
 	public String getmName() {
 		return mName;
 	}
