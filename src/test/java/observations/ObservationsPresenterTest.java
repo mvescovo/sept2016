@@ -23,8 +23,8 @@ import static org.mockito.Mockito.verify;
 public class ObservationsPresenterTest {
 
     private static List<Observation> OBSERVATIONS = Lists.newArrayList(
-            new Observation("Melbourne Olympic Park", "20160529133000", "7.7", "Mostly clear", "12.4", "0.0", "53"),
-            new Observation("Melbourne Olympic Park", "20160529140000", "9.9", "-", "13.2", "0.0", "56"));
+            new Observation("1","Melbourne Olympic Park", "20160529133000", "7.7", "Mostly clear", "12.4", "0.0", "53"),
+            new Observation("1","Melbourne Olympic Park", "20160529140000", "9.9", "-", "13.2", "0.0", "56"));
 
     // Use mock repository so real data is not affected
     @Mock
