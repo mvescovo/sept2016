@@ -37,7 +37,7 @@ public class InMemoryWeatherRepositoryTest {
      * - it calls the WeatherServiceApi to save the station
      */
     @Test
-    public void saveFavouriteStationFromWeatherServiceApi() {
+    public void saveFavouriteStationToWeatherServiceApi() {
         mInMemoryWeatherRepository.saveFavouriteStation(anyObject());
 
         verify(mWeatherServiceApi).saveFavouriteStation(anyObject());

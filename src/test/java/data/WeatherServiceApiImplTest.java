@@ -7,5 +7,6 @@ package data;
  */
 public class WeatherServiceApiImplTest {
 
-    // TODO Michael to update...
+    // There are no useful tests to be made with the current implementation.
+    // Partly because of the static variables involved.
 }
