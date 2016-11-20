@@ -1,6 +1,17 @@
-#Java Desktop Weather App
+# Software Engineering Process and Tools 2016
 
-Main Features:
+A Java weather program to demonstrate software engineering process and tools. This is the product of the assignment.
+
+# Install
+
+This program uses the Gradle build system for importing libraries and was built with IntelliJ. For Eclipse there is the Gradle Buildship plugin.
+
+###### API keys
+
+The app uses [https://openweathermap.org](https://openweathermap.org) and [forecast.io](forecast.io).
+
+# Features
+
 - Select any Australian weather station (based on BOM list).
 - View some history for a selected weather station.
 - View some forecasts for a selected weather station.
@@ -9,6 +20,10 @@ Main Features:
 - Save weather stations to a favourite list.
 - Remove a weather station from the favourite list.
 
-Notes:
-- This project was for educational purposes and not intended as a _real_ app.
-- The current version is incomplete and partly broken. Only two stations are available due to missing lat/lon data. This is an issue due to one of the weather API's requiring this and not offereing a city name option.
+# Issues
+- The current version is incomplete and partly broken. Only two stations are available due to missing lat/lon data. This is an issue due to one of the weather API's requiring lat/lon data and not offering a city name option. By eliminating the restrictive API (forecast.io) this problem can be resolved.
+
+# Licence
+[![AUR](https://img.shields.io/aur/license/yaourt.svg)]()
+
+[GNU General Public License v3.0](http://choosealicense.com/licenses/gpl-3.0/)
