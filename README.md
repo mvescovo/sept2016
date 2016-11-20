@@ -1,37 +1,14 @@
-Assignment part 1
------------------
-Software Engineering Process and Tools.
-####Team members
-- Kendall Taylor, s9004570
-  - 25% contribution
-  - Created the user interface, user guide, and how to.
-- Stephen Wood, s3239401
-  - 25% contribution
-  - Implemented the backend and the javadocs.
-- Daniel Peri, s3543146
-  - 25% contribution
-  - Created and managed the tests for the whole system.
-- Michael Vescovo, s3459317
-  - 25% contribution
-  - Designed the "skeleton" architecture and associated diagrams -  and this readme.
+#Java Desktop Weather App
 
-####Tutor
-- Aditya Jagtap
-  - Wednesday 5:30 - 7:30
+Main Features:
+- Select any Australian weather station (based on BOM list).
+- View some history for a selected weather station.
+- View some forecasts for a selected weather station.
+- See that data in the form of a chart.
+- Refresh the currently displayed weather data.
+- Save weather stations to a favourite list.
+- Remove a weather station from the favourite list.
 
-####Bonus marks
-- Junit testing
-  - We have a few basic junit tests, testing one of the presenter classes. More to come in assignment 2. Please see the tests directory in the source code.
-- Continous integration
-  - We have implemented Travis CI such that all junit tests are automatically run each time there is a new commit. There is a screenshot in the main folder.
-- Singleton pattern
-  - The "MainWindow" class at line 121 of "Main.java" is a singleton class using this pattern.
-- MVP (model view presenter) pattern
-  - The architecture is designed with the MVP pattern. A version of MVC, this pattern helps make it easy to test each component. Each "feature" has it's own presenter and view class and only the presenter can talk to the repository.
-- Repository pattern
-  - We have used the repository pattern so that each "feature" can grab it's own data, thereby reducing coupling between components.
-
-####Other
-I was not able to add the tutor to github or leantesting. Github requries the email address to already have an account; it cannot sent invites. Leantesting uses github to login.
-
-If this is you Aditya (reading this now) I tried with this email: aditya.jagtap@rmit.edu.au. Let me know if you have some other account you want me to add you with. You can reach me at s3459317@student.rmit.edu.au. Thanks, Michael.
+Notes:
+- This project was for educational purposes and not intended as a _real_ app.
+- The current version is incomplete and partly broken. Only two stations are available due to missing lat/lon data. This is an issue due to one of the weather API's requiring this and not offereing a city name option.
