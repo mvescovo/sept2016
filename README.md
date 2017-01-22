@@ -14,6 +14,7 @@ A Java weather program to demonstrate software engineering process and tools. Th
 
 # Screenshots
 <img src="https://cloud.githubusercontent.com/assets/15829736/22180274/b063848e-e0bf-11e6-9835-065644a312f6.png" height="351" width="500">
+<img src="https://cloud.githubusercontent.com/assets/15829736/22180291/0cf92adc-e0c0-11e6-9af4-4e5c59632d67.png" height="351" width="500">
 
 # Install
 
